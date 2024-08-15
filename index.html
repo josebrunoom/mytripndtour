@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyTripnTour</title>
+  </head>
+  <body class="bg-[#faf8fd]">
+    <div id="fb-root"></div>
+    <div id="app"></div>
+    <div id="fb-root"></div>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=45064562999-7unahamblqil0gid8uggtkjcr072ekuv.apps.googleusercontent.com&libraries=places"></script> -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v20.0&appId=1203498224221425" nonce="0NtxJQ9G"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module">
+      import router from './src/routes'
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1203498224221425', // Replace with your Facebook App ID
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v20.0' // Use the latest Graph API version or the version your app uses
+        });
+
+        console.log('Facebook SDK initialized');
+
+        FB.getLoginStatus(function(response) {
+          console.log('FB.getLoginStatus response:', response);
+        });
+      };
+
+      // Function to handle Facebook login
+      window.loginWithFacebook = function() {
+  FB.login(function(response) {
+    if (response.authResponse) {
+      console.log('Welcome! Fetching your information....');
+      FB.api('/me', {fields: 'name,email,birthday,gender,picture'}, async function(response) {
+        console.log('facebook response',response)
+        if (response && !response.error) {
+          console.log('Good to see you, ' + response.name + '. Your email is ' + response.email);
+          let backUser=[]
+          let objUser = {
+            Email: response.email,
+            Nome: response.name,
+            /* photo: userPicture, */
+            IdentificadorUnico: response.id, 
+            MetodoAutenticacao:'Facebook',
+            /* birthday: formattedDate, */
+            /* gender: userGender, */
+          };
+          backUser.push(objUser)
+          await sendUser(backUser)
+          router.push('/mytrip/home')
+        } else {
+          console.error('Error fetching email:', response.error);
+        }
+      });
+    } else {
+      console.log('User cancelled login or did not fully authorize.');
+    }
+  }, {scope: 'email, user_birthday,user_gender'}); // Request email permission here
+};
+const sendUser=async(user)=>{
+  try {
+    console.log('login', user)
+    await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/usuario/upload', user)
+  } catch (error) {
+    console.log(error)
+    alert('Erro ao logar')
+  }
+}
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
