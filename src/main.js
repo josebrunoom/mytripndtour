@@ -16,6 +16,8 @@ import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import PrimeVue from "primevue/config";
 import Aura from '@primevue/themes/aura';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap'
 
 const vuetify = createVuetify({
     components,
