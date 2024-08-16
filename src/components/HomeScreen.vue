@@ -1,16 +1,19 @@
 <template>
+  
   <div class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md" style="background-color: #FEECCF;">
           <h2 class="h5 fw-bold mb-2">Ponto de Origem</h2>
-          <div id="autocomplete-origin" class="autocomplete-container w-100"></div>
+          <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
+          </vue-google-autocomplete>
         </div>
       </div>
       <div class="col-12 col-md-6">
         <div class="p-4 rounded-lg shadow-md" style="background-color: #CFEDFE;">
           <h2 class="h5 fw-bold mb-2">Destino(s)</h2>
-          <div id="autocomplete-destination" class="autocomplete-container w-100"></div>
+          <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
+          </vue-google-autocomplete>
         </div>
       </div>
     </div>
@@ -18,58 +21,58 @@
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
-          <h2 class="h5 fw-bold mb-2 text-start">Tempo de viagem:</h2>
-          <div class="text-start mb-1"><span class="h5 fw-bold ml-1 text-start">Quantidade de dias::</span></div>
+        
+          <h2 class="h5 fw-bold mb-2">Tempo de viagem</h2>
+          <span class="mt-2 d-block text-start fw-bold ml-1">Quantidade de dias:</span>
           
-          <div class="d-flex ">
-            <input type="text" class="form-control form-control-lg w-25" placeholder="00" v-model="periodo_viagem"/>
-          </div>
+       
+            <input type="text" style="width: 100%;" class="form-control" placeholder="00" v-model="periodo_viagem"/>
+         
           <span class="mt-2 d-block text-start fw-bold ml-1">Data de início:</span>
           <VueDatePicker 
             v-model="date"
             locale="pt"
             class="mt-2 w-100"
             :enable-time-picker="false"
-            style="max-width: 300px; width: 100%;"
+            style="width: 100%;"
           ></VueDatePicker>
         </div>
       </div>
 
-      <div class="col-12 col-md-2 row-auto">
-        <div class="bg-white p-3">
+      <div class="col-12 col-md-6 mb-3 mb-md-0 bg-white">
+        <div class="p-3 " style="border-radius: 8px;">
           <h2 class="h5 fw-bold mb-2">Pessoas</h2>
-          <div class="d-flex align-items-center mb-3">
+          <div style="width: 50%; float: left">
+            <span class="mt-2 d-block text-start fw-bold ml-1">Adultos:</span>
             <input 
               type="text" 
-              class="form-control form-control-lg w-25" 
+              class="form-control" 
               placeholder="00" 
-              v-model="numAdults"
+              v-model.number="numAdults"
+              style="width: 50%;"
             />
-            <span class="ms-2 fs-3">Adultos</span>
-          </div>
-          <div class="d-flex align-items-center">
+
+            <span class="mt-2 d-block text-start fw-bold ml-1">Crianças:</span>
             <input 
               type="text" 
-              class="form-control form-control-lg w-25" 
+              class="form-control" 
               placeholder="00"  
               v-model="formattedChildren"
               @input="formatChildren"
+              style="width: 50%;"
             />
-            <span class="ms-2 fs-3">Crianças</span>
           </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-2 row-auto">
-        <div v-if="numChildren > 0" class="bg-white p-3 w-full col-md-12">
-            <div class="d-flex align-items-center ms-2">
-              <span class="fs-5 me-2 mb-1" style="width: 150px;">Criança {{ currentIndex + 1 }}:</span>
+            
+            <div  v-if="numChildren > 0" class="bg-white p-3 w-full col-md-12" style="width: 50%;float: left">
+            
+              <span class="mt-2 d-block text-start fw-bold ml-1">Idade Criança {{ currentIndex + 1 }}:</span>
               <input 
                 type="text" 
-                class="form-control form-control-sm mb-1" 
+                class="form-control" 
                 placeholder="Idade" 
                 v-model.number="childAges[currentIndex]"
               />
-            </div>
+           
             <button 
               @click="prevChild" 
               :disabled="currentIndex === 0" 
@@ -85,6 +88,10 @@
               &gt;
             </button>
           </div>
+          
+        </div>
+   
+        
       </div>
     </div>
 
@@ -104,9 +111,9 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-4 col-md-6 mb-2">
-        <div class="bg-white p-3 col-4">
-          <h3 class="h5 text-start">Lista de interesses:</h3>
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <div class="bg-white p-3 rounded-lg">
+          <h2 class="h5 fw-bold mb-2">Lista de interesses</h2>
           <div 
             v-for="(interest, index) in interesses" 
             :key="index" 
@@ -119,14 +126,18 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
-        <div class="card bg-white p-3">
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
-          <div id="autocomplete-conhecer" class="autocomplete-container w-100"></div>
+          <vue-google-autocomplete id="map3" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceC">
+          </vue-google-autocomplete>
         </div>
-        <div class="card bg-white p-3 mt-3">
+      </div>
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Não Quero Ir</h2>
-          <div id="autocomplete-nir" class="autocomplete-container w-100"></div>
+          <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
+          </vue-google-autocomplete>
         </div>
       </div>
     </div>
@@ -143,15 +154,25 @@
         <button 
           type="button" 
           class="btn btn-danger"
+          @click="refreshPage"
         >
           Apagar
         </button>
       </div>
     </div>
 
+    <div class="row mb-4">
+      <div class="col-12 roteiro-container">
+        <!-- Render each item after parsing with marked -->
+        <div v-for="(item, index) in roteiroData" :key="index" v-html="parseMarkdown(item)" class="roteiro-item"></div>
+      </div>
+    </div>
+
+
     <Loading :loading="isLoading"/>
   </div>
 </template>
+
 
   
 <script setup>
@@ -166,6 +187,8 @@
   import axios from 'axios';
   import moment from 'moment';
   import Loading from './Loading.vue';
+  import { marked } from 'marked';
+  import VueGoogleAutocomplete from "vue-google-autocomplete";
 
   const date = ref();
   const numAdults = ref()
@@ -183,6 +206,7 @@
   let lugar_nIr=[]
   let lugar_Conhecer=[]
   let meio_transporte
+  let roteiroData = []
   let ObjRoteiro={
     cidade_origem:'',
     destinos:[{cidade_destino: "Rio de Janeiro",
@@ -194,79 +218,27 @@
             lugar_nao_quer_conhecer: ["Museu de Arte Moderna"],
             meio_transporte: "Avião"}]
   }
+  const refreshPage = () => {
+  window.location.reload();
+  };
 
-  onMounted(() => {
-    const autocompleteElementOrigin = document.getElementById('autocomplete-origin');
-  if (autocompleteElementOrigin) {
-    const autocompleteOrigin = new GeocoderAutocomplete(
-      autocompleteElementOrigin,
-      'f1b2e9cbd43d4c0bbd85d576804e3f0e',
-      { lang: 'pt',
-      placeholder:'Digite um Lugar'
-       }
-    );
-    
-    autocompleteOrigin.on('select', (location) => {
-      Origem=location.properties.city;
-      ObjRoteiro.cidade_origem=Origem
-    });
-
-    autocompleteOrigin.on('suggestions', (suggestions) => {
-    });
+  const handlePlaceOrigem=(place)=>{
+    console.log(place);
+    Origem=place.locality
+  }
+  const handlePlaceDestino=(place)=>{
+    console.log(place);
+    Destinos.push(place.locality)
+  }
+  const handlePlaceC=(place)=>{
+    console.log(place);
+    lugar_Conhecer.push(place.route)
+  }
+  const handlePlaceN=(place)=>{
+    console.log(place);
+    lugar_nIr.push(place.route)
   }
   
-  const autocompleteElementDestination = document.getElementById('autocomplete-destination');
-  if (autocompleteElementDestination) {
-    const autocompleteDestination = new GeocoderAutocomplete(
-      autocompleteElementDestination,
-      'f1b2e9cbd43d4c0bbd85d576804e3f0e',
-      { lang: 'pt',
-      placeholder:'Digite um Lugar'
-       }
-    );
-    
-    autocompleteDestination.on('select', (location) => {
-      Destinos.push(location.properties.city);
-    });
-
-    autocompleteDestination.on('suggestions', (suggestions) => {
-    });
-  }
-  const autocompleteElementConhecer = document.getElementById('autocomplete-conhecer');
-  if (autocompleteElementConhecer) {
-    const autocompleteConhecer = new GeocoderAutocomplete(
-      autocompleteElementConhecer,
-      'f1b2e9cbd43d4c0bbd85d576804e3f0e',
-      { lang: 'pt',
-      placeholder:'Digite um Lugar'
-       }
-    );
-    
-    autocompleteConhecer.on('select', (location) => {
-      lugar_Conhecer.push(location.properties.city);
-    });
-
-    autocompleteConhecer.on('suggestions', (suggestions) => {
-    });
-  }
-  const autocompleteElementNir = document.getElementById('autocomplete-nir');
-  if (autocompleteElementNir) {
-    const autocompleteNir = new GeocoderAutocomplete(
-      autocompleteElementNir,
-      'f1b2e9cbd43d4c0bbd85d576804e3f0e',
-      { lang: 'pt',
-      placeholder:'Digite um Lugar'
-       }
-    );
-    
-    autocompleteNir.on('select', (location) => {
-      lugar_nIr.push(location.properties.city);
-    });
-
-    autocompleteNir.on('suggestions', (suggestions) => {
-    });
-  }
-});
 watch(numChildren, (newCount) => {
   if (newCount > childAges.length) {
     for (let i = childAges.length; i < newCount; i++) {
@@ -275,22 +247,6 @@ watch(numChildren, (newCount) => {
   } 
   else if (newCount < childAges.length) {
     childAges.splice(newCount);
-  }
-});
-function formatAdults() {
-  if (numAdults.value.length === 1) {
-    numAdults.value = '0' + numAdults.value; 
-  } else if (numAdults.value.length === 0) {
-    numAdults.value = '00'; 
-  }
-}
-
-const formattedAdults = computed({
-  get() {
-    return numAdults.value;
-  },
-  set(value) {
-    numAdults.value = value.replace(/\D/g, '').padStart(2, '0').slice(-2);
   }
 });
 const formatChildren = () => {
@@ -351,13 +307,16 @@ const postRoteiro=async () =>{
     const response = await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/gerar_roteiro', ObjRoteiro)
     console.log(response.data)
     localStorage.setItem('roteiro', JSON.stringify(response.data));
-    router.push('/mytrip/roteiro');
+    roteiroData = response.data
   } catch (error) {
     alert('Erro ao Gerar Roteiro')
   }
   finally {
     isLoading.value = false; 
   }
+}
+function parseMarkdown(text) {
+  return marked(text);
 }
 </script>
 <style scoped>
@@ -460,6 +419,11 @@ input[type="radio"] {
   display: flex;
   align-items: center;
 }
+.roteiro-item {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    text-align: left
+  }
 
 </style>
   
