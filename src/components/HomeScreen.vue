@@ -1,147 +1,158 @@
 <template>
-    <div class="flex-1 flex-col items-center w-full h-full" style="margin-left: 16rem">
-      <div class="flex space-x-4 mb-8 w-full" style="margin-left: 22rem">
-        <div class="bg-yellow-100 p-4 ml-4 rounded-lg shadow-md flex-grow max-w-lg w-full place-content-start">
-          <h2 class="text-lg font-bold mb-2">Ponto de Origem</h2>
-          
-          <div id="autocomplete-origin" class="autocomplete-container w-full"></div>
+  <div class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
+    <div class="row mb-4">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <div class="p-4 rounded-lg shadow-md" style="background-color: #FEECCF;">
+          <h2 class="h5 fw-bold mb-2">Ponto de Origem</h2>
+          <div id="autocomplete-origin" class="autocomplete-container w-100"></div>
         </div>
-        <div class="main-box bg-[#cfedfe]">
-          <h2 class="text-lg font-bold mb-2">Destino(s)</h2>
-            <div id="autocomplete-destination" class="autocomplete-container w-full"></div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="p-4 rounded-lg shadow-md" style="background-color: #CFEDFE;">
+          <h2 class="h5 fw-bold mb-2">Destino(s)</h2>
+          <div id="autocomplete-destination" class="autocomplete-container w-100"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <div class="p-3 bg-white" style="border-radius: 8px;">
+          <h2 class="h5 fw-bold mb-2 text-start">Tempo de viagem:</h2>
+          <div class="text-start mb-1"><span class="h5 fw-bold ml-1 text-start">Quantidade de dias::</span></div>
           
-          <div class="flex justify-end mt-4">
-            <!-- <button class="rounded-full bg-white w-6 mr-2" @click="">
-              <i class="fas fa-plus"></i>
-            </button> -->
+          <div class="d-flex ">
+            <input type="text" class="form-control form-control-lg w-25" placeholder="00" v-model="periodo_viagem"/>
+          </div>
+          <span class="mt-2 d-block text-start fw-bold ml-1">Data de início:</span>
+          <VueDatePicker 
+            v-model="date"
+            locale="pt"
+            class="mt-2 w-100"
+            :enable-time-picker="false"
+            style="max-width: 300px; width: 100%;"
+          ></VueDatePicker>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-2 row-auto">
+        <div class="bg-white p-3">
+          <h2 class="h5 fw-bold mb-2">Pessoas</h2>
+          <div class="d-flex align-items-center mb-3">
+            <input 
+              type="text" 
+              class="form-control form-control-lg w-25" 
+              placeholder="00" 
+              v-model="numAdults"
+            />
+            <span class="ms-2 fs-3">Adultos</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <input 
+              type="text" 
+              class="form-control form-control-lg w-25" 
+              placeholder="00"  
+              v-model="formattedChildren"
+              @input="formatChildren"
+            />
+            <span class="ms-2 fs-3">Crianças</span>
           </div>
         </div>
       </div>
-      <div class="flex w-full space-x-4 mb-8">
-    <div class="card flex flex-col items-start mb-2">
-      <h2 class="text-lg font-bold mb-2">Tempo de viagem</h2>
-      <!-- <p class="text-4xl font-bold">Guaxupé</p> -->
-      <div class="flex items-center space-x-2">
-      <input type="text" class="text-4xl font-bold w-10"placeholder="00" v-model="periodo_viagem"/>
-      <span class="text-4xl font-bold">dias</span>
-      </div>
-      <span class="mt-2 text-blue-500">Data de inicio</span>
-      
-      <VueDatePicker 
-        v-model="date"
-        locale="pt"
-        class="mt-2"
-        :enable-time-picker="false"
-      ></VueDatePicker>
-    </div>
-  <div class="flex space-x-8"> <!-- Flex container for Pessoas and child ages boxes -->
-    <!-- Pessoas Box -->
-    <div class="card flex flex-col items-start mb-2">
-      <h2 class="text-lg font-bold mb-2">Pessoas</h2>
-      <div class="flex items-center space-x-2 mb-8">
-        <input 
-          type="text" 
-          class="text-4xl font-bold w-10" 
-          placeholder="00" 
-          v-model="numAdults"
-        />
-        <span class="text-4xl font-bold">Adultos</span>
-      </div>
-      <div class="flex items-center space-x-2">
-        <input 
-          type="text" 
-          class="text-4xl font-bold w-10" 
-          placeholder="00"  
-          v-model="formattedChildren"
-          @input="formatChildren"
-        />
-        <span class="text-4xl font-bold">Crianças</span>
+      <div class="col-12 col-md-2 row-auto">
+        <div v-if="numChildren > 0" class="bg-white p-3 w-full col-md-12">
+            <div class="d-flex align-items-center ms-2">
+              <span class="fs-5 me-2 mb-1" style="width: 150px;">Criança {{ currentIndex + 1 }}:</span>
+              <input 
+                type="text" 
+                class="form-control form-control-sm mb-1" 
+                placeholder="Idade" 
+                v-model.number="childAges[currentIndex]"
+              />
+            </div>
+            <button 
+              @click="prevChild" 
+              :disabled="currentIndex === 0" 
+              class="btn btn-light"
+            >
+              &lt;
+            </button>
+            <button 
+              @click="nextChild" 
+              :disabled="currentIndex === numChildren - 1" 
+              class="btn btn-light ms-2"
+            >
+              &gt;
+            </button>
+          </div>
       </div>
     </div>
 
-    <!-- Child Ages Box -->
-    <div v-if="numChildren > 0" class="flex items-center space-x-2 mb-2 card">
-      <button 
-        @click="prevChild" 
-        :disabled="currentIndex === 0" 
-        class="px-4 py-2 bg-gray-300 rounded"
-      >
-        &lt;
-      </button>
-      
-      <div class="flex items-center space-x-2">
-        <span class="text-2xl font-bold mt-1 w-32">
-          Criança {{ currentIndex + 1 }}:
-        </span>
-        <input 
-          type="text" 
-          class="text-2xl font-bold w-16 mt-1" 
-          placeholder="Idade" 
-          v-model.number="childAges[currentIndex]"
-        />
+    <div class="row mb-4">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <div class="bg-white p-3 rounded-lg">
+          <h2 class="h5 fw-bold mb-2">Meio de Transporte</h2>
+          <VueSelect :options="transporteOptions" class="w-100" v-model="meio_transporte"></VueSelect>
+        </div>
       </div>
+      <div class="col-12 col-md-6">
+        <div class="bg-white p-3">
+          <h2 class="h5 fw-bold mb-2">Moeda preferida</h2>
+          <VueSelect :options="Moedas" class="w-100"></VueSelect>
+        </div>
+      </div>
+    </div>
 
-      <button 
-        @click="nextChild" 
-        :disabled="currentIndex === numChildren - 1" 
-        class="px-4 py-2 bg-gray-300 rounded"
-      >
-        &gt;
-      </button>
-    </div>
-  </div>
-    </div>
-    <div class="flex w-full space-x-4">
-      <div class="card flex flex-col items-start mb-2">
-      <h2 class="text-lg font-bold mb-2">Meio de Transporte</h2>
-      <VueSelect :options="transporteOptions" class="w-32" v-model="meio_transporte"></VueSelect>
-    </div>
-      <div class="card flex flex-col items-start mb-2">
-      <h2 class="text-lg font-bold mb-2">Moeda preferida</h2>
-      <VueSelect :options="Moedas" class="w-32"></VueSelect>
-    </div>
-    
-    </div>
-    <div class="flex w-full space-x-4 mb-4">
-      <div class="card">
-    <h3>Lista de interesses:</h3>
-    <div 
-      v-for="(interest, index) in interesses" 
-      :key="index" 
-      class="interest-item"
-    >
-      <label>
-        <input type="checkbox" :name="interest" :value="interest" />
-        <span class="interest-label ml-2">{{ interest }}</span>
-      </label>
-    </div>
-  </div>
-        <div class="main-box bg-white">
-          <h2 class="text-lg font-bold mb-2">Quero Conhecer</h2>
-          <div id="autocomplete-conhecer" class="autocomplete-container w-full"></div>
+    <div class="row mb-4">
+      <div class="col-4 col-md-6 mb-2">
+        <div class="bg-white p-3 col-4">
+          <h3 class="h5 text-start">Lista de interesses:</h3>
+          <div 
+            v-for="(interest, index) in interesses" 
+            :key="index" 
+            class="d-flex align-items-center mb-2"
+          >
+            <label class="d-flex align-items-center">
+              <input type="checkbox" :name="interest" :value="interest" class="me-2"/>
+              <span>{{ interest }}</span>
+            </label>
+          </div>
         </div>
-        <div class="main-box bg-white">
-          <h2 class="text-lg font-bold mb-2">Não Quero Ir</h2>
-          <div id="autocomplete-nir" class="autocomplete-container minimal round-borders w-full"></div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="card bg-white p-3">
+          <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
+          <div id="autocomplete-conhecer" class="autocomplete-container w-100"></div>
         </div>
+        <div class="card bg-white p-3 mt-3">
+          <h2 class="h5 fw-bold mb-2">Não Quero Ir</h2>
+          <div id="autocomplete-nir" class="autocomplete-container w-100"></div>
+        </div>
+      </div>
     </div>
-    <div class="flex w-full space-x-4 ml-4">
-    <input 
-      type="button" 
-      value="Enviar"
-      class="bg-blue-500 text-white font-bold py-2 px-4 rounded" 
-      @click="postRoteiro"
-    />
-    <input 
-      type="button" 
-      value="Apagar"
-      class="bg-red-500 text-white font-bold py-2 px-4 rounded" 
-    />
+
+    <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-start">
+        <button 
+          type="button" 
+          class="btn btn-primary me-2" 
+          @click="postRoteiro"
+        >
+          Enviar
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-danger"
+        >
+          Apagar
+        </button>
+      </div>
+    </div>
+
+    <Loading :loading="isLoading"/>
   </div>
-  <Loading :loading="isLoading"/>
-    </div>
-    
 </template>
+
   
 <script setup>
   import { ref, onMounted, watch,computed } from 'vue'
@@ -350,6 +361,12 @@ const postRoteiro=async () =>{
 }
 </script>
 <style scoped>
+.scrollable-container {
+  max-height: 90vh; /* Adjust as needed */
+  overflow-y: auto;
+  margin: 0 auto;
+  padding: 1rem; /* Adjust as needed */
+}
 .autocomplete-container {
     position: relative;
 }
