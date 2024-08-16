@@ -36,7 +36,6 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
   flex-grow: 1; /* flex-grow */
   max-width: 32rem; /* max-w-lg */
-  width: 100%; /* w-full */
   place-content: start; 
   padding-bottom: 40px; /* Adds space at the bottom */
 }
