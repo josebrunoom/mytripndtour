@@ -99,7 +99,13 @@
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Meio de Transporte</h2>
-          <VueSelect :options="transporteOptions" class="w-100" v-model="meio_transporte"></VueSelect>
+          <select class="w-100 form-select" id="select-transporte">
+            <option value=""></option>
+            <option value="Carro">Carro</option>
+            <option value="Ônibus">Ônibus</option>
+            <option value="Moto">Moto</option>
+            <option value="Avião">Avião</option>
+          </select>
         </div>
       </div>
       <div class="col-12 col-md-6">
@@ -197,14 +203,14 @@
   const currentIndex = ref(0);
   const isLoading=ref(false)
   let childAges=[]
-  let transporteOptions=['Carro','Ônibus','Moto','Avião']
+  let transporteOptions=['','Carro','Ônibus','Moto','Avião']
   let interesses=['Compras','Cultura Local','Esporte','Natureza']
   let Moedas=['Dolar','Real','Euro']
   let Destinos=[]
   let Origem
   let periodo_viagem
-  let lugar_nIr=[]
-  let lugar_Conhecer=[]
+  let lugar_nIr=['',]
+  let lugar_Conhecer=['',]
   let meio_transporte
   let roteiroData = []
   let ObjRoteiro={
@@ -226,7 +232,7 @@
     Origem=place.locality
   }
   const handlePlaceDestino=(place)=>{
-    Destinos.push(place.locality)
+    Destinos[0]=place.locality
   }
   const handlePlaceC=(place)=>{
     lugar_Conhecer[0]=document.getElementById("map3").value
@@ -291,11 +297,11 @@ const postRoteiro=async () =>{
     destinos:[{cidade_destino: Destinos[0],
             periodo_viagem: transformDates(date.value, periodo_viagem),
             quantidade_adultos: numAdults.value,
-            quantidade_criancas: numChildren.value,
+            quantidade_criancas: numChildren.value ? numChildren.value : 0,
             idades_criancas: childAges,
             locais_interesse: lugar_Conhecer,
             lugar_nao_quer_conhecer: lugar_nIr,
-            meio_transporte: meio_transporte}]
+            meio_transporte: document.getElementById("select-transporte").value}]
   }
   
   console.log(ObjRoteiro)
