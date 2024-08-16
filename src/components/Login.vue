@@ -4,7 +4,7 @@
         <div class="flex justify-center mb-4">
           <img src="../assets/logo.jpg" alt="Logo" class="img-Logo" />
         </div>
-        <form @submit.prevent="IsChecked('google')">
+        <form @submit.prevent="">
           <div  class="mt-4 ml-16 items-center">
             <button  @click="IsChecked('google')" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
               <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
@@ -12,7 +12,7 @@
             </button>
           </div>
         </form>
-        <form @submit.prevent="IsChecked('facebook')">
+        <form @submit.prevent="">
           <div  class="mt-4 ml-16">
             <button  @click="IsChecked('facebook')" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
               <img src="../assets/Facebook_icon.svg" alt="Facebook" class="img-Facebook mr-1" />
@@ -40,6 +40,8 @@
   import ModalTermsAndPolitics from './ModalTermsAndPolitics.vue';
   import axios from 'axios';
   import Loading from './Loading.vue';
+
+  const isProd=ref(false)
 
   const isLoading = ref(false)
   let checkbox = ref(false)
@@ -87,7 +89,7 @@ const login = () => {
             code: response.code,
             client_id: '45064562999-7unahamblqil0gid8uggtkjcr072ekuv.apps.googleusercontent.com',
             client_secret: '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', 
-            redirect_uri: 'https://jolly-bush-08650a50f.5.azurestaticapps.net', //must be changed later
+            redirect_uri: isProd.value==false ? 'http://localhost:5173' : 'https://mytripntour.com', //must be changed later
             grant_type: 'authorization_code'
           });
           
