@@ -87,7 +87,7 @@ const login = () => {
             code: response.code,
             client_id: '45064562999-7unahamblqil0gid8uggtkjcr072ekuv.apps.googleusercontent.com',
             client_secret: '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', 
-            redirect_uri: 'http://localhost:5173', //must be changed later
+            redirect_uri: 'https://jolly-bush-08650a50f.5.azurestaticapps.net', //must be changed later
             grant_type: 'authorization_code'
           });
           
