@@ -8,8 +8,15 @@
             </div>
         </div> -->
         <div class="w-full h-full bg-[#faf8fd]"> 
-            <div class="h-[50px] bg-[#faf8fd]"> 
-            <!-- header sidebar -->
+            <div style="height:16% !important;" class="h-[100px] bg-[#faf8fd]"> 
+                
+    <img data-v-86585a1e="" src="/src/assets/logo.jpg" alt="Logo" class="" style="
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 10%;
+">
+
         </div>
         <div class="h-[calc(100vh-50px)] bg-[#faf8fd]">
             <RouterView></RouterView>
@@ -31,4 +38,3 @@ import HomeScreen from '../HomeScreen.vue';
     height: 10rem;
     }
 </style>
-  
