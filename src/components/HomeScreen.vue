@@ -34,7 +34,7 @@
             locale="pt"
             class="mt-2 w-100"
             :enable-time-picker="false"
-            style="width: 100%;"
+            style="width: 100%; z-index: 999;"
           ></VueDatePicker>
         </div>
       </div>
@@ -162,7 +162,7 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 roteiro-container">
+      <div class="col-12 roteiro-container bg-white">
         <!-- Render each item after parsing with marked -->
         <div v-for="(item, index) in roteiroData" :key="index" v-html="parseMarkdown(item)" class="roteiro-item"></div>
       </div>
@@ -223,20 +223,16 @@
   };
 
   const handlePlaceOrigem=(place)=>{
-    console.log(place);
     Origem=place.locality
   }
   const handlePlaceDestino=(place)=>{
-    console.log(place);
     Destinos.push(place.locality)
   }
   const handlePlaceC=(place)=>{
-    console.log(place);
-    lugar_Conhecer.push(place.route)
+    lugar_Conhecer[0]=document.getElementById("map3").value
   }
   const handlePlaceN=(place)=>{
-    console.log(place);
-    lugar_nIr.push(place.route)
+    lugar_nIr[0]=document.getElementById("map4").value
   }
   
 watch(numChildren, (newCount) => {
