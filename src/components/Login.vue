@@ -41,7 +41,7 @@
   import axios from 'axios';
   import Loading from './Loading.vue';
 
-  const isProd=ref(false)
+  const isProd=ref(true)
 
   const isLoading = ref(false)
   let checkbox = ref(false)
