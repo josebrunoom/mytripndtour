@@ -165,6 +165,11 @@
   resolved "https://registry.yarnpkg.com/@geoapify/geocoder-autocomplete/-/geocoder-autocomplete-2.0.1.tgz#8d66003075ac7d48cc19269bd227d173b95490b2"
   integrity sha512-uylT+V33dcYsCdTfmzx6kH6wgQLaGWeGYY4S1ko54W6wTYfua2VfMV6rOvaxqYg3J8WFCtWoUozWG8Xm3p3h+w==
 
+"@googlemaps/js-api-loader@^1.16.6":
+  version "1.16.8"
+  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.16.8.tgz#1595a2af80ca07e551fc961d921a2437d1cb3643"
+  integrity sha512-CROqqwfKotdO6EBjZO/gQGVTbeDps5V7Mt9+8+5Q+jTg5CRMi3Ii/L9PmV3USROrt2uWxtGzJHORmByxyo9pSQ==
+
 "@googlemaps/markerclusterer@^2.0.3":
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/@googlemaps/markerclusterer/-/markerclusterer-2.5.3.tgz#9f891ce7e8e161775f3a3e2c9f66956810284591"
@@ -1023,6 +1028,11 @@ path-scurry@^1.11.1:
     lru-cache "^10.2.0"
     minipass "^5.0.0 || ^6.0.2 || ^7.0.0"
 
+perfect-debounce@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/perfect-debounce/-/perfect-debounce-1.0.0.tgz#9c2e8bc30b169cc984a58b7d5b28049839591d2a"
+  integrity sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==
+
 picocolors@^1.0.0, picocolors@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.1.tgz#a8ad579b571952f0e5d25892de5445bcfe25aaa1"
@@ -1345,6 +1355,11 @@ vite@^5.3.4:
   optionalDependencies:
     fsevents "~2.3.3"
 
+vue-google-autocomplete@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-google-autocomplete/-/vue-google-autocomplete-1.1.4.tgz#d735650c37c710328d98f135815945fc299079b0"
+  integrity sha512-a1aRG+F0A8crf/RnWW1EXxA/aaFh/Qpu6GSxOjfpWPNgvReNttYgAcwft1I+XvULuNjFc6YNciv/tHUHxxt0Qg==
+
 vue-router@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.4.2.tgz#bc7bf27f108fc15e5cc2a30b314a662275e2b2bb"
@@ -1356,6 +1371,14 @@ vue-select@^4.0.0-beta.6:
   version "4.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-4.0.0-beta.6.tgz#7c250cb7c01280b54a311cb446629801b3c8df98"
   integrity sha512-K+zrNBSpwMPhAxYLTCl56gaMrWZGgayoWCLqe5rWwkB8aUbAUh7u6sXjIR7v4ckp2WKC7zEEUY27g6h1MRsIHw==
+
+vue-use-places-autocomplete@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/vue-use-places-autocomplete/-/vue-use-places-autocomplete-0.2.2.tgz#c6392e84ae07c2cb15e78c5b31dc98b58d762c34"
+  integrity sha512-icYyGaXmZpZ9wb+vI5RuWYXPfCPSLguy8rQ4kcd0Tua7WQ7lGCYPwYhAhU2tHlH289rPPmgWlLlnJCWBH6yUGg==
+  dependencies:
+    "@googlemaps/js-api-loader" "^1.16.6"
+    perfect-debounce "^1.0.0"
 
 vue3-carousel@^0.3.3:
   version "0.3.3"
