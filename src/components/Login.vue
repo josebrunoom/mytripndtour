@@ -121,11 +121,19 @@ const login = () => {
             /* birthday: formattedDate, */
             /* gender: userGender, */
           };
+          let LocalStorageUser = {
+            Email: userEmail,
+            Nome: userName,
+            photo: userPicture,
+            IdentificadorUnico: userInfo.names[0].metadata.source.id, 
+            MetodoAutenticacao:'Google',
+            birthday: formattedDate,
+            gender: userGender,
+          };
           backUser.push(objUser)
-          localStorage.setItem('user', JSON.stringify(objUser));
+          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           await sendUser(backUser)
           console.log(response)
-          router.push('/mytrip/home');
         } catch (error) {
           console.error('Error handling Google login response:', error);
         }
@@ -139,6 +147,7 @@ const sendUser=async(user)=>{
   try {
     /* let user=[{"Nome": "Usuário 1", "IdentificadorUnico": "ID12345", "Email": "usuario1@example.com", "MetodoAutenticacao": "Google"}] */
     await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/usuario/upload', user)
+    router.push('/mytrip/home');
   } catch (error) {
     isLoading.value=false
     alert('Erro ao logar')
