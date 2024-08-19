@@ -3,17 +3,29 @@
   <div class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
-        <div class="p-4 rounded-lg shadow-md" style="background-color: #FEECCF;">
-          <h2 class="h5 fw-bold mb-2">Ponto de Origem</h2>
-          <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
-          </vue-google-autocomplete>
+        <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
+          <h2 class="h5 fw-bold mb-4 text-left">Ponto de Origem</h2>
+          <div class="d-flex align-items-center" v-if="showOrigem==false">
+            <h1 class="fw-bold mr-2">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</h1>
+            <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button>
+          </div>
+          <div v-if="showOrigem==true">
+            <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
+            </vue-google-autocomplete>
+          </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <div class="p-4 rounded-lg shadow-md" style="background-color: #CFEDFE;">
-          <h2 class="h5 fw-bold mb-2">Destino(s)</h2>
-          <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
-          </vue-google-autocomplete>
+        <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
+          <h2 class="h5 fw-bold mb-4 text-left">Destino(s)</h2>
+          <div class="d-flex align-items-center" v-if="showDestino==false">
+            <h1 class="fw-bold mr-2">{{ DestinoCity ? DestinoCity : 'Selecione o Destino' }}</h1>
+            <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button>
+          </div>
+          <div v-if="showDestino==true">
+            <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
+            </vue-google-autocomplete>
+          </div>
         </div>
       </div>
     </div>
@@ -24,17 +36,17 @@
         
           <h2 class="h5 fw-bold mb-2">Tempo de viagem</h2>
           <span class="mt-2 d-block text-start fw-bold ml-1">Quantidade de dias:</span>
-          
-       
             <input type="text" style="width: 100%;" class="form-control" placeholder="00" v-model="periodo_viagem"/>
-         
           <span class="mt-2 d-block text-start fw-bold ml-1">Data de início:</span>
           <VueDatePicker 
             v-model="date"
-            locale="pt"
+            locale="pt-BR"
             class="mt-2 w-100"
             :enable-time-picker="false"
             style="width: 100%; z-index: 999;"
+            cancel-text="Fechar"
+            select-text="Selecionar"
+            :format="customFormat"
           ></VueDatePicker>
         </div>
       </div>
@@ -68,7 +80,7 @@
               <span class="mt-2 d-block text-start fw-bold ml-1">Idade Criança {{ currentIndex + 1 }}:</span>
               <input 
                 type="text" 
-                class="form-control" 
+                class="form-control mb-2" 
                 placeholder="Idade" 
                 v-model.number="childAges[currentIndex]"
               />
@@ -182,14 +194,9 @@
 
   
 <script setup>
-  import { ref, onMounted, watch,computed } from 'vue'
+  import { ref, onMounted, watch, computed } from 'vue'
   import VueDatePicker from '@vuepic/vue-datepicker';
-  import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
   import VueSelect from 'vue-select';
-  import { Carousel, Navigation, Slide, Pagination } from 'vue3-carousel'
-  import 'vue3-carousel/dist/carousel.css'
-  import "@geoapify/geocoder-autocomplete/styles/minimal.css";
-  import router from '../routes';
   import axios from 'axios';
   import moment from 'moment';
   import Loading from './Loading.vue';
@@ -202,6 +209,8 @@
   //const childAges = ref([]);
   const currentIndex = ref(0);
   const isLoading=ref(false)
+  const showOrigem=ref(false)
+  const showDestino=ref(false)
   let childAges=[]
   let transporteOptions=['','Carro','Ônibus','Moto','Avião']
   let interesses=['Compras','Cultura Local','Esporte','Natureza']
@@ -213,26 +222,29 @@
   let lugar_Conhecer=['',]
   let meio_transporte
   let roteiroData = []
-  let ObjRoteiro={
-    cidade_origem:'',
-    destinos:[{cidade_destino: "Rio de Janeiro",
-            periodo_viagem: "2024-08-10 a 2024-08-20",
-            quantidade_adultos: 2,
-            quantidade_criancas: 2,
-            idades_criancas: [8, 12],
-            locais_interesse: ["Cristo Redentor", "Pão de Açúcar", "Copacabana"],
-            lugar_nao_quer_conhecer: ["Museu de Arte Moderna"],
-            meio_transporte: "Avião"}]
+  let OrigemCity = null
+  let DestinoCity = null
+
+  const setOrigem = () =>{
+    showOrigem.value=true
   }
+  const setDestino = () =>{
+    showDestino.value=true
+  }
+  
   const refreshPage = () => {
   window.location.reload();
   };
 
   const handlePlaceOrigem=(place)=>{
     Origem=place.locality
+    OrigemCity=place.locality
+    showOrigem.value=false
   }
   const handlePlaceDestino=(place)=>{
     Destinos[0]=place.locality
+    DestinoCity=place.locality
+    showDestino.value=false
   }
   const handlePlaceC=(place)=>{
     lugar_Conhecer[0]=document.getElementById("map3").value
@@ -320,8 +332,16 @@ const postRoteiro=async () =>{
 function parseMarkdown(text) {
   return marked(text);
 }
+const customFormat = (date) => {
+  return date ? moment(date).format('DD/MM/YYYY') : '';
+};
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+* {
+  font-family: 'Sora', sans-serif;
+}
 .scrollable-container {
   max-height: 90vh; /* Adjust as needed */
   overflow-y: auto;
