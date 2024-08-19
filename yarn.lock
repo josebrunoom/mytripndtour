@@ -160,11 +160,6 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-6.6.0.tgz#0e984f0f2344ee513c185d87d77defac4c0c8224"
   integrity sha512-60G28ke/sXdtS9KZCpZSHHkCbdsOGEhIUGlwq6yhY74UpTiToIh8np7A8yphhM4BWsvNFtIvLpi4co+h9Mr9Ow==
 
-"@geoapify/geocoder-autocomplete@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@geoapify/geocoder-autocomplete/-/geocoder-autocomplete-2.0.1.tgz#8d66003075ac7d48cc19269bd227d173b95490b2"
-  integrity sha512-uylT+V33dcYsCdTfmzx6kH6wgQLaGWeGYY4S1ko54W6wTYfua2VfMV6rOvaxqYg3J8WFCtWoUozWG8Xm3p3h+w==
-
 "@googlemaps/js-api-loader@^1.16.6":
   version "1.16.8"
   resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.16.8.tgz#1595a2af80ca07e551fc961d921a2437d1cb3643"
