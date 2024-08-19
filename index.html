@@ -49,9 +49,18 @@
             /* birthday: formattedDate, */
             /* gender: userGender, */
           };
+          let LocalStorageUser = {
+            Email: response.email,
+            Nome: response.name,
+            photo: response.picture.data.url, 
+            IdentificadorUnico: response.id, 
+            MetodoAutenticacao:'Facebook',
+            birthday: response.birthday, 
+            gender: response.gender, 
+          };
+          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           backUser.push(objUser)
           await sendUser(backUser)
-          router.push('/mytrip/home')
         } else {
           console.error('Error fetching email:', response.error);
         }
@@ -59,12 +68,13 @@
     } else {
       console.log('User cancelled login or did not fully authorize.');
     }
-  }, {scope: 'email, user_birthday,user_gender'}); // Request email permission here
+  }, {scope: 'email, user_birthday,user_gender'}); 
 };
 const sendUser=async(user)=>{
   try {
     console.log('login', user)
     await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/usuario/upload', user)
+    router.push('/mytrip/home')
   } catch (error) {
     console.log(error)
     alert('Erro ao logar')
