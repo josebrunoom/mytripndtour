@@ -9,9 +9,10 @@
             <h1 class="fw-bold mr-2">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</h1>
             <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button>
           </div>
-          <div v-if="showOrigem==true">
-            <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
-            </vue-google-autocomplete>
+          <div v-show="showOrigem==true">
+            <input id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
+            <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
+            </vue-google-autocomplete> -->
           </div>
         </div>
       </div>
@@ -22,9 +23,10 @@
             <h1 class="fw-bold mr-2">{{ DestinoCity ? DestinoCity : 'Selecione o Destino' }}</h1>
             <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button>
           </div>
-          <div v-if="showDestino==true">
-            <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
-            </vue-google-autocomplete>
+          <div v-show="showDestino==true">
+            <input id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
+            <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
+            </vue-google-autocomplete> -->
           </div>
         </div>
       </div>
@@ -147,15 +149,17 @@
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
-          <vue-google-autocomplete id="map3" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceC">
-          </vue-google-autocomplete>
+          <input id="autocompleteQ" type="text" placeholder="Informe a localizacao" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
+          <!-- <vue-google-autocomplete id="map3" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceC">
+          </vue-google-autocomplete> -->
         </div>
       </div>
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Não Quero Ir</h2>
-          <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
-          </vue-google-autocomplete>
+          <input id="autocompleteN" type="text" placeholder="Informe a localizacao" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
+          <!-- <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
+          </vue-google-autocomplete> -->
         </div>
       </div>
     </div>
@@ -185,8 +189,6 @@
         <div v-for="(item, index) in roteiroData" :key="index" v-html="parseMarkdown(item)" class="roteiro-item"></div>
       </div>
     </div>
-
-
     <Loading :loading="isLoading"/>
   </div>
 </template>
@@ -224,6 +226,39 @@
   let roteiroData = []
   let OrigemCity = null
   let DestinoCity = null
+
+  onMounted(() => {
+  const initAutocomplete = (elementId, types) => {
+    const input = document.getElementById(elementId);
+    const autocomplete = new google.maps.places.Autocomplete(input, { types });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      console.log(place.name); // Handle the place name as needed
+      if(elementId=='autocompleteQ'){
+        lugar_Conhecer.push(place.name)
+      }
+      if(elementId=='autocompleteN'){
+        lugar_nIr.push(place.name)
+      }
+      if(elementId=='autocompleteO'){
+        Origem=place.name
+        OrigemCity=place.name
+        showOrigem.value=false
+      }
+      if(elementId=='autocompleteD'){
+        Destinos[0]=place.name
+        DestinoCity=place.name
+        showDestino.value=false
+      }
+    });
+  };
+
+  initAutocomplete('autocompleteQ', ['point_of_interest', 'country']);
+  initAutocomplete('autocompleteN', ['point_of_interest', 'country']);
+  initAutocomplete('autocompleteO', ['(cities)']);
+  initAutocomplete('autocompleteD', ['locality', 'country']);
+});
 
   const setOrigem = () =>{
     showOrigem.value=true
