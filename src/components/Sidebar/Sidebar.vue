@@ -36,10 +36,8 @@ const name = ref('')
 let img
 
 onMounted(() => {
-    console.log(`user`, user)
     name.value=user.Nome
     img=user.photo
-    console.log(name, img)
 })
 </script>
 
