@@ -4,7 +4,7 @@
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
-          <h2 class="h5 fw-bold mb-4 text-left">Ponto de Origem</h2>
+          <h2 class="h5 fw-bold mb-4 text-left">Cidade de Origem</h2>
           <div class="d-flex align-items-center" v-if="showOrigem==false">
             <h1 class="fw-bold mr-2">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</h1>
             <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -35,103 +35,135 @@
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
-        
-          <h2 class="h5 fw-bold mb-2">Tempo de viagem</h2>
-          <span class="mt-2 d-block text-start fw-bold ml-1">Quantidade de dias:</span>
-            <input type="text" style="width: 100%;" class="form-control" placeholder="00" v-model="periodo_viagem"/>
-          <span class="mt-2 d-block text-start fw-bold ml-1">Data de início:</span>
-          <VueDatePicker 
-            v-model="date"
-            locale="pt-BR"
-            class="mt-2 w-100"
-            :enable-time-picker="false"
-            style="width: 100%; z-index: 999;"
-            cancel-text="Fechar"
-            select-text="Selecionar"
-            :format="customFormat"
-          ></VueDatePicker>
+          <h2 class="h5 fw-bold mb-2">Duração da Viagem</h2>
+        <div class="row">
+          <div class="col-6 mt-2 text-start fw-bold">Quantidade de dias:</div>
+          <div class="col-6 mt-2 text-start fw-bold">Data de início:</div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-12 col-md-6 mt-2">
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="00" 
+              v-model="periodo_viagem"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <VueDatePicker 
+              v-model="date"
+              locale="pt-BR"
+              :enable-time-picker="false"
+              class="w-100"
+              style="z-index: 999;"
+              cancel-text="Fechar"
+              select-text="Selecionar"
+              :format="customFormat"
+            ></VueDatePicker>
+          </div>
         </div>
       </div>
-
-      <div class="col-12 col-md-6 mb-3 mb-md-0 bg-white">
-        <div class="p-3 " style="border-radius: 8px;">
+    </div>
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <div class="p-3 bg-white" style="border-radius: 8px;">
           <h2 class="h5 fw-bold mb-2">Pessoas</h2>
-          <div style="width: 50%; float: left">
-            <span class="mt-2 d-block text-start fw-bold ml-1">Adultos:</span>
+        <div class="row">
+          <div class="col-4 mt-2 text-start fw-bold">Adultos:</div>
+          <div class="col-4 mt-2 text-start fw-bold">Crianças:</div>
+          <div v-if="numChildren > 0" class="col-4 mt-2 text-start fw-bold">
+            <button 
+              @click="prevChild" 
+              :disabled="currentIndex === 0" 
+              class="bg-white hover:bg-gray-500 text-black rounded-lg"
+            >
+              &lt;
+            </button>
+            Idade Criança {{ currentIndex + 1 }}:
+            <button 
+              @click="nextChild" 
+              :disabled="currentIndex === numChildren - 1" 
+              class="bg-white hover:bg-gray-500 text-black rounded-lg"
+            >
+              &gt;
+            </button>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-12 col-md-4 mt-2">
             <input 
               type="text" 
               class="form-control" 
               placeholder="00" 
               v-model.number="numAdults"
-              style="width: 50%;"
             />
-
-            <span class="mt-2 d-block text-start fw-bold ml-1">Crianças:</span>
+          </div>
+          <div class="col-12 col-md-4 mt-2">
             <input 
               type="text" 
               class="form-control" 
               placeholder="00"  
               v-model="formattedChildren"
               @input="formatChildren"
-              style="width: 50%;"
             />
           </div>
-            
-            <div  v-if="numChildren > 0" class="bg-white p-3 w-full col-md-12" style="width: 50%;float: left">
-            
-              <span class="mt-2 d-block text-start fw-bold ml-1">Idade Criança {{ currentIndex + 1 }}:</span>
+          <div v-if="numChildren > 0" class="col-12 col-md-4 mt-2">
               <input 
                 type="text" 
-                class="form-control mb-2" 
+                class="form-control" 
                 placeholder="Idade" 
                 v-model.number="childAges[currentIndex]"
               />
-           
-            <button 
-              @click="prevChild" 
-              :disabled="currentIndex === 0" 
-              class="btn btn-light"
-            >
-              &lt;
-            </button>
-            <button 
-              @click="nextChild" 
-              :disabled="currentIndex === numChildren - 1" 
-              class="btn btn-light ms-2"
-            >
-              &gt;
-            </button>
           </div>
-          
         </div>
-   
-        
       </div>
     </div>
-
+    </div>
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Meio de Transporte</h2>
-          <select class="w-100 form-select" id="select-transporte">
+          <!-- <select class="w-100 form-select" id="select-transporte">
             <option value=""></option>
             <option value="Carro">Carro</option>
             <option value="Ônibus">Ônibus</option>
             <option value="Moto">Moto</option>
             <option value="Avião">Avião</option>
-          </select>
+          </select> -->
+          <div 
+            v-for="(modo, index) in transporteOptions" 
+            :key="index" 
+            class="d-inline-flex mb-2"
+          >
+            <label class="d-flex ml-2">
+              <input type="radio" :name="transporteOptions" :value="modo" class="me-2" v-model="meio_transporte"/>
+              <span>{{ modo }}</span>
+            </label>
+          </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <div class="bg-white p-3">
+        <div class="bg-white p-3 rounded-lg">
+          <h2 class="h5 fw-bold mb-2">Lista de interesses</h2>
+          <div 
+            v-for="(interest, index) in interesses" 
+            :key="index" 
+            class="d-inline-flex align-items-center mb-2"
+          >
+            <label class="d-flex align-items-center pl-3">
+              <input type="checkbox" :name="interest" :value="interest" class="me-2"/>
+              <span>{{ interest }}</span>
+            </label>
+          </div>
+        </div>
+        <!-- <div class="bg-white p-3">
           <h2 class="h5 fw-bold mb-2">Moeda preferida</h2>
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
-        </div>
+        </div> -->
       </div>
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <!-- <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Lista de interesses</h2>
           <div 
@@ -145,8 +177,8 @@
             </label>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      </div> -->
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
           <input id="autocompleteQ" type="text" placeholder="Informe a localizacao" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
@@ -154,9 +186,9 @@
           </vue-google-autocomplete> -->
         </div>
       </div>
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
-          <h2 class="h5 fw-bold mb-2">Não Quero Ir</h2>
+          <h2 class="h5 fw-bold mb-2">Não Precisa Incluir</h2>
           <input id="autocompleteN" type="text" placeholder="Informe a localizacao" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
           <!-- <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
           </vue-google-autocomplete> -->
@@ -166,12 +198,29 @@
 
     <div class="row mb-4">
       <div class="col-12 d-flex justify-content-start">
+        <div class="fw-bold mb-2 pl-2">Gerar com detalhes descritivos dos locais sugeridos?: </div>
+        <div 
+            class="d-inline-flex align-items-center mb-2"
+          >
+          <div 
+            v-for="(modo, index) in opc" 
+            :key="index" 
+            class="d-inline-flex mb-2"
+          >
+            <label class="d-flex ml-2">
+              <input type="radio" :name="opc" :value="modo" class="me-2" v-model="opcaoGerar"/>
+              <span>{{ modo }}</span>
+            </label>
+          </div>
+          </div>
+      </div>
+      <div class="col-12 d-flex justify-content-start">
         <button 
           type="button" 
-          class="btn btn-primary me-2" 
+          class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
           @click="postRoteiro"
         >
-          Enviar
+          Gerar Roteiro
         </button>
         <button 
           type="button" 
@@ -180,6 +229,7 @@
         >
           Apagar
         </button>
+        
       </div>
     </div>
 
@@ -214,8 +264,9 @@
   const showOrigem=ref(false)
   const showDestino=ref(false)
   let childAges=[]
-  let transporteOptions=['','Carro','Ônibus','Moto','Avião']
-  let interesses=['Compras','Cultura Local','Esporte','Natureza']
+  let transporteOptions=['Meios Próprios','Veículos de Aluguel','Rodoviário','Trens','Marítimo','Aéreo']
+  let opc=['Sim','Não']
+  let interesses=['Museus', 'Ecoturismo', 'Gastronomia', 'Cidades Históricas', 'Compras','Diversão Noturna', 'Cultura Local', 'Esportes', 'Parques de Diversão']
   let Moedas=['Dolar','Real','Euro']
   let Destinos=[]
   let Origem
@@ -226,6 +277,7 @@
   let roteiroData = []
   let OrigemCity = null
   let DestinoCity = null
+  let opcaoGerar
 
   onMounted(() => {
   const initAutocomplete = (elementId, types) => {
@@ -348,7 +400,7 @@ const postRoteiro=async () =>{
             idades_criancas: childAges,
             locais_interesse: lugar_Conhecer,
             lugar_nao_quer_conhecer: lugar_nIr,
-            meio_transporte: document.getElementById("select-transporte").value}]
+            meio_transporte: meio_transporte}]
   }
   
   console.log(ObjRoteiro)
