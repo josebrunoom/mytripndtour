@@ -42,6 +42,8 @@
   import Loading from './Loading.vue';
 
   const isProd=ref(true)
+  const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
+  const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
 
   const isLoading = ref(false)
   let checkbox = ref(false)
@@ -81,14 +83,14 @@
 const login = () => {
   googleSdkLoaded((google) => {
     const client = google.accounts.oauth2.initCodeClient({
-      client_id: '45064562999-7unahamblqil0gid8uggtkjcr072ekuv.apps.googleusercontent.com',
+      client_id: clientId,
       scope: 'email profile openid https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read',
       callback: async (response) => {
         try {
           const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
             code: response.code,
-            client_id: '45064562999-7unahamblqil0gid8uggtkjcr072ekuv.apps.googleusercontent.com',
-            client_secret: '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', 
+            client_id: clientId,
+            client_secret: clientSecret, 
             redirect_uri: 'http://mytripntour.com', //must be changed later
             grant_type: 'authorization_code'
           });
