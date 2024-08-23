@@ -1,7 +1,7 @@
 import Login from "../components/Login.vue";
 import HomeScreen from "../components/HomeScreen.vue";
 import Sidebar from "../components/Sidebar/Sidebar.vue";
-import Roteiro from "../components/Roteiro.vue";
+import Perfil from "../components/Perfil.vue";
 
 const routes = [
     {
@@ -19,9 +19,9 @@ const routes = [
                 component: HomeScreen,
             },
             {
-                path: "roteiro",
-                name: "Roteiro",
-                component: Roteiro,
+                path: "perfil",
+                name: "Perfil",
+                component: Perfil,
             },
         ]
     },
