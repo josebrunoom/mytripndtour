@@ -4,10 +4,20 @@
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
-          <h2 class="h5 fw-bold mb-4 text-left">Cidade de Origem</h2>
+          <div class="d-flex align-items-center justify-content-between">
+              <h2 class="h5 fw-bold mb-4 text-left">
+                Cidade de Origem
+                <i 
+                  class="bi bi-question-circle-fill"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+              </h2>
+            </div>
           <div class="d-flex align-items-center" v-if="showOrigem==false">
-            <h1 class="fw-bold mr-2">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</h1>
-            <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="fw-bold mr-2 h1" @click="setOrigem">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</button>
+            <!-- <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button> -->
           </div>
           <div v-show="showOrigem==true">
             <input id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
@@ -18,10 +28,20 @@
       </div>
       <div class="col-12 col-md-6">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
-          <h2 class="h5 fw-bold mb-4 text-left">Destino(s)</h2>
+          <div class="d-flex align-items-center justify-content-between">
+              <h2 class="h5 fw-bold mb-4 text-left">
+                Destino(s)
+                <i 
+                  class="bi bi-question-circle-fill"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+              </h2>
+            </div>
           <div class="d-flex align-items-center" v-if="showDestino==false">
-            <h1 class="fw-bold mr-2">{{ DestinoCity ? DestinoCity : 'Selecione o Destino' }}</h1>
-            <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="fw-bold mr-2 h1" @click="setDestino">{{ DestinoCity ? DestinoCity : 'Selecione o Destino' }}</button>
+            <!-- <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button> -->
           </div>
           <div v-show="showDestino==true">
             <input id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
@@ -33,9 +53,17 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
-          <h2 class="h5 fw-bold mb-2">Duração da Viagem</h2>
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Duração da Viagem</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
         <div class="row">
           <div class="col-6 mt-2 text-start fw-bold">Quantidade de dias:</div>
           <div class="col-6 mt-2 text-start fw-bold">Data de início:</div>
@@ -64,9 +92,40 @@
         </div>
       </div>
     </div>
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-md-3 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
-          <h2 class="h5 fw-bold mb-2">Pessoas</h2>
+          <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
+            <h2 class="h5 fw-bold mb-2">Tipo de Hospedagem</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
+          <div 
+            v-for="(modo, index) in lugares" 
+            :key="index" 
+            class="d-inline-flex mb-2"
+          >
+            <label class="d-flex ml-2">
+              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="lugarSelecionado"/>
+              <span>{{ modo }}</span>
+            </label>
+          </div>
+      </div>
+    </div>
+      <div class="col-12 col-md-5 mb-3 mb-md-0">
+        <div class="p-3 bg-white" style="border-radius: 8px;">
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Pessoas</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
         <div class="row">
           <div class="col-4 mt-2 text-start fw-bold">Adultos:</div>
           <div class="col-4 mt-2 text-start fw-bold">Crianças:</div>
@@ -121,7 +180,15 @@
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
-          <h2 class="h5 fw-bold mb-2">Meio de Transporte</h2>
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Quero Viajar de </h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
           <!-- <select class="w-100 form-select" id="select-transporte">
             <option value=""></option>
             <option value="Carro">Carro</option>
@@ -143,7 +210,15 @@
       </div>
       <div class="col-12 col-md-6">
         <div class="bg-white p-3 rounded-lg">
-          <h2 class="h5 fw-bold mb-2">Lista de interesses</h2>
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Lista de Interesses</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
           <div 
             v-for="(interest, index) in interesses" 
             :key="index" 
@@ -180,16 +255,32 @@
       </div> -->
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
-          <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
-          <input id="autocompleteQ" type="text" placeholder="Informe a localizacao" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
+          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
           <!-- <vue-google-autocomplete id="map3" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceC">
           </vue-google-autocomplete> -->
         </div>
       </div>
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
-          <h2 class="h5 fw-bold mb-2">Não Precisa Incluir</h2>
-          <input id="autocompleteN" type="text" placeholder="Informe a localizacao" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Não precisa incluir</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
+          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
           <!-- <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
           </vue-google-autocomplete> -->
         </div>
@@ -198,7 +289,7 @@
 
     <div class="row mb-4">
       <div class="col-12 d-flex justify-content-start">
-        <div class="fw-bold mb-2 pl-2">Gerar com detalhes descritivos dos locais sugeridos?: </div>
+        <div class="fw-bold mb-2 pl-2">Gerar com detalhes descritivos dos locais sugeridos? </div>
         <div 
             class="d-inline-flex align-items-center mb-2"
           >
@@ -227,7 +318,7 @@
           class="btn btn-danger"
           @click="refreshPage"
         >
-          Apagar
+          Limpar Tudo
         </button>
         
       </div>
@@ -264,10 +355,11 @@
   const showOrigem=ref(false)
   const showDestino=ref(false)
   let childAges=[]
-  let transporteOptions=['Meios Próprios','Veículos de Aluguel','Rodoviário','Trens','Marítimo','Aéreo']
+  let transporteOptions=['Meios Próprios (não gerar)','Veículos de Aluguel','Rodoviário','Trens','Marítimo','Aéreo']
   let opc=['Sim','Não']
   let interesses=['Museus', 'Ecoturismo', 'Gastronomia', 'Cidades Históricas', 'Compras','Diversão Noturna', 'Cultura Local', 'Esportes', 'Parques de Diversão']
-  let Moedas=['Dolar','Real','Euro']
+  let lugares=['Hostel', 'Pousadas', 'Alto luxo', 'Resorts', 'Só pra dormir (3 estrelas)']
+  let lugarSelecionado
   let Destinos=[]
   let Origem
   let periodo_viagem
@@ -306,10 +398,10 @@
     });
   };
 
-  initAutocomplete('autocompleteQ', ['point_of_interest', 'country']);
-  initAutocomplete('autocompleteN', ['point_of_interest', 'country']);
+  initAutocomplete('autocompleteQ', ['point_of_interest', 'country', 'continent','locality']);
+  initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
-  initAutocomplete('autocompleteD', ['locality', 'country']);
+  initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
 });
 
   const setOrigem = () =>{
