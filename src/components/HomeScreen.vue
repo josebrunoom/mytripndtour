@@ -1,5 +1,4 @@
 <template>
-  
   <div class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
