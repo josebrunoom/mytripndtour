@@ -33,7 +33,7 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { googleOneTap, GoogleLogin, googleTokenLogin, googleAuthCodeLogin, googleSdkLoaded } from "vue3-google-login";
   import { decodeCredential } from 'vue3-google-login';
   import router from '../routes';
@@ -48,6 +48,24 @@
   const isLoading = ref(false)
   let checkbox = ref(false)
   const showModal = ref(false);
+  const userIP=ref('')
+  let token=null
+
+  onMounted(()=>{
+    ipGet();
+    if(token){
+      verifytoken();
+    }
+  })
+  const verifytoken=()=>{
+
+  }
+  const ipGet=async ()=>{
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    userIP.value = data.ip;
+    console.log("User's IP address:", userIP);
+  }
   const openModal = () => {
     showModal.value = true;
   };
@@ -118,24 +136,25 @@ const login = () => {
             Email: userEmail,
             Nome: userName,
             /* photo: userPicture, */
-            IdentificadorUnico: userInfo.names[0].metadata.source.id, 
-            MetodoAutenticacao:'Google',
-            /* birthday: formattedDate, */
-            /* gender: userGender, */
+            password: userInfo.names[0].metadata.source.id, 
+            birthday: formattedDate,
+            gender: userGender,
+            idioma:'PT',
+            ip_origem:userIP.value
           };
           let LocalStorageUser = {
             Email: userEmail,
             Nome: userName,
             photo: userPicture,
-            IdentificadorUnico: userInfo.names[0].metadata.source.id, 
+            password: userInfo.names[0].metadata.source.id, 
             MetodoAutenticacao:'Google',
             birthday: formattedDate,
             gender: userGender,
           };
           backUser.push(objUser)
+          console.log(objUser)
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-          await sendUser(backUser)
-          console.log(response)
+          await sendUser(objUser)
         } catch (error) {
           console.error('Error handling Google login response:', error);
         }
@@ -147,9 +166,16 @@ const login = () => {
 const sendUser=async(user)=>{
   isLoading.value=true
   try {
+    console.log(user)
     /* let user=[{"Nome": "Usuário 1", "IdentificadorUnico": "ID12345", "Email": "usuario1@example.com", "MetodoAutenticacao": "Google"}] */
-    await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/usuario/upload', user)
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', user)
+    console.log(response.data)
+    localStorage.setItem('token', response.data.token)
     router.push('/mytrip/home');
+    /* if(response.data.ExistUser=='1'){
+      
+    } */
+    
   } catch (error) {
     isLoading.value=false
     alert('Erro ao logar')
