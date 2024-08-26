@@ -42,7 +42,7 @@
                     <button 
                     type="button" 
                     class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
-                    @click=""
+                    @click="goTo('perfil')"
                     >
                     <i class="fa-regular fa-user"></i>
                     Meu Perfil
