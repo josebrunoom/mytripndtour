@@ -109,7 +109,7 @@ const login = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'http://mytripntour.com', //must be changed later
+            redirect_uri: 'http://localhost:5173', //must be changed later
             grant_type: 'authorization_code'
           });
           
@@ -133,10 +133,10 @@ const login = () => {
           const formattedDate = `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}`;
           let backUser=[]
           let objUser = {
-            Email: userEmail,
-            Nome: userName,
+            email: userEmail,
+            name: userName,
             /* photo: userPicture, */
-            password: userInfo.names[0].metadata.source.id, 
+            //password: userInfo.names[0].metadata.source.id, 
             birthday: formattedDate,
             gender: userGender,
             idioma:'PT',
@@ -168,7 +168,13 @@ const sendUser=async(user)=>{
   try {
     console.log(user)
     /* let user=[{"Nome": "Usuário 1", "IdentificadorUnico": "ID12345", "Email": "usuario1@example.com", "MetodoAutenticacao": "Google"}] */
-    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', user)
+    const response = await fetch('https://newlogin-lm7edjmduq-uc.a.run.app', {
+      method: 'POST', // Specifies the request method
+      headers: {
+        'Content-Type': 'application/json', // Set the content type header
+      },
+      body: JSON.stringify(user), // Convert the user object to a JSON string
+    });
     console.log(response.data)
     localStorage.setItem('token', response.data.token)
     router.push('/mytrip/home');
