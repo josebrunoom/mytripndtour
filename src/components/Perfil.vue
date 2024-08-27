@@ -101,7 +101,7 @@
     
   }
   const deletePerfil = () =>{
-      dialog = true;
+      dialog.value = true;
   }
 
 
