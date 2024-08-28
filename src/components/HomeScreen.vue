@@ -52,7 +52,7 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Duração da Viagem</h2>
@@ -70,7 +70,7 @@
         <div class="row align-items-center">
           <div class="col-12 col-md-6 mt-2">
             <input 
-              type="text" 
+              type="number" 
               class="form-control" 
               placeholder="00" 
               v-model="periodo_viagem"
@@ -90,31 +90,10 @@
           </div>
         </div>
       </div>
-    </div>
-      <div class="col-12 col-md-3 mb-3 mb-md-0">
-        <div class="p-3 bg-white" style="border-radius: 8px;">
-          <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
-            <h2 class="h5 fw-bold mb-2">Tipo de Hospedagem</h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  title="tooltip 1"
-                ></i>
-          </div>
-          <div 
-            v-for="(modo, index) in lugares" 
-            :key="index" 
-            class="d-inline-flex mb-2"
-          >
-            <label class="d-flex ml-2">
-              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada"/>
-              <span>{{ modo }}</span>
-            </label>
-          </div>
       </div>
-    </div>
-      <div class="col-12 col-md-5 mb-3 mb-md-0">
+      
+    
+      <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Pessoas</h2>
@@ -149,7 +128,7 @@
         <div class="row align-items-center">
           <div class="col-12 col-md-4 mt-2">
             <input 
-              type="text" 
+              type="number" 
               class="form-control" 
               placeholder="00" 
               v-model.number="numAdults"
@@ -157,7 +136,7 @@
           </div>
           <div class="col-12 col-md-4 mt-2">
             <input 
-              type="text" 
+              type="number" 
               class="form-control" 
               placeholder="00"  
               v-model="formattedChildren"
@@ -174,10 +153,34 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
-    </div>
+
     <div class="row mb-4">
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-md-3 mb-3 mb-md-0">
+        <div class="p-3 bg-white" style="border-radius: 8px;">
+          <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
+            <h2 class="h5 fw-bold mb-2">Tipo de Hospedagem</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
+          <div 
+            v-for="(modo, index) in lugares" 
+            :key="index" 
+            class="d-inline-flex mb-2"
+          >
+            <label class="d-flex ml-2">
+              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada"/>
+              <span>{{ modo }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Quero Viajar de </h2>
@@ -207,7 +210,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Lista de Interesses</h2>
@@ -234,6 +237,7 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
+      
     </div>
 
     <div class="row mb-4">
@@ -337,6 +341,16 @@
       </div>
     </div>
     <Loading :loading="isLoading"/>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>Os campos: origem, destino, quantidade de dias, data de inicio e quantidade de adultos são obrigatórios!</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialog=false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -360,13 +374,14 @@
   const isLoading=ref(false)
   const showOrigem=ref(false)
   const showDestino=ref(false)
+  const dialog=ref(false)
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
-  let transporteOptions=['Meios Próprios (não gerar)','Veículos de Aluguel','Rodoviário','Trens','Marítimo','Aéreo']
+  let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
-  let interesses=['Museus', 'Ecoturismo', 'Gastronomia', 'Cidades Históricas', 'Compras','Diversão Noturna', 'Cultura Local', 'Esportes', 'Parques de Diversão']
+  let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão']
   let selectedInteresses=[]
-  let lugares=['Hostel', 'Pousadas', 'Alto luxo', 'Resorts', 'Só pra dormir (3 estrelas)']
+  let lugares=['Alto luxo','Hostel', 'Pousadas', , 'Resorts', 'Só pra dormir (3 estrelas)']
   let hospedagemSelecionada
   let Destinos=[]
   let Origem
@@ -447,11 +462,11 @@
     showOrigem.value=true
   }
   const setDestino = () =>{
-    showDestino.value=true
+    showDestino.value=true;
   }
   
   const refreshPage = () => {
-  window.location.reload();
+    window.location.reload();
   };
 
   const handlePlaceOrigem=(place)=>{
@@ -559,17 +574,24 @@ const postRoteiro=async () =>{
   }
   
   console.log(ObjRoteiro1)
-  try {
-    const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
-    console.log(response.data)
-    localStorage.setItem('roteiro', JSON.stringify(response.data));
-    roteiroData.Roteiro=response.data
-  } catch (error) {
-    alert('Erro ao Gerar Roteiro')
-  }
-  finally {
+  if(!ObjRoteiro1.origem || !ObjRoteiro1.destino || !ObjRoteiro1.dias || !ObjRoteiro1.data_inicio || !ObjRoteiro1.qtd_adultos){
+    dialog.value = true;
     isLoading.value = false; 
   }
+  else{
+    try {
+      const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
+      console.log(response.data)
+      localStorage.setItem('roteiro', JSON.stringify(response.data));
+      roteiroData.Roteiro=response.data
+    } catch (error) {
+      alert('Erro ao Gerar Roteiro')
+    }
+    finally {
+      isLoading.value = false; 
+    }
+  }
+  
 }
 function parseMarkdown(text) {
   console.log('parseText ', text)
@@ -687,7 +709,14 @@ input[type="radio"] {
 .roteiro-item {
     margin-bottom: 20px;
     line-height: 1.6;
-    text-align: left
+    text-align: left;
+    -webkit-touch-callout: none;  /* iPhone OS, Safari */
+    -webkit-user-select: none;    /* Chrome, Safari 3 */
+    -khtml-user-select: none;     /* Safari 2 */
+    -moz-user-select: none;       /* Firefox */
+    -ms-user-select: none;        /* IE10+ */
+    user-select: none;            /* Possível implementação no futuro */
+    /* cursor: default; */
   }
 
 </style>
