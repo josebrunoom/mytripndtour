@@ -108,7 +108,7 @@
             class="d-inline-flex mb-2"
           >
             <label class="d-flex ml-2">
-              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="lugarSelecionado"/>
+              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada"/>
               <span>{{ modo }}</span>
             </label>
           </div>
@@ -224,7 +224,7 @@
             class="d-inline-flex align-items-center mb-2"
           >
             <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" :value="interest" class="me-2"/>
+              <input type="checkbox" :name="interest" :value="interest" class="me-2" v-model="selectedInteresses"/>
               <span>{{ interest }}</span>
             </label>
           </div>
@@ -237,21 +237,6 @@
     </div>
 
     <div class="row mb-4">
-      <!-- <div class="col-12 col-md-4 mb-3 mb-md-0">
-        <div class="bg-white p-3 rounded-lg">
-          <h2 class="h5 fw-bold mb-2">Lista de interesses</h2>
-          <div 
-            v-for="(interest, index) in interesses" 
-            :key="index" 
-            class="d-flex align-items-center mb-2"
-          >
-            <label class="d-flex align-items-center">
-              <input type="checkbox" :name="interest" :value="interest" class="me-2"/>
-              <span>{{ interest }}</span>
-            </label>
-          </div>
-        </div>
-      </div> -->
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
@@ -262,6 +247,16 @@
                   data-placement="top"
                   title="tooltip 1"
                 ></i>
+                <div class="">
+                  <button>
+                  <i 
+                  class="fa fa-plus mb-2 pl-1 pb-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="adicionar item"
+                ></i>
+                </button>
+                </div>
           </div>
           <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
           <!-- <vue-google-autocomplete id="map3" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceC">
@@ -278,6 +273,16 @@
                   data-placement="top"
                   title="tooltip 1"
                 ></i>
+                <div class="">
+                  <button>
+                  <i 
+                  class="fa fa-plus mb-2 pl-1 pb-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="adicionar item"
+                ></i>
+                </button>
+                </div>
           </div>
           <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
           <!-- <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
@@ -353,12 +358,14 @@
   const isLoading=ref(false)
   const showOrigem=ref(false)
   const showDestino=ref(false)
+  const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Meios Próprios (não gerar)','Veículos de Aluguel','Rodoviário','Trens','Marítimo','Aéreo']
   let opc=['Sim','Não']
   let interesses=['Museus', 'Ecoturismo', 'Gastronomia', 'Cidades Históricas', 'Compras','Diversão Noturna', 'Cultura Local', 'Esportes', 'Parques de Diversão']
+  let selectedInteresses=[]
   let lugares=['Hostel', 'Pousadas', 'Alto luxo', 'Resorts', 'Só pra dormir (3 estrelas)']
-  let lugarSelecionado
+  let hospedagemSelecionada
   let Destinos=[]
   let Origem
   let periodo_viagem
@@ -390,17 +397,19 @@
         showOrigem.value=false
       }
       if(elementId=='autocompleteD'){
-        Destinos[0]=place.name
+        Destinos.push(place.name)
         DestinoCity=place.name
         showDestino.value=false
       }
     });
   };
-
+  console.log(user)
   initAutocomplete('autocompleteQ', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
   initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
+
+  
 });
 
   const setOrigem = () =>{
@@ -479,6 +488,12 @@ const formatChildren = () => {
         const formattedEndDate = endDate.format('YYYY-MM-DD');
         return `${formattedStartDate} a ${formattedEndDate}`;
       }
+      function transformDate(initialDateStr) {
+        const initialDate = moment(initialDateStr);
+        const formattedStartDate = initialDate.format('DD/MM/YYYY');
+        console.log(formattedStartDate)
+        return `${formattedStartDate}`;
+      }
 
 const postRoteiro=async () =>{
   isLoading.value=true
@@ -493,13 +508,31 @@ const postRoteiro=async () =>{
             lugar_nao_quer_conhecer: lugar_nIr,
             meio_transporte: meio_transporte}]
   }
+  let ObjRoteiro1={
+    email:user.Email,
+    origem:Origem,
+    destino: Destinos[0],
+    dias:periodo_viagem,
+    data_inicio: transformDate(date.value),
+    qtd_adultos: numAdults.value,
+    qtd_menores: numChildren.value ? numChildren.value : 0,
+    idade_menores: childAges,
+    interesses: selectedInteresses,
+    locais_interesse: lugar_Conhecer,
+    lugar_nao_quer_conhecer: lugar_nIr,
+    meio_transporte: meio_transporte == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte,
+    tipo_hospedagem:hospedagemSelecionada,
+    desc_detalhada:opcaoGerar=='Sim' ? 'S' : 'N',
+    idioma: "PT-BR",
+    ip_origem: user.ip_origem
+  }
   
-  console.log(ObjRoteiro)
+  console.log(ObjRoteiro1)
   try {
-    const response = await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/gerar_roteiro', ObjRoteiro)
+    const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
     console.log(response.data)
     localStorage.setItem('roteiro', JSON.stringify(response.data));
-    roteiroData = response.data
+    roteiroData.push(response.data)
   } catch (error) {
     alert('Erro ao Gerar Roteiro')
   }
