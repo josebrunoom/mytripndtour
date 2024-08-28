@@ -92,7 +92,6 @@
     date.value=user.birthday
     selectedGender.value=user.gender
     img=user.photo
-    iptest()
   })
   const customFormat = (date) => {
   return date ? moment(date).format('DD/MM/YYYY') : '';
@@ -103,8 +102,6 @@
   const deletePerfil = () =>{
       dialog.value = true;
   }
-
-
 </script>
   
   <style scoped>
