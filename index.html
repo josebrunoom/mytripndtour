@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module">
       import router from './src/routes'
-      window.fbAsyncInit = function() {
+      /* window.fbAsyncInit = function() {
         FB.init({
           appId      : '1203498224221425', // Replace with your Facebook App ID
           cookie     : true,
@@ -29,7 +29,7 @@
           console.log('FB.getLoginStatus response:', response);
         });
       };
-
+ */
       // Function to handle Facebook login
       window.loginWithFacebook = function() {
   FB.login(function(response) {
@@ -70,7 +70,7 @@
     }
   }, {scope: 'email, user_birthday,user_gender'}); 
 };
-const sendUser=async(user)=>{
+/* const sendUser=async(user)=>{
   try {
     console.log('login', user)
     await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/usuario/upload', user)
@@ -79,7 +79,7 @@ const sendUser=async(user)=>{
     console.log(error)
     alert('Erro ao logar')
   }
-}
+} */
     </script>
     <script type="module" src="/src/main.js"></script>
   </body>

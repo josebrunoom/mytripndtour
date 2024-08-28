@@ -6,7 +6,7 @@
         </div>
         <form @submit.prevent="">
           <div  class="mt-4 ml-16 items-center">
-            <button  @click="IsChecked('google')" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
+            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
               <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
               Entrar com o Google
             </button>
@@ -14,7 +14,7 @@
         </form>
         <form @submit.prevent="">
           <div  class="mt-4 ml-16">
-            <button  @click="IsChecked('facebook')" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
+            <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
               <img src="../assets/Facebook_icon.svg" alt="Facebook" class="img-Facebook mr-1" />
               Entrar com o Facebook
             </button>
@@ -40,6 +40,7 @@
   import ModalTermsAndPolitics from './ModalTermsAndPolitics.vue';
   import axios from 'axios';
   import Loading from './Loading.vue';
+  import { jwtDecode } from "jwt-decode";
 
   const isProd=ref(true)
   const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
@@ -49,22 +50,87 @@
   let checkbox = ref(false)
   const showModal = ref(false);
   const userIP=ref('')
-  let token=null
+  let token=localStorage.getItem('token')
 
   onMounted(()=>{
     ipGet();
     if(token){
-      verifytoken();
+      const tokenDecoded = jwtDecode(token)
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      if (tokenDecoded.exp > currentTimestamp) {
+        console.log("The 'exp' timestamp is in the future.");
+        router.push('/mytrip/home');
+      } else {
+        console.log("The 'exp' timestamp has passed.");
+      }
     }
-  })
-  const verifytoken=()=>{
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId: '1203498224221425',
+      cookie: true,
+      xfbml: true,
+      version: 'v20.0'
+    });
 
-  }
+    console.log('Facebook SDK initialized');
+
+    FB.getLoginStatus(function(response) {
+      console.log('FB.getLoginStatus response:', response);
+    });
+  };
+
+  // Load Facebook SDK
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return; }
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/pt_BR/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  })
+
+  const loginWithFacebook = () => {
+  FB.login(function(response) {
+    if (response.authResponse) {
+      console.log('Welcome! Fetching your information....');
+      FB.api('/me', { fields: 'name,email,birthday,gender,picture' }, async function(response) {
+        console.log('facebook response', response);
+        if (response && !response.error) {
+          console.log('Good to see you, ' + response.name + '. Your email is ' + response.email);
+          let backUser = [];
+          let objUser = {
+            email: response.email,
+            name: response.name,
+            //password: response.id, 
+            birthday:  response.birthday,
+            gender: response.gender,
+            idioma:'PT',
+            ip_origem:userIP.value
+          };
+          let LocalStorageUser = {
+            Email: response.email,
+            Nome: response.name,
+            photo: response.picture.data.url,
+            IdentificadorUnico: response.id,
+            MetodoAutenticacao: 'Facebook',
+            birthday: response.birthday,
+            gender: response.gender,
+          };
+          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+          await sendUser(objUser);
+        } else {
+          console.error('Error fetching email:', response.error);
+        }
+      });
+    } else {
+      console.log('User cancelled login or did not fully authorize.');
+    }
+  }, { scope: 'email,user_birthday,user_gender' });
+};
   const ipGet=async ()=>{
     const response = await fetch('https://api.ipify.org?format=json');
     const data = await response.json();
     userIP.value = data.ip;
-    console.log("User's IP address:", userIP);
   }
   const openModal = () => {
     showModal.value = true;
@@ -73,7 +139,6 @@
     showModal.value = false;
   };
   const IsChecked = (tipo)=>{
-    console.log('Checked alert', checkbox.value)
     if(checkbox.value==false){
       alert('Aceite os termos para continuar')
     }else{
@@ -92,7 +157,6 @@
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error fetching user info:', error);
@@ -109,14 +173,13 @@ const login = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'http://localhost:5173', //must be changed later
+            redirect_uri: 'http://mytripntour.com', //must be changed later
             grant_type: 'authorization_code'
           });
           
           const accessToken = tokenResponse.data.access_token;
           
           const userInfo = await fetchUserInfo(accessToken);
-          console.log("User Info:", userInfo);
 
           const userEmail = userInfo.emailAddresses[0].value;
           const userName = userInfo.names[0].displayName;
@@ -124,11 +187,11 @@ const login = () => {
           const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
           const userGender = userInfo.genders ? userInfo.genders[0].value : null;
 
-          console.log("User Email:", userEmail);
+          /* console.log("User Email:", userEmail);
           console.log("User Name:", userName);
           console.log("User Picture:", userPicture);
           console.log("User Birthday:", userBirthday);
-          console.log("User Gender:", userGender);
+          console.log("User Gender:", userGender); */
           //same format
           const formattedDate = `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}`;
           let backUser=[]
@@ -150,9 +213,9 @@ const login = () => {
             MetodoAutenticacao:'Google',
             birthday: formattedDate,
             gender: userGender,
+            ip_origem:userIP.value
           };
           backUser.push(objUser)
-          console.log(objUser)
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           await sendUser(objUser)
         } catch (error) {
@@ -166,21 +229,23 @@ const login = () => {
 const sendUser=async(user)=>{
   isLoading.value=true
   try {
-    console.log(user)
-    /* let user=[{"Nome": "Usuário 1", "IdentificadorUnico": "ID12345", "Email": "usuario1@example.com", "MetodoAutenticacao": "Google"}] */
-    const response = await fetch('https://newlogin-lm7edjmduq-uc.a.run.app', {
-      method: 'POST', // Specifies the request method
+    /* const response = await fetch('https://newlogin-lm7edjmduq-uc.a.run.app', {
+      method: 'POST', 
       headers: {
-        'Content-Type': 'application/json', // Set the content type header
+        'Content-Type': 'application/json', 
       },
-      body: JSON.stringify(user), // Convert the user object to a JSON string
-    });
-    console.log(response.data)
-    localStorage.setItem('token', response.data.token)
-    router.push('/mytrip/home');
-    /* if(response.data.ExistUser=='1'){
-      
-    } */
+      body: JSON.stringify(user), 
+    }); */
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', user)
+    console.log('response senduser',response.data)
+    if(response.data.ExistUser==1){
+      localStorage.setItem('token', response.data.token)
+      const tokenDecoded= jwtDecode(response.data.token)
+      console.log(tokenDecoded)
+      router.push('/mytrip/home');
+    } else{
+      alert('Aceite os termos para continuar')
+    }
     
   } catch (error) {
     isLoading.value=false
@@ -191,7 +256,6 @@ const sendUser=async(user)=>{
 }
 
   const loginFacebook = async () => {
-    console.log('Facebook login triggered');
     if (window.loginWithFacebook) {
       window.loginWithFacebook();
     } else {
