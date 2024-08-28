@@ -157,7 +157,7 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 col-md-3 mb-3 mb-md-0">
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
             <h2 class="h5 fw-bold mb-2">Tipo de Hospedagem</h2>
