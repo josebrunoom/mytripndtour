@@ -331,7 +331,9 @@
     <div class="row mb-4">
       <div class="col-12 roteiro-container bg-white">
         <!-- Render each item after parsing with marked -->
-        <div v-for="(item, index) in roteiroData" :key="index" v-html="parseMarkdown(item)" class="roteiro-item"></div>
+         <div v-if="roteiroData.Roteiro!=null">
+          <div v-html="parseMarkdown(roteiroData.Roteiro.Roteiro)" class="roteiro-item"></div>
+         </div>
       </div>
     </div>
     <Loading :loading="isLoading"/>
@@ -372,10 +374,39 @@
   let lugar_nIr=['',]
   let lugar_Conhecer=['',]
   let meio_transporte
-  let roteiroData = []
+  let roteiroData = {Roteiro:null,}
   let OrigemCity = null
   let DestinoCity = null
   let opcaoGerar
+/*   {
+    email: "luisalbergoni717@gmail.com",
+    origem: "Guaxupé",
+    "destino": "Santos",
+    "dias": "5",
+    "data_inicio": "28/08/2024",
+    "qtd_adultos": 5,
+    "qtd_menores": 2,
+    "idade_menores": [
+        2,
+        2
+    ],
+    "interesses": [
+        "Ecoturismo"
+    ],
+    "locais_interesse": [
+        "",
+        "Praia dos Milionários"
+    ],
+    "lugar_nao_quer_conhecer": [
+        "",
+        "Praia do Gonzaguinha"
+    ],
+    "meio_transporte": "Veículos de Aluguel",
+    "tipo_hospedagem": "Alto luxo",
+    "desc_detalhada": "S",
+    "idioma": "PT-BR",
+    "ip_origem": "186.193.138.75"
+} */
 
   onMounted(() => {
   const initAutocomplete = (elementId, types) => {
@@ -532,7 +563,7 @@ const postRoteiro=async () =>{
     const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
     console.log(response.data)
     localStorage.setItem('roteiro', JSON.stringify(response.data));
-    roteiroData.push(response.data)
+    roteiroData.Roteiro=response.data
   } catch (error) {
     alert('Erro ao Gerar Roteiro')
   }
@@ -541,6 +572,7 @@ const postRoteiro=async () =>{
   }
 }
 function parseMarkdown(text) {
+  console.log('parseText ', text)
   return marked(text);
 }
 const customFormat = (date) => {
