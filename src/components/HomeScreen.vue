@@ -19,7 +19,7 @@
             <!-- <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button> -->
           </div>
           <div v-show="showOrigem==true">
-            <input id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
           </div>
@@ -37,15 +37,33 @@
                   title="tooltip 1"
                 ></i>
               </h2>
+              <div class="h5 fw-bold mb-6 ms-auto">
+                <!-- <button @click="addDestino">
+                <i 
+                  class="fa-solid fa-plus "
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="adicionar destino"
+                ></i>
+              </button> -->
+              </div>
             </div>
           <div class="d-flex align-items-center" v-if="showDestino==false">
             <button class="fw-bold mr-2 h1" @click="setDestino">{{ DestinoCity ? DestinoCity : 'Selecione o Destino' }}</button>
             <!-- <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button> -->
           </div>
           <div v-show="showDestino==true">
-            <input id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
+          </div>
+          <div class="selected-placesDestino mt-2">
+            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index" class="d-flex mb-2 align-items-center">
+              <span class=" text-black place-item">
+                {{ place }};
+            </span>
+            <button @click="removePlaceDestino(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            </div>
           </div>
         </div>
       </div>
@@ -72,8 +90,9 @@
             <input 
               type="number" 
               class="form-control" 
-              placeholder="00" 
+              placeholder="0" 
               v-model="periodo_viagem"
+              min="0"
             />
           </div>
           <div class="col-12 col-md-6 mt-2">
@@ -107,21 +126,21 @@
         <div class="row">
           <div class="col-4 mt-2 text-start fw-bold">Adultos:</div>
           <div class="col-4 mt-2 text-start fw-bold">Crianças:</div>
-          <div v-if="numChildren > 0" class="col-4 mt-2 text-start fw-bold">
+          <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
               :disabled="currentIndex === 0" 
-              class="bg-white hover:bg-gray-500 text-black rounded-lg"
+              class="bg-gray-300 hover:bg-gray-500  rounded-lg w-6"
             >
-              &lt;
+            <i class="fa-solid fa-arrow-left"></i>
             </button>
-            Idade Criança {{ currentIndex + 1 }}:
+            Idade {{ currentIndex + 1 }}° Criança 
             <button 
               @click="nextChild" 
               :disabled="currentIndex === numChildren - 1" 
-              class="bg-white hover:bg-gray-500 text-black rounded-lg"
+              class="bg-gray-300 hover:bg-gray-500 rounded-lg w-6"
             >
-              &gt;
+            <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </div>
@@ -130,25 +149,28 @@
             <input 
               type="number" 
               class="form-control" 
-              placeholder="00" 
+              placeholder="0" 
               v-model.number="numAdults"
+              min="0"
             />
           </div>
           <div class="col-12 col-md-4 mt-2">
             <input 
               type="number" 
               class="form-control" 
-              placeholder="00"  
-              v-model="formattedChildren"
+              placeholder="0"  
+              v-model="numChildren"
               @input="formatChildren"
+              min="0"
             />
           </div>
           <div v-if="numChildren > 0" class="col-12 col-md-4 mt-2">
               <input 
-                type="text" 
+                type="number" 
                 class="form-control" 
                 placeholder="Idade" 
                 v-model.number="childAges[currentIndex]"
+                min="0"
               />
           </div>
         </div>
@@ -227,7 +249,7 @@
             class="d-inline-flex align-items-center mb-2"
           >
             <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" :value="interest" class="me-2" v-model="selectedInteresses"/>
+              <input type="checkbox" :name="interest" :value="interest" class="me-2" @input="pushInteresses(interest)"/>
               <span>{{ interest }}</span>
             </label>
           </div>
@@ -253,18 +275,24 @@
                 ></i>
                 <div class="">
                   <button>
-                  <i 
+                  <!-- <i 
                   class="fa fa-plus mb-2 pl-1 pb-1"
                   data-toggle="tooltip" 
                   data-placement="top"
                   title="adicionar item"
-                ></i>
+                ></i> -->
                 </button>
                 </div>
           </div>
           <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
-          <!-- <vue-google-autocomplete id="map3" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceC">
-          </vue-google-autocomplete> -->
+          <div class="selected-places mt-2">
+            <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
+              <span class=" text-black place-item">
+                {{ place }};
+            </span>
+            <button @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -279,18 +307,24 @@
                 ></i>
                 <div class="">
                   <button>
-                  <i 
+                  <!-- <i 
                   class="fa fa-plus mb-2 pl-1 pb-1"
                   data-toggle="tooltip" 
                   data-placement="top"
                   title="adicionar item"
-                ></i>
+                ></i> -->
                 </button>
                 </div>
           </div>
           <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
-          <!-- <vue-google-autocomplete id="map4" types="establishment" classname="form-control" placeholder="" v-on:placechanged="handlePlaceN">
-          </vue-google-autocomplete> -->
+          <div class="selected-places mt-2">
+            <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
+              <span class=" text-black place-item">
+                {{ place }};
+            </span>
+            <button @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -357,7 +391,7 @@
 
   
 <script setup>
-  import { ref, onMounted, watch, computed } from 'vue'
+  import { ref, onMounted, watch, computed, onUpdated,nextTick  } from 'vue'
   import VueDatePicker from '@vuepic/vue-datepicker';
   import VueSelect from 'vue-select';
   import axios from 'axios';
@@ -375,23 +409,28 @@
   const showOrigem=ref(false)
   const showDestino=ref(false)
   const dialog=ref(false)
+  const inputOrigem = ref(null);
+  const inputDestino = ref(null);
+  const OrigemCity=ref(null)
+  const DestinoCity=ref(null)
+  const lugaresConhecerFullNames=ref([])
+  const lugaresNaoIrFullNames=ref([])
+  const lugaresDestinosFullNames=ref([])
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
   let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão']
   let selectedInteresses=[]
-  let lugares=['Alto luxo','Hostel', 'Pousadas', , 'Resorts', 'Só pra dormir (3 estrelas)']
+  let lugares=['Alto luxo','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3 estrelas)']
   let hospedagemSelecionada
   let Destinos=[]
   let Origem
   let periodo_viagem
-  let lugar_nIr=['',]
-  let lugar_Conhecer=['',]
+  let lugar_nIr=[]
+  let lugar_Conhecer=[]
   let meio_transporte
   let roteiroData = {Roteiro:null,}
-  let OrigemCity = null
-  let DestinoCity = null
   let opcaoGerar
 /*   {
     email: "luisalbergoni717@gmail.com",
@@ -432,20 +471,38 @@
       const place = autocomplete.getPlace();
       console.log(place.name); // Handle the place name as needed
       if(elementId=='autocompleteQ'){
-        lugar_Conhecer.push(place.name)
+        if(lugaresConhecerFullNames.value.length+1>5){
+          alert('O número máximo de lugares é 5')
+        } else{
+          lugaresConhecerFullNames.value.push(document.getElementById('autocompleteQ').value)
+          console.log(lugaresConhecerFullNames.value)
+          lugar_Conhecer.push(place.name)
+        }
       }
       if(elementId=='autocompleteN'){
-        lugar_nIr.push(place.name)
+        if(lugaresNaoIrFullNames.value.length+1>5){
+          alert('O número máximo de lugares é 5')
+        } else {
+          lugaresNaoIrFullNames.value.push(document.getElementById('autocompleteN').value)
+          console.log(lugaresNaoIrFullNames.value)
+          lugar_nIr.push(place.name)
+        }
       }
       if(elementId=='autocompleteO'){
         Origem=place.name
-        OrigemCity=place.name
+        OrigemCity.value=place.name
         showOrigem.value=false
       }
       if(elementId=='autocompleteD'){
-        Destinos.push(place.name)
-        DestinoCity=place.name
-        showDestino.value=false
+        if(lugaresDestinosFullNames.value.length+1>5){
+          alert('O número máximo de lugares é 5')
+        }else{
+          Destinos.push(place.name)
+          DestinoCity.value=place.name
+          lugaresDestinosFullNames.value.push(document.getElementById('autocompleteD').value)
+          showDestino.value=false
+          console.log(Destinos, lugaresDestinosFullNames.value)
+        }
       }
     });
   };
@@ -454,9 +511,20 @@
   initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
   initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
-
-  
 });
+
+  onUpdated(()=> {
+    if (showOrigem.value) {
+      nextTick(() => {
+        inputOrigem.value.focus();
+      });
+    }
+    if (showDestino.value) {
+      nextTick(() => {
+        inputDestino.value.focus();
+      });
+    }
+  })
 
   const setOrigem = () =>{
     showOrigem.value=true
@@ -468,23 +536,6 @@
   const refreshPage = () => {
     window.location.reload();
   };
-
-  const handlePlaceOrigem=(place)=>{
-    Origem=place.locality
-    OrigemCity=place.locality
-    showOrigem.value=false
-  }
-  const handlePlaceDestino=(place)=>{
-    Destinos[0]=place.locality
-    DestinoCity=place.locality
-    showDestino.value=false
-  }
-  const handlePlaceC=(place)=>{
-    lugar_Conhecer[0]=document.getElementById("map3").value
-  }
-  const handlePlaceN=(place)=>{
-    lugar_nIr[0]=document.getElementById("map4").value
-  }
   
 watch(numChildren, (newCount) => {
   if (newCount > childAges.length) {
@@ -496,8 +547,10 @@ watch(numChildren, (newCount) => {
     childAges.splice(newCount);
   }
 });
+
 const formatChildren = () => {
-      numChildren.value = parseInt(formattedChildren.value) || 0;
+      //numChildren.value = parseInt(formattedChildren.value) || 0;
+      console.log(numChildren.value)
       while (childAges.length < numChildren.value) {
         childAges.push(null);  
       }
@@ -557,7 +610,7 @@ const postRoteiro=async () =>{
   let ObjRoteiro1={
     email:user.Email,
     origem:Origem,
-    destino: Destinos[0],
+    destino: Destinos,
     dias:periodo_viagem,
     data_inicio: transformDate(date.value),
     qtd_adultos: numAdults.value,
@@ -568,7 +621,7 @@ const postRoteiro=async () =>{
     lugar_nao_quer_conhecer: lugar_nIr,
     meio_transporte: meio_transporte == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte,
     tipo_hospedagem:hospedagemSelecionada,
-    desc_detalhada:opcaoGerar=='Sim' ? 'S' : 'N',
+    desc_detalhada:opcaoGerar=='Sim' ? 'S' : opcaoGerar=='Não' ? 'N' : 'S',
     idioma: "PT-BR",
     ip_origem: user.ip_origem
   }
@@ -600,6 +653,22 @@ function parseMarkdown(text) {
 const customFormat = (date) => {
   return date ? moment(date).format('DD/MM/YYYY') : '';
 };
+    const removePlace = (index) => {
+      lugar_Conhecer.splice(index, 1);
+      lugaresConhecerFullNames.value.splice(index, 1)
+    };
+    const removePlaceNir = (index) => {
+      lugar_nIr.splice(index, 1);
+      lugaresNaoIrFullNames.value.splice(index, 1)
+    };
+    const removePlaceDestino = (index) => {
+      Destinos.splice(index, 1);
+      lugaresDestinosFullNames.value.splice(index, 1)
+      console.log(Destinos, lugaresDestinosFullNames.value)
+    };
+    const pushInteresses = (interest) =>{
+      selectedInteresses.push(interest)
+    }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
@@ -705,6 +774,18 @@ input[type="radio"] {
   flex: 1 1 calc(50% - 16px); 
   display: flex;
   align-items: center;
+}
+.selected-places {
+  max-height: 100px; /* Adjust height as needed */
+  overflow-y: auto; /* Make the div scrollable */
+}
+.selected-placesDestino {
+  max-height: 25%; /* Adjust height as needed */
+  overflow-y: auto; /* Make the div scrollable */
+}
+.place-item {
+  display: block; /* Ensure each place is on its own line */
+  padding: 5px 0; /* Add some spacing between each line */
 }
 .roteiro-item {
     margin-bottom: 20px;
