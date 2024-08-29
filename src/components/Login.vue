@@ -5,16 +5,16 @@
           <img src="../assets/logo.jpg" alt="Logo" class="img-Logo" />
         </div>
         <form @submit.prevent="">
-          <div  class="mt-4 ml-16 items-center">
-            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
+          <div  class=" flex justify-center items-center">
+            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
               <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
               Entrar com o Google
             </button>
           </div>
         </form>
         <form @submit.prevent="">
-          <div  class="mt-4 ml-16">
-            <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24">
+          <div  class=" flex justify-center items-center">
+            <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
               <img src="../assets/Facebook_icon.svg" alt="Facebook" class="img-Facebook mr-1" />
               Entrar com o Facebook
             </button>
@@ -278,7 +278,7 @@ const sendUser=async(user)=>{
     height: 2.7rem;
   }
   .input-box {
-    width: 20rem;
+    width: 60%;
   }
   .google-btn {
     display: flex;
