@@ -17,6 +17,7 @@
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "html2pdf.js": "^0.10.2",
     "jwt-decode": "^4.0.0",
     "marked": "^14.0.0",
     "moment": "^2.30.1",
