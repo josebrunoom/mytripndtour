@@ -2,7 +2,7 @@
     <div class="flex justify-center items-center min-h-screen">
       <div class="w-full max-w p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div class="flex justify-center mb-4">
-          <img src="../assets/logo.jpg" alt="Logo" class="img-Logo" />
+          <img src="../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-01.jpg" alt="Logo" class="img-Logo" />
         </div>
         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">
@@ -20,11 +20,11 @@
             </button>
           </div>
         </form>
-        <div class="mt-4 ml-16">
+        <!-- <div class="mt-4 ml-16">
             <input type="checkbox" v-model="checkbox">
             <span @click.prevent="openModal" class="cursor-pointer text-blue-500 mr-10 ml-2">Eu aceito os termos e condições</span>
             </input>
-        </div>
+        </div> -->
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>
       <Loading :loading="isLoading" ></Loading>
@@ -173,7 +173,7 @@ const login = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://mytripntour.com', //must be changed later
+            redirect_uri: 'https://mytripntour.com/', //must be changed later
             grant_type: 'authorization_code'
           });
           
@@ -245,6 +245,7 @@ const sendUser=async(user)=>{
       router.push('/mytrip/home');
     } else{
       alert('Aceite os termos para continuar')
+      openModal();
     }
     
   } catch (error) {
@@ -267,7 +268,6 @@ const sendUser=async(user)=>{
   <style scoped>
   .img-Logo {
     width: 40rem;
-    height: 40rem;
   }
   .img-Facebook {
     width: 2rem;

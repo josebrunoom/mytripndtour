@@ -68,6 +68,7 @@ Usando este site para se envolver em qualquer forma de publicidade ou marketing 
                     <p><span class="uppercase">20.</span>O Site reserva-se o direito de ceder, transferir e subcontratar seus direitos e/ou obrigações sob este Acordo sem qualquer notificação ou consentimento prévio necessário. Os usuários não terão permissão para atribuir, transferir ou subcontratar qualquer um de seus direitos e/ou obrigações sob estes Termos. Além disso, uma pessoa que não seja parte destes Termos e Condições não terá o direito de fazer cumprir qualquer disposição neles contida.</p>
                     <p><span class="uppercase">21.</span>Estes Termos e Condições, incluindo quaisquer avisos legais e isenções de responsabilidade neste site, constituem o acordo completo entre o Site e você em relação ao uso deste site. Em última análise, este Acordo substitui todos os acordos e entendimentos anteriores relativos ao mesmo.</p>
                     <p><span class="uppercase">22.</span>Qualquer dúvida, entre em contato por meio do endereço de e-mail: duvidas@mytripntour.com.</p>
+                    <button @click="aceitaTerms" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100"> ACEITAR</button>
                 </div>
                 <!-- <div class="footer justify-center">
                     <button @click="closeModal" class="marginButton google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100"> FECHAR</button>
@@ -78,6 +79,8 @@ Usando este site para se envolver em qualquer forma de publicidade ou marketing 
 </template>
 
 <script>
+
+import router from '../routes';
 
 export default {
     name: "ModalTermsAndPolitics",
@@ -94,15 +97,19 @@ export default {
     methods:{
         closeModalv1(){
             this.ModalVisible=false
+        },
+        aceitaTerms(){
+            router.push('/mytrip/home');
+            this.ModalVisible=false
         }
     }
 }
 </script>
 
 <style scoped>
-.marginButton{
+/* .marginButton{
     margin-left: 20rem;
-}
+} */
 .input-box {
     width: 20rem;
   }
