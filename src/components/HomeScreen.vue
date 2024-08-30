@@ -19,7 +19,7 @@
             <!-- <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button> -->
           </div>
           <div v-show="showOrigem==true">
-            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
           </div>
@@ -28,7 +28,7 @@
       <div class="col-12 col-md-6">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
-              <h2 class="h5 fw-bold mb-4 text-left">
+              <h2 class="h5 fw-bold  text-left">
                 Destino(s)
                 <i 
                   class="bi bi-question-circle-fill"
@@ -49,20 +49,20 @@
               </div>
             </div>
           <div class="d-flex align-items-center" v-if="showDestino==false">
-            <button class="fw-bold mr-2 h1" @click="setDestino">{{ DestinoCity ? DestinoCity : 'Selecione o Destino' }}</button>
+            <button class="fw-bold h1" @click="setDestino">Selecione o Destino</button>
             <!-- <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button> -->
           </div>
           <div v-show="showDestino==true">
-            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
           </div>
-          <div class="selected-placesDestino mt-2">
-            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index" class="d-flex mb-2 align-items-center">
-              <span class=" text-black place-item">
+          <div class="selected-placesDestino">
+            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+              <span class=" text-black" style="font-size: 0.8rem;">
                 {{ place }};
             </span>
-            <button @click="removePlaceDestino(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>
@@ -105,6 +105,7 @@
               cancel-text="Fechar"
               select-text="Selecionar"
               :format="customFormat"
+              :min-date="new Date()"
             ></VueDatePicker>
           </div>
         </div>
@@ -125,7 +126,7 @@
           </div>
         <div class="row">
           <div class="col-4 mt-2 text-start fw-bold">Adultos:</div>
-          <div class="col-4 mt-2 text-start fw-bold">Crianças:</div>
+          <div class="col-4 mt-2 text-start fw-bold">Menores:</div>
           <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
@@ -134,7 +135,7 @@
             >
             <i class="fa-solid fa-arrow-left"></i>
             </button>
-            Idade {{ currentIndex + 1 }}° Criança 
+            Idade {{ currentIndex + 1 }}° Menor 
             <button 
               @click="nextChild" 
               :disabled="currentIndex === numChildren - 1" 
@@ -249,7 +250,7 @@
             class="d-inline-flex align-items-center mb-2"
           >
             <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" :value="interest" class="me-2" @input="pushInteresses(interest)"/>
+              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"/>
               <span>{{ interest }}</span>
             </label>
           </div>
@@ -284,7 +285,7 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
+          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
@@ -316,7 +317,7 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" style="padding-left: 10px; padding-right: 10px;">
+          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
@@ -358,7 +359,7 @@
         <button 
           type="button" 
           class="btn btn-danger"
-          @click="refreshPage"
+          @click="resetData"
         >
           Limpar Tudo
         </button>
@@ -370,7 +371,8 @@
       <div class="col-12 roteiro-container bg-white">
         <!-- Render each item after parsing with marked -->
          <div v-if="roteiroData.Roteiro!=null">
-          <div v-html="parseMarkdown(roteiroData.Roteiro.Roteiro)" class="roteiro-item"></div>
+          <div  id="pdf-content" v-html="parseMarkdown(roteiroData.Roteiro.Roteiro)" class="roteiro-item"></div>
+          <button class="btn" @click="downloadPdf"> baixar como pdf </button>
          </div>
       </div>
     </div>
@@ -398,7 +400,7 @@
   import moment from 'moment';
   import Loading from './Loading.vue';
   import { marked } from 'marked';
-  import VueGoogleAutocomplete from "vue-google-autocomplete";
+  import html2pdf from 'html2pdf.js';
 
   const date = ref();
   const numAdults = ref()
@@ -416,6 +418,9 @@
   const lugaresConhecerFullNames=ref([])
   const lugaresNaoIrFullNames=ref([])
   const lugaresDestinosFullNames=ref([])
+  const inChecked = ref([])
+  const meio_transporte = ref()
+  const hospedagemSelecionada=ref()
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
@@ -423,15 +428,15 @@
   let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão']
   let selectedInteresses=[]
   let lugares=['Alto luxo','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3 estrelas)']
-  let hospedagemSelecionada
   let Destinos=[]
   let Origem
   let periodo_viagem
   let lugar_nIr=[]
   let lugar_Conhecer=[]
-  let meio_transporte
   let roteiroData = {Roteiro:null,}
-  let opcaoGerar
+  let opcaoGerar = 'Sim'
+  let location;
+  let lang = null;
 /*   {
     email: "luisalbergoni717@gmail.com",
     origem: "Guaxupé",
@@ -495,6 +500,7 @@
       }
       if(elementId=='autocompleteD'){
         if(lugaresDestinosFullNames.value.length+1>5){
+          showDestino.value=false;
           alert('O número máximo de lugares é 5')
         }else{
           Destinos.push(place.name)
@@ -595,18 +601,8 @@ const formatChildren = () => {
       }
 
 const postRoteiro=async () =>{
+  lang = localStorage.getItem('lang')
   isLoading.value=true
-  let ObjRoteiro={
-    cidade_origem:Origem,
-    destinos:[{cidade_destino: Destinos[0],
-            periodo_viagem: transformDates(date.value, periodo_viagem),
-            quantidade_adultos: numAdults.value,
-            quantidade_criancas: numChildren.value ? numChildren.value : 0,
-            idades_criancas: childAges,
-            locais_interesse: lugar_Conhecer,
-            lugar_nao_quer_conhecer: lugar_nIr,
-            meio_transporte: meio_transporte}]
-  }
   let ObjRoteiro1={
     email:user.Email,
     origem:Origem,
@@ -619,10 +615,10 @@ const postRoteiro=async () =>{
     interesses: selectedInteresses,
     locais_interesse: lugar_Conhecer,
     lugar_nao_quer_conhecer: lugar_nIr,
-    meio_transporte: meio_transporte == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte,
-    tipo_hospedagem:hospedagemSelecionada,
+    meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
+    tipo_hospedagem:hospedagemSelecionada.value,
     desc_detalhada:opcaoGerar=='Sim' ? 'S' : opcaoGerar=='Não' ? 'N' : 'S',
-    idioma: "PT-BR",
+    idioma: lang ? lang : "PT-BR",
     ip_origem: user.ip_origem
   }
   
@@ -666,8 +662,54 @@ const customFormat = (date) => {
       lugaresDestinosFullNames.value.splice(index, 1)
       console.log(Destinos, lugaresDestinosFullNames.value)
     };
-    const pushInteresses = (interest) =>{
-      selectedInteresses.push(interest)
+    const pushInteresses = (event, interest) =>{
+      if(event.target.checked){
+        selectedInteresses.push(interest)
+      }else{
+        selectedInteresses = selectedInteresses.filter(item => item !== interest);
+      }
+    }
+
+    const handleSelect = () =>{
+      console.log('handlesele')
+      location='';
+    }
+    const resetData = () => {
+      // Reset form fields and variables
+      numAdults.value = 0;
+      numChildren.value = 0;
+      childAges = [];
+      currentIndex.value = 0;
+      showOrigem.value = false;
+      showDestino.value = false;
+      OrigemCity.value = null;
+      DestinoCity.value = null;
+      lugaresConhecerFullNames.value = [];
+      lugaresNaoIrFullNames.value = [];
+      lugaresDestinosFullNames.value = [];
+      inChecked.value=[]
+      location = '';
+      periodo_viagem = null;
+      meio_transporte.value = null;
+      hospedagemSelecionada.value = null;
+      roteiroData = { Roteiro: null };
+      opcaoGerar = 'Sim';
+      selectedInteresses = [];
+      lugar_nIr = [];
+      lugar_Conhecer = [];
+      console.log(selectedInteresses)
+    };
+
+    const downloadPdf = () => {
+      const element = document.getElementById('pdf-content'); 
+      const opt = {
+        margin:       1,
+        filename:     'content.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(element).set(opt).save();
     }
 </script>
 <style scoped>
@@ -780,8 +822,12 @@ input[type="radio"] {
   overflow-y: auto; /* Make the div scrollable */
 }
 .selected-placesDestino {
-  max-height: 25%; /* Adjust height as needed */
+  max-height: 40%; /* Adjust height as needed */
   overflow-y: auto; /* Make the div scrollable */
+  display: flex; /* Make items inline */
+  flex-wrap: wrap; /* Wrap items to the next line if they exceed the container width */
+  gap: 10px; /* Add space between items */
+  align-items: center; /* Align items vertically center */
 }
 .place-item {
   display: block; /* Ensure each place is on its own line */
@@ -799,6 +845,11 @@ input[type="radio"] {
     user-select: none;            /* Possível implementação no futuro */
     /* cursor: default; */
   }
+  .custom-checkbox {
+  border-color: #000000;
+  background-color: #ffffff;
+}
+
 
 </style>
   
