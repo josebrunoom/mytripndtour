@@ -614,7 +614,7 @@ const postRoteiro=async () =>{
     idade_menores: childAges,
     interesses: selectedInteresses,
     locais_interesse: lugar_Conhecer,
-    lugar_nao_quer_conhecer: lugar_nIr,
+    nao_incluir: lugar_nIr,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
     desc_detalhada:opcaoGerar=='Sim' ? 'S' : opcaoGerar=='Não' ? 'N' : 'S',
@@ -866,6 +866,14 @@ input[type="checkbox"] {
 }
 input[type="radio"]{
   border-radius: 50%;
+}
+input[type="checkbox"]:checked{
+  background-color: black;
+    border-color:black
+}
+input[type="radio"]:checked{
+  background-color: black;
+    border-color:black
 }
 
 
