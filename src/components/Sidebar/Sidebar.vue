@@ -53,7 +53,7 @@
                 <button 
                     type="button" 
                     class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
-                    @click=""
+                    @click="openDialog('sair')"
                 >
                 <i class="fa-solid fa-door-open"></i>
                 Sair
@@ -63,14 +63,8 @@
         </div>
         <div class="w-full bg-[#faf8fd]"> 
             <div style="height:5% !important;" class=" bg-[#faf8fd]"> 
-            <!-- <img data-v-86585a1e="" src="/src/assets/logo.jpg" alt="Logo" class="" style="
-                    display: block;
-                    margin-left: auto;
-                    margin-right: auto;
-                    width: 10%;
-                "> -->
                 <div class="d-flex justify-content-end align-items-center mt-4 pr-16">
-                    <button class="fw-bold mr-4" @click="openDialog"><i class="fa-solid fa-globe"></i> Idioma</button>
+                    <button class="fw-bold mr-4" @click="openDialog('lang')"><i class="fa-solid fa-globe"></i> Idioma</button>
                     <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img" alt="" />
                     <button class="fw-bold">{{ name }}</button>
                 </div>
@@ -95,6 +89,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogSair" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>Deseja mesmo Sair?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="sairUser">Sim</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </div>
 </template>
 
@@ -107,8 +111,9 @@ const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
 const route = useRoute();
 const currentRouteName=ref(route.name)
-let img
+const img = ref('')
 const dialog=ref(false)
+const dialogSair=ref(false)
 const lenguage = ref('')
 
 const savelang = () => {
@@ -116,7 +121,7 @@ const savelang = () => {
 }
 onMounted(() => {
     name.value=user.Nome
-    img=user.photo
+    img.value=user.photo
     console.log(route.name);
 })
 watchEffect(() => {
@@ -126,8 +131,18 @@ watchEffect(() => {
 const goTo=(id)=>{
     router.push('/mytrip/'+id);
 }
-const openDialog = () =>{
-    dialog.value = true;
+const openDialog = (id) =>{
+    if(id=='lang'){
+        dialog.value = true;
+    }
+    if(id=='sair'){
+        dialogSair.value=true;
+    }
+}
+const sairUser = () =>{
+    dialogSair.value=false
+    localStorage.clear();
+    router.push('/')
 }
 </script>
 
