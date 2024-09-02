@@ -2,6 +2,7 @@ import Login from "../components/Login.vue";
 import HomeScreen from "../components/HomeScreen.vue";
 import Sidebar from "../components/Sidebar/Sidebar.vue";
 import Perfil from "../components/Perfil.vue";
+import Politica_privacidade from "../components/politica_privacidade.vue";
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
                 component: Perfil,
             },
         ]
+    },
+    {
+        path:'/politica_privacidade',
+        name:"politica_privacidade",
+        component:Politica_privacidade
     },
 ]
 
