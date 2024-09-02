@@ -19,6 +19,9 @@
               Entrar com o Facebook
             </button>
           </div>
+          <!-- <button class="btn btn-primary" @click="tap">
+            ModalTermsAndPolitics
+          </button> -->
         </form>
         <!-- <div class="mt-4 ml-16">
             <input type="checkbox" v-model="checkbox">
@@ -51,6 +54,10 @@
   const showModal = ref(false);
   const userIP=ref('')
   let token=localStorage.getItem('token')
+
+  const tap = () => {
+    router.push('/politica_privacidade')
+  }
 
   onMounted(()=>{
     ipGet();
