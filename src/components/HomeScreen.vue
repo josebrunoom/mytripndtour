@@ -845,9 +845,27 @@ input[type="radio"] {
     user-select: none;            /* Possível implementação no futuro */
     /* cursor: default; */
   }
-  .custom-checkbox {
-  border-color: #000000;
-  background-color: #ffffff;
+ 
+/* Reset de CSS para inputs de formulário */
+input[type="radio"],
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: initial;
+    border-style: none;
+    color: inherit;
+    box-sizing: border-box;
+    border: 2px solid #cccccc;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s ease;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+}
+input[type="radio"]{
+  border-radius: 50%;
 }
 
 
