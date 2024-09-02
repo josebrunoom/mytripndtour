@@ -21,12 +21,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+
 const vuetify = createVuetify({
     components,
     directives,
 })
 
-const CLIENT_ID = '45064562999-7unahamblqil0gid8uggtkjcr072ekuv.apps.googleusercontent.com'
+const CLIENT_ID = '667280034337-clqs1ehk1tuhtnb536d85gkngr5maq03.apps.googleusercontent.com'
 
 const app = createApp(App)
 app.use(vue3GoogleLogin, {
