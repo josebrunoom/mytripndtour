@@ -1,10 +1,10 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 import router from './routes'
 import './index.css'
 import vue3GoogleLogin from 'vue3-google-login'
@@ -20,6 +20,7 @@ import '@popperjs/core'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import '@mdi/font/css/materialdesignicons.css';
 
 
 const vuetify = createVuetify({
