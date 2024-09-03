@@ -613,7 +613,7 @@ const postRoteiro=async () =>{
     qtd_menores: numChildren.value ? numChildren.value : 0,
     idade_menores: childAges,
     interesses: selectedInteresses,
-    locais_interesse: lugar_Conhecer,
+    quero_conhecer: lugar_Conhecer,
     nao_incluir: lugar_nIr,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
