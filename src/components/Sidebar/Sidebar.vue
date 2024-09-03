@@ -77,7 +77,7 @@
       <v-card>
         <v-card-title class="headline">Selecionar Idioma</v-card-title>
         <v-card-text></v-card-text>
-            <select class="form-control " v-model="lenguage" @change="savelang">
+            <select class="form-control " v-model="language" @change="changeLanguage">
                 <option value="" disabled>Selecione o Idioma</option>
                 <option value="EN-US">Inglês</option>
                 <option value="PT-BR">Português</option>
@@ -114,10 +114,23 @@ const currentRouteName=ref(route.name)
 const img = ref('')
 const dialog=ref(false)
 const dialogSair=ref(false)
-const lenguage = ref('')
+const language = ref(localStorage.getItem('lang') || 'pt');
 
 const savelang = () => {
-    localStorage.setItem('lang', lenguage.value)
+    localStorage.setItem('lang', language.value);
+}
+
+const changeLanguage = () => {
+    savelang();
+    const langCodeMap = {
+        'EN-US': 'en',
+        'PT-BR': 'pt',
+        'ES': 'es'
+    };
+    if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+    document.cookie = `googtrans=/pt/${langCodeMap[language.value]}; path=/; domain=${document.domain}`;
+    location.reload();
+    }
 }
 onMounted(() => {
     name.value=user.Nome
@@ -152,6 +165,7 @@ const sairUser = () =>{
 * {
     font-family: 'Sora', sans-serif;
 }
+
     .img-Logo{
     width: 10rem;
     height: 10rem;
