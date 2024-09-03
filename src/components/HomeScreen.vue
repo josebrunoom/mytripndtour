@@ -401,6 +401,8 @@
   import Loading from './Loading.vue';
   import { marked } from 'marked';
   import html2pdf from 'html2pdf.js';
+  import Rating from 'primevue/rating';
+
 
   const date = ref();
   const numAdults = ref()
@@ -421,6 +423,7 @@
   const inChecked = ref([])
   const meio_transporte = ref()
   const hospedagemSelecionada=ref()
+  const starValue=ref()
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
@@ -613,7 +616,7 @@ const postRoteiro=async () =>{
     qtd_menores: numChildren.value ? numChildren.value : 0,
     idade_menores: childAges,
     interesses: selectedInteresses,
-    locais_interesse: lugar_Conhecer,
+    quero_conhecer: lugar_Conhecer,
     nao_incluir: lugar_nIr,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
