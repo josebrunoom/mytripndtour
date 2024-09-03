@@ -23,11 +23,9 @@
             ModalTermsAndPolitics
           </button> -->
         </form>
-        <!-- <div class="mt-4 ml-16">
-            <input type="checkbox" v-model="checkbox">
-            <span @click.prevent="openModal" class="cursor-pointer text-blue-500 mr-10 ml-2">Eu aceito os termos e condições</span>
-            </input>
-        </div> -->
+        <div class="mt-4">
+            <a href="https://mytripntour.com/politica_privacidade">Política de Privacidade</a>
+        </div>
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>
       <Loading :loading="isLoading" ></Loading>
