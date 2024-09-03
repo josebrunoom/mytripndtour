@@ -369,11 +369,33 @@
 
     <div class="row mb-4">
       <div class="col-12 roteiro-container bg-white">
+        
         <!-- Render each item after parsing with marked -->
          <div v-if="roteiroData.Roteiro!=null">
+          <div class="col-md-12 d-flex align-items-start">
+            <span class="fw-bold pl-4">
+                Como foi o roteiro gerado?
+            </span>
+          </div>
+          <div class="col-start-12 d-flex">
+            <div class="col-md-6 pb-2 pr-36">
+              <v-rating
+            v-model="starValue"
+            background-color="blue-grey lighten-2"
+            color="amber"
+            dense
+          ></v-rating>
+            </div>
+          </div>
+          <div class="col-start-12 d-flex">
+            <div class="pl-4 pb-6" v-show="starValue<=3 && starValue != null">
+              <textarea class="form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?"></textarea>
+            </div>
+            <button class="btn" @click="sendRating"> Enviar </button>
+          </div>
           <div  id="pdf-content" v-html="parseMarkdown(roteiroData.Roteiro.Roteiro)" class="roteiro-item"></div>
           <button class="btn" @click="downloadPdf"> baixar como pdf </button>
-         </div>
+          </div>
       </div>
     </div>
     <Loading :loading="isLoading"/>
@@ -401,7 +423,6 @@
   import Loading from './Loading.vue';
   import { marked } from 'marked';
   import html2pdf from 'html2pdf.js';
-  import Rating from 'primevue/rating';
 
 
   const date = ref();
@@ -423,7 +444,9 @@
   const inChecked = ref([])
   const meio_transporte = ref()
   const hospedagemSelecionada=ref()
-  const starValue=ref()
+  const starValue=ref(null)
+  const whyCardShow=ref(false)
+  const whyCardComentario=ref('')
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
@@ -440,35 +463,6 @@
   let opcaoGerar = 'Sim'
   let location;
   let lang = null;
-/*   {
-    email: "luisalbergoni717@gmail.com",
-    origem: "Guaxupé",
-    "destino": "Santos",
-    "dias": "5",
-    "data_inicio": "28/08/2024",
-    "qtd_adultos": 5,
-    "qtd_menores": 2,
-    "idade_menores": [
-        2,
-        2
-    ],
-    "interesses": [
-        "Ecoturismo"
-    ],
-    "locais_interesse": [
-        "",
-        "Praia dos Milionários"
-    ],
-    "lugar_nao_quer_conhecer": [
-        "",
-        "Praia do Gonzaguinha"
-    ],
-    "meio_transporte": "Veículos de Aluguel",
-    "tipo_hospedagem": "Alto luxo",
-    "desc_detalhada": "S",
-    "idioma": "PT-BR",
-    "ip_origem": "186.193.138.75"
-} */
 
   onMounted(() => {
   const initAutocomplete = (elementId, types) => {
@@ -644,6 +638,33 @@ const postRoteiro=async () =>{
     }
   }
   
+}
+
+const sendRating = async () =>{
+  try {
+    let ObjRoteiro1={
+    email:user.Email,
+    origem:Origem,
+    destino: Destinos,
+    dias:periodo_viagem,
+    data_inicio: transformDate(date.value),
+    qtd_adultos: numAdults.value,
+    qtd_menores: numChildren.value ? numChildren.value : 0,
+    idade_menores: childAges,
+    interesses: selectedInteresses,
+    quero_conhecer: lugar_Conhecer,
+    nao_incluir: lugar_nIr,
+    meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
+    tipo_hospedagem:hospedagemSelecionada.value,
+    idioma: lang ? lang : "PT-BR",
+    ip_origem: user.ip_origem,
+    txt_Roteiro:'reteste',
+    txt_comentario:whyCardComentario.value,
+  }
+    await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
+  } catch (error) {
+    console.log(error)
+  }
 }
 function parseMarkdown(text) {
   console.log('parseText ', text)
