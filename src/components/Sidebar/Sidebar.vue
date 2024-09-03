@@ -64,7 +64,23 @@
         <div class="w-full bg-[#faf8fd]"> 
             <div style="height:5% !important;" class=" bg-[#faf8fd]"> 
                 <div class="d-flex justify-content-end align-items-center mt-4 pr-16">
-                    <button class="fw-bold mr-4" @click="openDialog('lang')"><i class="fa-solid fa-globe"></i> Idioma</button>
+                    <div class="dropdown">
+                            <button class="dropdown-toggle fw-bold mr-4" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-globe"></i> {{ languageName }}</button>
+                            <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                <li v-for="(langName, langCode) in languages" :key="langCode">
+                                    <a class="dropdown-item" href="#" @click="changeLanguage(langCode, langName)">
+                                    {{ langName }}
+                                    </a>
+                                </li>
+                            </div>
+                    </div>
+                    <!-- <button class="fw-bold mr-4" @click="openDialog('lang')"><i class="fa-solid fa-globe"></i> Idioma</button>
+                    <div v-show="dialog">
+                        <select class="" v-model="language" @change="changeLanguage">
+                        <option value="" disabled>Selecione o Idioma</option>
+                        <option v-for="(langName, langCode) in languages" :key="langCode" :value="langCode">{{ langName }}</option>
+                        </select>
+                    </div> -->
                     <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img" alt="" />
                     <button class="fw-bold">{{ name }}</button>
                 </div>
@@ -73,22 +89,20 @@
                 <RouterView></RouterView>
             </div>
         </div>
-        <v-dialog v-model="dialog" max-width="500px">
+       <!--  <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Selecionar Idioma</v-card-title>
         <v-card-text></v-card-text>
-            <select class="form-control " v-model="language" @change="changeLanguage">
-                <option value="" disabled>Selecione o Idioma</option>
-                <option value="EN-US">Inglês</option>
-                <option value="PT-BR">Português</option>
-                <option value="ES">Espanhol</option>
-            </select>
+        <select class="form-control" v-model="language" @change="changeLanguage">
+            <option value="" disabled>Selecione o Idioma</option>
+            <option v-for="(langName, langCode) in languages" :key="langCode" :value="langCode">{{ langName }}</option>
+        </select>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="[#78c0d6]" text @click="dialog=false">OK</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
     <v-dialog v-model="dialogSair" max-width="500px">
       <v-card>
         <v-card-title class="headline">Atenção</v-card-title>
@@ -106,6 +120,7 @@
 import { ref, onMounted,watchEffect  } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import router from '../../routes';
+import languages from '../../data/lang';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
@@ -115,23 +130,25 @@ const img = ref('')
 const dialog=ref(false)
 const dialogSair=ref(false)
 const language = ref(localStorage.getItem('lang') || 'pt');
+const languageName = ref('Português');
 
-const savelang = () => {
-    localStorage.setItem('lang', language.value);
+
+const savelang = (langCode, langName) => {
+    localStorage.setItem('lang', langCode);
+    languageName.value=langName
 }
 
-const changeLanguage = () => {
-    savelang();
-    const langCodeMap = {
-        'EN-US': 'en',
-        'PT-BR': 'pt',
-        'ES': 'es'
-    };
-    if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-    document.cookie = `googtrans=/pt/${langCodeMap[language.value]}; path=/; domain=${document.domain}`;
+
+const changeLanguage = (langCode, langName) => {
+  // Save selected language
+  savelang(langCode, langName);
+
+  // Google Translate logic
+  if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${document.domain}`;
     location.reload();
-    }
-}
+  }
+};
 onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
@@ -169,5 +186,11 @@ const sairUser = () =>{
     .img-Logo{
     width: 10rem;
     height: 10rem;
+    }
+
+    .dropdown-menu-custom {
+        max-height: 200px; /* Adjust this value as needed */
+        overflow-y: auto;
+        width: 200px; /* Adjust this value as needed */
     }
 </style>
