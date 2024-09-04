@@ -14,15 +14,9 @@
                 ></i>
               </h2>
             </div>
-          <div class="d-flex align-items-center" v-if="showOrigem==false">
-            <button class="fw-bold mr-2 h1" @click="setOrigem">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</button>
-            <!-- <button class="bg-white rounded-full w-6" @click="setOrigem"><i class="fa-solid fa-pen-to-square"></i></button> -->
-          </div>
-          <div v-show="showOrigem==true">
             <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
-          </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
@@ -48,15 +42,9 @@
               </button> -->
               </div>
             </div>
-          <div class="d-flex align-items-center" v-if="showDestino==false">
-            <button class="fw-bold h1" @click="setDestino">Selecione o Destino</button>
-            <!-- <button class="bg-white rounded-full w-6" @click="setDestino"><i class="fa-solid fa-pen-to-square"></i></button> -->
-          </div>
-          <div v-show="showDestino==true">
             <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
-          </div>
           <div class="selected-placesDestino">
             <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
               <span class=" text-black" style="font-size: 0.8rem;">
@@ -363,7 +351,9 @@
         >
           Limpar Tudo
         </button>
-        
+        <div v-if="roteiroData.Roteiro!=null">
+          <button class="btn" @click="downloadPdf"> baixar como pdf </button>
+        </div>
       </div>
     </div>
 
@@ -372,6 +362,9 @@
         
         <!-- Render each item after parsing with marked -->
          <div v-if="roteiroData.Roteiro!=null">
+          
+          <div  id="pdf-content" v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
+          
           <div class="col-md-12 d-flex align-items-start">
             <span class="fw-bold pl-4">
                 Como foi o roteiro gerado?
@@ -393,8 +386,6 @@
             </div>
             <button class="btn" @click="sendRating"> Enviar </button>
           </div>
-          <div  id="pdf-content" v-html="parseMarkdown(roteiroData.Roteiro.Roteiro)" class="roteiro-item"></div>
-          <button class="btn" @click="downloadPdf"> baixar como pdf </button>
           </div>
       </div>
     </div>
@@ -402,7 +393,7 @@
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Atenção</v-card-title>
-        <v-card-text>Os campos: origem, destino, quantidade de dias, data de inicio e quantidade de adultos são obrigatórios!</v-card-text>
+        <v-card-text>O campo: {{ errMsg }} é obrigatório!</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="[#78c0d6]" text @click="dialog=false">OK</v-btn>
@@ -447,6 +438,7 @@
   const starValue=ref(null)
   const whyCardShow=ref(false)
   const whyCardComentario=ref('')
+  const errMsg=ref('')
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
@@ -591,13 +583,21 @@ const formatChildren = () => {
         return `${formattedStartDate} a ${formattedEndDate}`;
       }
       function transformDate(initialDateStr) {
-        const initialDate = moment(initialDateStr);
-        const formattedStartDate = initialDate.format('DD/MM/YYYY');
-        console.log(formattedStartDate)
-        return `${formattedStartDate}`;
+        if(!initialDateStr){
+          dialog.value = true;
+          isLoading.value = false; 
+          errMsg.value='Data de início'
+        } else {
+          const initialDate = moment(initialDateStr);
+          const formattedStartDate = initialDate.format('DD/MM/YYYY');
+          console.log(formattedStartDate)
+          return `${formattedStartDate}`;
+        }
       }
 
 const postRoteiro=async () =>{
+  starValue.value=null;
+  whyCardComentario.value='';
   lang = localStorage.getItem('lang')
   isLoading.value=true
   let ObjRoteiro1={
@@ -618,12 +618,33 @@ const postRoteiro=async () =>{
     idioma: lang ? lang : "PT-BR",
     ip_origem: user.ip_origem
   }
+  console.log(date.value)
   
   console.log(ObjRoteiro1)
-  if(!ObjRoteiro1.origem || !ObjRoteiro1.destino || !ObjRoteiro1.dias || !ObjRoteiro1.data_inicio || !ObjRoteiro1.qtd_adultos){
+/*   if(!ObjRoteiro1.origem || !ObjRoteiro1.destino || !ObjRoteiro1.dias || !ObjRoteiro1.data_inicio || !ObjRoteiro1.qtd_adultos){
     dialog.value = true;
     isLoading.value = false; 
+  }else */ if(!ObjRoteiro1.origem){
+    dialog.value = true;
+    isLoading.value = false; 
+    errMsg.value='Ponto de Origem'
   }
+  else if(!ObjRoteiro1.destino){
+    dialog.value = true;
+    isLoading.value = false;
+    errMsg.value='Destino' 
+  }
+  else if(!ObjRoteiro1.dias){
+    dialog.value = true;
+    isLoading.value = false; 
+    errMsg.value='Quantidade de dias'
+  }
+  else if(!ObjRoteiro1.qtd_adultos){
+    dialog.value = true;
+    isLoading.value = false; 
+    errMsg.value='Adultos'
+  }
+
   else{
     try {
       const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
@@ -658,7 +679,8 @@ const sendRating = async () =>{
     tipo_hospedagem:hospedagemSelecionada.value,
     idioma: lang ? lang : "PT-BR",
     ip_origem: user.ip_origem,
-    txt_Roteiro:'reteste',
+    txt_Roteiro:roteiroData.Roteiro.Roteiro,
+    qtd_estrelas:starValue.value,
     txt_comentario:whyCardComentario.value,
   }
     await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
