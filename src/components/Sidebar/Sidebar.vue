@@ -68,7 +68,7 @@
                             <button class="dropdown-toggle fw-bold mr-4" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-globe"></i> {{ languageName }}</button>
                             <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
                                 <li v-for="(langName, langCode) in languages" :key="langCode">
-                                    <a class="dropdown-item" href="#" @click="changeLanguage(langCode, langName)">
+                                    <a class="dropdown-item" href="#" @click.prevent="changeLanguage(langCode, langName)">
                                     {{ langName }}
                                     </a>
                                 </li>
@@ -130,24 +130,28 @@ const img = ref('')
 const dialog=ref(false)
 const dialogSair=ref(false)
 const language = ref(localStorage.getItem('lang') || 'pt');
-const languageName = ref('Português');
+const languageName = ref(localStorage.getItem('langName') || 'Português');
 
 
 const savelang = (langCode, langName) => {
+    console.log('read')
     localStorage.setItem('lang', langCode);
+    localStorage.setItem('langName', langName);
     languageName.value=langName
+    console.log(languageName.value)
 }
 
 
 const changeLanguage = (langCode, langName) => {
+    console.log('readvaad')
   // Save selected language
   savelang(langCode, langName);
 
   // Google Translate logic
-  if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${document.domain}`;
+  document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${document.domain}`;
+    
+    // Reload the page to apply the language change
     location.reload();
-  }
 };
 onMounted(() => {
     name.value=user.Nome
