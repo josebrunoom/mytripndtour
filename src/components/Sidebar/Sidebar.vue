@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen w-screen flex fixed left-0 top-0">
+    <div class="h-screen w-screen flex fixed left-0">
         <div class="w-full hidden sm:block md:w-[500px] lg:w-[300px] h-full mt-4 ml-4">
             <div class="h-[calc(100vh-50px)] bg-[#ffff] rounded-lg">
                 <div class="flex justify-center mb-4 top-0">
@@ -143,7 +143,7 @@ const savelang = (langCode, langName) => {
 
 
 const changeLanguage = (langCode, langName) => {
-    console.log('readvaad')
+
   // Save selected language
   savelang(langCode, langName);
 

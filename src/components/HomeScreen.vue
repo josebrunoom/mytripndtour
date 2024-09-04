@@ -4,7 +4,7 @@
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
           <div class="d-flex align-items-center justify-content-between">
-              <h2 class="h5 fw-bold mb-4 text-left">
+              <h2 class="h5 fw-bold text-left">
                 Cidade de Origem
                 <i 
                   class="bi bi-question-circle-fill"
@@ -346,14 +346,14 @@
         </button>
         <button 
           type="button" 
-          class="btn btn-danger"
+          class="btn btn-warning me-2 "
           @click="resetData"
         >
           Limpar Tudo
         </button>
-        <div v-if="roteiroData.Roteiro!=null">
-          <button class="btn" @click="downloadPdf"> baixar como pdf </button>
-        </div>
+      
+          <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
+        
       </div>
     </div>
 
@@ -381,8 +381,8 @@
             </div>
           </div>
           <div class="col-start-12 d-flex">
-            <div class="pl-4 pb-6" v-show="starValue<=3 && starValue != null">
-              <textarea class="form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?"></textarea>
+            <div class="pl-4 pb-6" style="width:100%" v-show="starValue<=3 && starValue != null">
+              <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?"></textarea>
             </div>
             <button class="btn" @click="sendRating"> Enviar </button>
           </div>
@@ -457,6 +457,8 @@
   let lang = null;
 
   onMounted(() => {
+
+    
   const initAutocomplete = (elementId, types) => {
     const input = document.getElementById(elementId);
     const autocomplete = new google.maps.places.Autocomplete(input, { types });
@@ -506,6 +508,9 @@
   initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
   initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
+  
+  document.getElementById("autocompleteO").focus();
+
 });
 
   onUpdated(()=> {
@@ -661,6 +666,11 @@ const postRoteiro=async () =>{
   
 }
 
+var iframe = document.querySelector('iframe.skiptranslate');
+    if (iframe) {
+        iframe.style.display = 'none';
+    }
+
 const sendRating = async () =>{
   try {
     let ObjRoteiro1={
@@ -684,6 +694,9 @@ const sendRating = async () =>{
     txt_comentario:whyCardComentario.value,
   }
     await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
+
+    alert("Avaliação enviada com sucesso!");
+
   } catch (error) {
     console.log(error)
   }
@@ -761,6 +774,7 @@ const customFormat = (date) => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
 
+
 * {
   font-family: 'Sora', sans-serif;
 }
@@ -778,7 +792,7 @@ const customFormat = (date) => {
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-top: 0.5rem;
+  
   width: 100%;
   z-index: 10;
   position: absolute;
@@ -921,7 +935,26 @@ input[type="radio"]:checked{
   background-color: black;
     border-color:black
 }
+iframe.skiptranslate {
+    display: none;
+    visibility: hidden;
+}
+div#google_translate_element {
+    display: none;
+}
+html{
+  background-color: #fdf8fd;
+}
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+}
 
-
+body {
+    top: 0px !important;
+}
+#autocompleteQ, #autocompleteN{
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}
 </style>
   

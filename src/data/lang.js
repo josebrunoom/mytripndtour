@@ -1,4 +1,7 @@
 const languages = {
+    "pt": "Português",
+    "en": "Inglês",
+    "es": "Espanhol",
     "af": "Africâner",
     "sq": "Albanês",
     "am": "Amárico",
@@ -20,7 +23,7 @@ const languages = {
     "cs": "Checo",
     "da": "Dinamarquês",
     "nl": "Holandês",
-    "en": "Inglês",
+    
     "eo": "Esperanto",
     "et": "Estoniano",
     "tl": "Filipino",
@@ -73,7 +76,7 @@ const languages = {
     "ps": "Pashto",
     "fa": "Persa",
     "pl": "Polonês",
-    "pt": "Português",
+    
     "pa": "Punjabi",
     "ro": "Romeno",
     "ru": "Russo",
@@ -87,7 +90,7 @@ const languages = {
     "sk": "Eslovaco",
     "sl": "Esloveno",
     "so": "Somali",
-    "es": "Espanhol",
+    
     "su": "Sundanes",
     "sw": "Suaíli",
     "sv": "Sueco",

@@ -3,6 +3,7 @@ import HomeScreen from "../components/HomeScreen.vue";
 import Sidebar from "../components/Sidebar/Sidebar.vue";
 import Perfil from "../components/Perfil.vue";
 import Politica_privacidade from "../components/politica_privacidade.vue";
+import HelloWorld from "../components/HelloWorld.vue";
 
 const routes = [
     {
@@ -18,6 +19,11 @@ const routes = [
                 path: "home",
                 name: "home",
                 component: HomeScreen,
+            },
+            {
+                path: "hello",
+                name: "hello",
+                component: HelloWorld,
             },
             {
                 path: "perfil",
