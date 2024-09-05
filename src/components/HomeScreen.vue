@@ -4,7 +4,7 @@
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
           <div class="d-flex align-items-center justify-content-between">
-              <h2 class="h5 fw-bold text-left">
+              <h2 class="h3 fw-bold text-left">
                 Cidade de Origem
                 <i 
                   class="bi bi-question-circle-fill"
@@ -14,7 +14,7 @@
                 ></i>
               </h2>
             </div>
-            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location1" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
         </div>
@@ -22,7 +22,7 @@
       <div class="col-12 col-md-6">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
-              <h2 class="h5 fw-bold  text-left">
+              <h2 class="h3 fw-bold  text-left">
                 Destino(s)
                 <i 
                   class="bi bi-question-circle-fill"
@@ -42,7 +42,7 @@
               </button> -->
               </div>
             </div>
-            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect(autocompleteD)" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
           <div class="selected-placesDestino">
@@ -273,7 +273,7 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
+          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
@@ -305,7 +305,7 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
+          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
@@ -371,20 +371,22 @@
             </span>
           </div>
           <div class="col-start-12 d-flex">
-            <div class="col-md-6 pb-2 pr-36">
+            <div class="col-md-12 pb-2 pr-36">
               <v-rating
-            v-model="starValue"
-            background-color="blue-grey lighten-2"
-            color="amber"
-            dense
-          ></v-rating>
+                v-model="starValue"
+                background-color="blue-grey lighten-2"
+                color="amber"
+                dense
+                style="float: left;"
+              ></v-rating>
+              <button class="btn btn-secondary" @click="sendRating"> Enviar </button>
             </div>
           </div>
           <div class="col-start-12 d-flex">
             <div class="pl-4 pb-6" style="width:100%" v-show="starValue<=3 && starValue != null">
               <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?"></textarea>
             </div>
-            <button class="btn" @click="sendRating"> Enviar </button>
+            
           </div>
           </div>
       </div>
@@ -453,7 +455,10 @@
   let lugar_Conhecer=[]
   let roteiroData = {Roteiro:null,}
   let opcaoGerar = 'Sim'
-  let location;
+  let location1;
+  let location2;
+  let location3;
+  let location4;
   let lang = null;
 
   onMounted(() => {
@@ -463,12 +468,12 @@
     const input = document.getElementById(elementId);
     const autocomplete = new google.maps.places.Autocomplete(input, { types });
 
-    console.log(input);
-
     autocomplete.addListener('place_changed', () => {
+
       const place = autocomplete.getPlace();
       console.log(place.name); // Handle the place name as needed
-   
+      console.log(place)
+
       if(elementId=='autocompleteQ'){
         if(lugaresConhecerFullNames.value.length+1>5){
           alert('O número máximo de lugares é 5')
@@ -488,23 +493,24 @@
         }
       }
       if(elementId=='autocompleteO'){
+        console.log("a");
         Origem=place.name
         OrigemCity.value=place.name
         showOrigem.value=false
       }
       if(elementId=='autocompleteD'){
-       
+        console.log("b");
         if(lugaresDestinosFullNames.value.length+1>5){
           showDestino.value=false;
           alert('O número máximo de lugares é 5')
       
         }else{
-          
+          console.log("c");
           Destinos.push(place.name)
           DestinoCity.value=place.name
-          lugaresDestinosFullNames.value.push(document.getElementById('autocompleteD').value)
+          lugaresDestinosFullNames.value.push(place.name)
           showDestino.value=false
-          console.log(Destinos, lugaresDestinosFullNames.value)
+          
         }
       }
     });
@@ -626,7 +632,7 @@ const postRoteiro=async () =>{
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
     desc_detalhada:opcaoGerar=='Sim' ? 'S' : opcaoGerar=='Não' ? 'N' : 'S',
-    idioma: lang ? lang : "PT-BR",
+    idioma: lang ? lang : "pt",
     ip_origem: user.ip_origem
   }
   console.log(date.value)
@@ -703,7 +709,8 @@ const sendRating = async () =>{
     txt_comentario:whyCardComentario.value,
   }
    // await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
-    const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
+    const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
+   
     console.log(response.data);
     alert("Obrigado por nos informar. Já estamos trabalhar para melhorar!!!");
 
@@ -740,8 +747,16 @@ const customFormat = (date) => {
       }
     }
 
-    const handleSelect = (field) =>{
-      field.value='';
+    function handleSelect2(){
+      location2 = '';
+      
+    }
+    function handleSelect3(){
+      location3 = '';
+      
+    }
+    function handleSelect4(){
+      location4 = '';
       
     }
     const resetData = () => {
@@ -786,7 +801,7 @@ const customFormat = (date) => {
       const element = document.getElementById('pdf-content'); 
       const opt = {
         margin:       1,
-        filename:     'content.pdf',
+        filename:     'MyTripNTour_Roteiro.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
