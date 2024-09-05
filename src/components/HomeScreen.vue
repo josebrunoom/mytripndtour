@@ -14,7 +14,7 @@
                 ></i>
               </h2>
             </div>
-            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
         </div>
@@ -42,7 +42,7 @@
               </button> -->
               </div>
             </div>
-            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location" @change="handleSelect(autocompleteD)" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
           <div class="selected-placesDestino">
@@ -319,7 +319,7 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 d-flex justify-content-start">
+      <div style="display: none !important" class="col-12 d-flex justify-content-start">
         <div class="fw-bold mb-2 pl-2">Gerar com detalhes descritivos dos locais sugeridos? </div>
         <div 
             class="d-inline-flex align-items-center mb-2"
@@ -463,9 +463,12 @@
     const input = document.getElementById(elementId);
     const autocomplete = new google.maps.places.Autocomplete(input, { types });
 
+    console.log(input);
+
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
       console.log(place.name); // Handle the place name as needed
+   
       if(elementId=='autocompleteQ'){
         if(lugaresConhecerFullNames.value.length+1>5){
           alert('O número máximo de lugares é 5')
@@ -490,10 +493,13 @@
         showOrigem.value=false
       }
       if(elementId=='autocompleteD'){
+       
         if(lugaresDestinosFullNames.value.length+1>5){
           showDestino.value=false;
           alert('O número máximo de lugares é 5')
+      
         }else{
+          
           Destinos.push(place.name)
           DestinoCity.value=place.name
           lugaresDestinosFullNames.value.push(document.getElementById('autocompleteD').value)
@@ -629,7 +635,8 @@ const postRoteiro=async () =>{
 /*   if(!ObjRoteiro1.origem || !ObjRoteiro1.destino || !ObjRoteiro1.dias || !ObjRoteiro1.data_inicio || !ObjRoteiro1.qtd_adultos){
     dialog.value = true;
     isLoading.value = false; 
-  }else */ if(!ObjRoteiro1.origem){
+  }else */ 
+  if(!ObjRoteiro1.origem){
     dialog.value = true;
     isLoading.value = false; 
     errMsg.value='Ponto de Origem'
@@ -656,6 +663,8 @@ const postRoteiro=async () =>{
       console.log(response.data)
       localStorage.setItem('roteiro', JSON.stringify(response.data));
       roteiroData.Roteiro=response.data
+      console.log(ObjRoteiro1.origem);
+      document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
     } catch (error) {
       alert('Erro ao Gerar Roteiro')
     }
@@ -693,9 +702,10 @@ const sendRating = async () =>{
     qtd_estrelas:starValue.value,
     txt_comentario:whyCardComentario.value,
   }
-    await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
-
-    alert("Avaliação enviada com sucesso!");
+   // await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
+    const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
+    console.log(response.data);
+    alert("Obrigado por nos informar. Já estamos trabalhar para melhorar!!!");
 
   } catch (error) {
     console.log(error)
@@ -719,7 +729,8 @@ const customFormat = (date) => {
     const removePlaceDestino = (index) => {
       Destinos.splice(index, 1);
       lugaresDestinosFullNames.value.splice(index, 1)
-      console.log(Destinos, lugaresDestinosFullNames.value)
+      console.log(Destinos)
+      console.log(lugaresDestinosFullNames.value)
     };
     const pushInteresses = (event, interest) =>{
       if(event.target.checked){
@@ -729,9 +740,9 @@ const customFormat = (date) => {
       }
     }
 
-    const handleSelect = () =>{
-      console.log('handlesele')
-      location='';
+    const handleSelect = (field) =>{
+      field.value='';
+      
     }
     const resetData = () => {
       // Reset form fields and variables
@@ -746,9 +757,21 @@ const customFormat = (date) => {
       lugaresConhecerFullNames.value = [];
       lugaresNaoIrFullNames.value = [];
       lugaresDestinosFullNames.value = [];
+      while(lugaresDestinosFullNames.length) {
+        lugaresDestinosFullNames.pop();
+      }
+      while(Destinos.length) {
+        Destinos.pop();
+      }
+      console.log(Destinos)
+      console.log(lugaresDestinosFullNames.value)
+      while(lugaresConhecerFullNames.length) {
+        lugaresConhecerFullNames.pop();
+      }
       inChecked.value=[]
       location = '';
       periodo_viagem = null;
+      date.value = null;
       meio_transporte.value = null;
       hospedagemSelecionada.value = null;
       roteiroData = { Roteiro: null };
