@@ -14,7 +14,7 @@
                 ></i>
               </h2>
             </div>
-            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="location1" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
         </div>
@@ -93,6 +93,7 @@
               cancel-text="Fechar"
               select-text="Selecionar"
               :format="customFormat"
+              auto-apply
               :min-date="new Date()"
             ></VueDatePicker>
           </div>
@@ -115,7 +116,7 @@
         <div class="row">
           <div class="col-4 mt-2 text-start fw-bold">Adultos:</div>
           <div class="col-4 mt-2 text-start fw-bold">Menores:</div>
-          <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
+          <!-- <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
               :disabled="currentIndex === 0" 
@@ -131,7 +132,8 @@
             >
             <i class="fa-solid fa-arrow-right"></i>
             </button>
-          </div>
+          </div> -->
+
         </div>
         <div class="row align-items-center">
           <div class="col-12 col-md-4 mt-2">
@@ -151,9 +153,28 @@
               v-model="numChildren"
               @input="formatChildren"
               min="0"
+              max="6"
             />
           </div>
-          <div v-if="numChildren > 0" class="col-12 col-md-4 mt-2">
+          <div class="col-4 mt-2 text-center fw-bold">
+            <div class="d-flex flex-wrap">
+              <div 
+                v-for="(age, index) in numChildren" 
+                :key="index" 
+                class="col-6 mb-2"
+              >
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  :placeholder="`Idade ${index + 1}`" 
+                  v-model.number="childAges[index]"
+                  min="0"
+                  max="17"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- <div v-if="numChildren > 0" class="col-12 col-md-4 mt-2">
               <input 
                 type="number" 
                 class="form-control" 
@@ -161,7 +182,7 @@
                 v-model.number="childAges[currentIndex]"
                 min="0"
               />
-          </div>
+          </div> -->
         </div>
       </div>
       </div>
@@ -347,7 +368,7 @@
         <button 
           type="button" 
           class="btn btn-warning me-2 "
-          @click="resetData"
+          @click="dialogLimpar=true"
         >
           Limpar Tudo
         </button>
@@ -402,6 +423,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogLimpar" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>Deseja mesmo limpar tudo?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="resetData">Sim</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -438,7 +469,7 @@
   const meio_transporte = ref()
   const hospedagemSelecionada=ref()
   const starValue=ref(null)
-  const whyCardShow=ref(false)
+  const dialogLimpar=ref(false)
   const whyCardComentario=ref('')
   const errMsg=ref('')
   const user=JSON.parse(localStorage.getItem('user'));
@@ -708,12 +739,17 @@ const sendRating = async () =>{
     qtd_estrelas:starValue.value,
     txt_comentario:whyCardComentario.value,
   }
-   // await axios.post('https://mtt-stars-667280034337.us-central1.run.app', ObjRoteiro1)
+  if(!starValue.value){
+    alert('Preencha a avaliação primeiro')
+  }else if(starValue.value<=3 && !whyCardComentario.value){
+    alert('Você deve preencher as razões')
+  }else if(whyCardComentario.value.length<=35){
+    alert('Motivo deve ser maior do que 35 caracteres')
+  }else{
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
-   
     console.log(response.data);
     alert("Obrigado por nos informar. Já estamos trabalhar para melhorar!!!");
-
+  }
   } catch (error) {
     console.log(error)
   }
@@ -761,6 +797,7 @@ const customFormat = (date) => {
     }
     const resetData = () => {
       // Reset form fields and variables
+      dialogLimpar.value=false
       numAdults.value = 0;
       numChildren.value = 0;
       childAges = [];
@@ -808,6 +845,10 @@ const customFormat = (date) => {
       };
       html2pdf().from(element).set(opt).save();
     }
+
+  const handleDate = (newDate) => {
+    date.value = newDate
+  }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
@@ -993,6 +1034,16 @@ body {
 #autocompleteQ, #autocompleteN{
   border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
+}
+.child-age {
+  width: 4rem; /* Adjust width as necessary */
+  flex: 0 0 auto; 
+}
+.child-container {
+  display: flex;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  white-space: nowrap; /* Prevent wrapping */
+  gap: 10px; /* Optional: Add space between inputs */
 }
 </style>
   
