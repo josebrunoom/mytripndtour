@@ -7,7 +7,7 @@
               <h2 class="h3 fw-bold text-left">
                 Cidade de Origem
                 <i 
-                  class="bi bi-question-circle-fill"
+                  class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
                   title="tooltip 1"
@@ -25,7 +25,7 @@
               <h2 class="h3 fw-bold  text-left">
                 Destino(s)
                 <i 
-                  class="bi bi-question-circle-fill"
+                  class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
                   title="tooltip 1"
@@ -42,7 +42,7 @@
               </button> -->
               </div>
             </div>
-            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputDestino" @keydown.enter.prevent id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
           <div class="selected-placesDestino">
@@ -212,7 +212,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <!-- <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Quero Viajar de </h2>
@@ -223,13 +223,6 @@
                   title="tooltip 1"
                 ></i>
           </div>
-          <!-- <select class="w-100 form-select" id="select-transporte">
-            <option value=""></option>
-            <option value="Carro">Carro</option>
-            <option value="Ônibus">Ônibus</option>
-            <option value="Moto">Moto</option>
-            <option value="Avião">Avião</option>
-          </select> -->
           <div 
             v-for="(modo, index) in transporteOptions" 
             :key="index" 
@@ -241,7 +234,7 @@
             </label>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="col-12 col-md-4">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
@@ -846,8 +839,11 @@ const customFormat = (date) => {
       html2pdf().from(element).set(opt).save();
     }
 
-  const handleDate = (newDate) => {
-    date.value = newDate
+  const preventEnter = (event) => {
+    if (event.key === "Enter") {
+      console.log('enter')
+        event.preventDefault(); // Prevent the default action (submitting, etc.)
+      }
   }
 </script>
 <style scoped>
