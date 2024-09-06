@@ -42,7 +42,7 @@
               </button> -->
               </div>
             </div>
-            <input ref="inputDestino" @keydown.enter.prevent id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
           <div class="selected-placesDestino">
@@ -70,20 +70,20 @@
                 ></i>
           </div>
         <div class="row">
-          <div class="col-6 mt-2 text-start fw-bold">Quantidade de dias:</div>
-          <div class="col-6 mt-2 text-start fw-bold">Data de início:</div>
-        </div>
-        <div class="row align-items-center">
-          <div class="col-12 col-md-6 mt-2">
+          <div class="col-12 col-md-2 mt-2">
             <input 
               type="number" 
               class="form-control" 
               placeholder="0" 
               v-model="periodo_viagem"
               min="0"
+              @change="transformDates(date,periodo_viagem)"
             />
           </div>
-          <div class="col-12 col-md-6 mt-2">
+          <div class="col-6 mt-3 text-start fw-bold">Dias</div>
+        </div>
+        <div class=" align-items-center d-flex">
+          <div class="col-12 col-md-3 mt-2">
             <VueDatePicker 
               v-model="date"
               locale="pt-BR"
@@ -95,7 +95,16 @@
               :format="customFormat"
               auto-apply
               :min-date="new Date()"
+              @date-update="transformDates(date,periodo_viagem)"
             ></VueDatePicker>
+          </div>
+          <div v-if="date && periodo_viagem" class="pt-2 px-3">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+          <div v-if="date && periodo_viagem" class="pt-2 ">
+            <span class="fw-bold">
+              {{ FinalDate }}
+            </span>
           </div>
         </div>
       </div>
@@ -114,8 +123,28 @@
                 ></i>
           </div>
         <div class="row">
-          <div class="col-4 mt-2 text-start fw-bold">Adultos:</div>
-          <div class="col-4 mt-2 text-start fw-bold">Menores:</div>
+          <div class="col-md-2 mt-2">
+            <input 
+              type="number" 
+              class="form-control" 
+              placeholder="0" 
+              v-model.number="numAdults"
+              min="0"
+            />
+          </div>
+          <div class="col-2 mt-3 text-start fw-bold">Adultos</div>
+          <div class="col-md-2 mt-2">
+            <input 
+              type="number" 
+              class="form-control" 
+              placeholder="0"  
+              v-model="numChildren"
+              @input="formatChildren"
+              min="0"
+              max="5"
+            />
+          </div>
+          <div class="col-4 mt-3 text-start fw-bold">Menores</div>
           <!-- <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
@@ -136,28 +165,8 @@
 
         </div>
         <div class="row align-items-center">
-          <div class="col-12 col-md-4 mt-2">
-            <input 
-              type="number" 
-              class="form-control" 
-              placeholder="0" 
-              v-model.number="numAdults"
-              min="0"
-            />
-          </div>
-          <div class="col-12 col-md-4 mt-2">
-            <input 
-              type="number" 
-              class="form-control" 
-              placeholder="0"  
-              v-model="numChildren"
-              @input="formatChildren"
-              min="0"
-              max="6"
-            />
-          </div>
-          <div class="col-4 mt-2 text-center fw-bold">
-            <div class="d-flex flex-wrap">
+          <div class="col-3 mt-2 text-center fw-bold">
+            <div class="d-flex space-x-4">
               <div 
                 v-for="(age, index) in numChildren" 
                 :key="index" 
@@ -188,8 +197,8 @@
       </div>
     </div>
 
-    <div class="row mb-4">
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+    <div class="row mb-4 col-12">
+      <div class="col-12 col-md-3 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
             <h2 class="h5 fw-bold mb-2">Tipo de Hospedagem</h2>
@@ -235,7 +244,7 @@
           </div>
         </div>
       </div> -->
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-3">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Lista de Interesses</h2>
@@ -262,11 +271,7 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
-      
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-md-3 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
@@ -298,7 +303,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-md-3 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Não precisa incluir</h2>
@@ -330,6 +335,12 @@
           </div>
         </div>
       </div>
+      
+    </div>
+
+    <div class="row mb-4">
+
+
     </div>
 
     <div class="row mb-4">
@@ -442,7 +453,7 @@
   import html2pdf from 'html2pdf.js';
 
 
-  const date = ref();
+  const date = ref(new Date());
   const numAdults = ref()
   const numChildren = ref();
   //const childAges = ref([]);
@@ -465,6 +476,8 @@
   const dialogLimpar=ref(false)
   const whyCardComentario=ref('')
   const errMsg=ref('')
+  const FinalDate=ref(null);
+  const periodo_viagem=ref(null);
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
@@ -474,7 +487,6 @@
   let lugares=['Alto luxo','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3 estrelas)']
   let Destinos=[]
   let Origem
-  let periodo_viagem
   let lugar_nIr=[]
   let lugar_Conhecer=[]
   let roteiroData = {Roteiro:null,}
@@ -484,6 +496,11 @@
   let location3;
   let location4;
   let lang = null;
+
+  watch(date, (newValue) => {
+    transformDates(newValue, periodo_viagem.value)
+  console.log('Date updated:', newValue);
+});
 
   onMounted(() => {
 
@@ -495,6 +512,10 @@
     autocomplete.addListener('place_changed', () => {
 
       const place = autocomplete.getPlace();
+      if (!place.geometry) {
+      console.log('No details available for input: ' + input.value);
+      return;
+    }
       console.log(place.name); // Handle the place name as needed
       console.log(place)
 
@@ -527,14 +548,12 @@
         if(lugaresDestinosFullNames.value.length+1>5){
           showDestino.value=false;
           alert('O número máximo de lugares é 5')
-      
         }else{
           console.log("c");
           Destinos.push(place.name)
           DestinoCity.value=place.name
           lugaresDestinosFullNames.value.push(place.name)
           showDestino.value=false
-          
         }
       }
     });
@@ -617,11 +636,16 @@ const formatChildren = () => {
 
 
       function transformDates(initialDateStr, numberOfDays) {
-        const initialDate = moment(initialDateStr);
-        const formattedStartDate = initialDate.format('YYYY-MM-DD');
-        const endDate = initialDate.clone().add(numberOfDays, 'days');
-        const formattedEndDate = endDate.format('YYYY-MM-DD');
-        return `${formattedStartDate} a ${formattedEndDate}`;
+        if(date&&periodo_viagem){
+          console.log('initdate',initialDateStr, 'numdays', numberOfDays)
+          const initialDate = moment(date.value);
+          console.log(initialDate)
+          const endDate = initialDate.clone().add(periodo_viagem.value, 'days');
+          console.log(endDate)
+          const formattedEndDate = endDate.format('DD/MM/YYYY');
+          FinalDate.value= `${formattedEndDate}`;
+          console.log(FinalDate.value)
+        }
       }
       function transformDate(initialDateStr) {
         if(!initialDateStr){
@@ -645,7 +669,7 @@ const postRoteiro=async () =>{
     email:user.Email,
     origem:Origem,
     destino: Destinos,
-    dias:periodo_viagem,
+    dias:periodo_viagem.value,
     data_inicio: transformDate(date.value),
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
@@ -716,7 +740,7 @@ const sendRating = async () =>{
     email:user.Email,
     origem:Origem,
     destino: Destinos,
-    dias:periodo_viagem,
+    dias:periodo_viagem.value,
     data_inicio: transformDate(date.value),
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
@@ -815,7 +839,7 @@ const customFormat = (date) => {
       }
       inChecked.value=[]
       location = '';
-      periodo_viagem = null;
+      periodo_viagem.value = null;
       date.value = null;
       meio_transporte.value = null;
       hospedagemSelecionada.value = null;
@@ -839,12 +863,9 @@ const customFormat = (date) => {
       html2pdf().from(element).set(opt).save();
     }
 
-  const preventEnter = (event) => {
-    if (event.key === "Enter") {
-      console.log('enter')
-        event.preventDefault(); // Prevent the default action (submitting, etc.)
-      }
-  }
+    const handleDate=()=>{
+
+    }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
