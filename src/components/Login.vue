@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center items-center min-h-screen">
-      <div class="w-full max-w p-8 space-y-8 bg-white rounded-lg shadow-md">
+      <div class=" max-w p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div class="flex justify-center mb-4">
           <img src="../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-01.jpg" alt="Logo" class="img-Logo" />
         </div>
