@@ -105,7 +105,7 @@
               @date-update="transformDates(date,periodo_viagem)"
             ></VueDatePicker>
           </div>
-          <div class="col-3 pt-3 fw-bold">Data de Inicio</div>
+          <div class="col-3 pt-3 fw-bold">Inicio</div>
           <div v-if="date && periodo_viagem" class="col-1 pt-3 px-3">
             <i class="fa-solid fa-arrow-right"></i>
           </div>
@@ -521,7 +521,7 @@
   let opc=['Sim','Não']
   let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão']
   let selectedInteresses=[]
-  let lugares=['Alto luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)']
+  let lugares=['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)']
   let Destinos=[]
   let Origem
   let lugar_nIr=[]
