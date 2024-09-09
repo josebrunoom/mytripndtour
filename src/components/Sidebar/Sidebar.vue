@@ -148,7 +148,7 @@ const changeLanguage = (langCode, langName) => {
   savelang(langCode, langName);
 
   // Google Translate logic
-  document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${document.domain}`;
+  document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
     
     // Reload the page to apply the language change
     location.reload();
