@@ -14,7 +14,10 @@
                 ></i>
               </h2>
             </div>
-            <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;">
+            <button v-show="!showOrigem" class="fw-bold float-start h1" @click="setOrigem">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</button>
+              <div v-show="showOrigem">
+                <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;">
+              </div>
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
         </div>
@@ -42,7 +45,12 @@
               </button> -->
               </div>
             </div>
-            <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+            <div v-if="!showDestino" class="d-flex justify-content-start">
+              <button  class="fw-bold h1 fontDestino" @click="setDestino">Selecione o Destino</button>
+            </div>
+              <div v-show="showDestino">
+                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+              </div>
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
           <div class="selected-placesDestino">
@@ -69,21 +77,20 @@
                   title="tooltip 1"
                 ></i>
           </div>
-        <div class="row">
-          <div class="col-12 col-md-2 mt-2">
+        <div class="row col-12 d-flex">
+          <div class="col-12 col-md-1 me-3 mt-2">
             <input 
               type="number" 
               class="form-control" 
               placeholder="0" 
               v-model="periodo_viagem"
               min="0"
+              style="width: 4rem;"
               @change="transformDates(date,periodo_viagem)"
             />
           </div>
-          <div class="col-6 mt-3 text-start fw-bold">Dias</div>
-        </div>
-        <div class=" align-items-center d-flex">
-          <div class="col-12 col-md-3 mt-2">
+          <div class="col-1 mt-3 fw-bold">Dias</div>
+          <div class="col-md-3 mt-2">
             <VueDatePicker 
               v-model="date"
               locale="pt-BR"
@@ -98,14 +105,18 @@
               @date-update="transformDates(date,periodo_viagem)"
             ></VueDatePicker>
           </div>
-          <div v-if="date && periodo_viagem" class="pt-2 px-3">
+          <div class="col-3 pt-3 fw-bold">Data de Inicio</div>
+          <div v-if="date && periodo_viagem" class="col-1 pt-3 px-3">
             <i class="fa-solid fa-arrow-right"></i>
           </div>
-          <div v-if="date && periodo_viagem" class="pt-2 ">
+          <div v-if="date && periodo_viagem" class="col-2 pt-3 ">
             <span class="fw-bold">
               {{ FinalDate }}
             </span>
           </div>
+        </div>
+        <div class="d-flex">
+          
         </div>
       </div>
       </div>
@@ -122,18 +133,19 @@
                   title="tooltip 1"
                 ></i>
           </div>
-        <div class="row">
-          <div class="col-md-2 mt-2">
+        <div class="row d-flex align-items-center flex-wrap">
+          <div class="col-md-1 me-3 mt-2">
             <input 
               type="number" 
               class="form-control" 
               placeholder="0" 
               v-model.number="numAdults"
               min="0"
+              style="width: 4rem;"
             />
           </div>
-          <div class="col-2 mt-3 text-start fw-bold">Adultos</div>
-          <div class="col-md-2 mt-2">
+          <div class="col-md-1 me-3 mt-3 fw-bold">Adultos</div>
+          <div class="col-md-1 me-3 mt-2">
             <input 
               type="number" 
               class="form-control" 
@@ -142,9 +154,10 @@
               @input="formatChildren"
               min="0"
               max="5"
+              style="width: 4rem;"
             />
           </div>
-          <div class="col-4 mt-3 text-start fw-bold">Menores</div>
+          <div class="col-md-1 me-3 mt-3 fw-bold">Menores</div>
           <!-- <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
@@ -162,15 +175,11 @@
             <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div> -->
-
-        </div>
-        <div class="row align-items-center">
-          <div class="col-3 mt-2 text-center fw-bold">
+          <div class="col-md-1 me-3 mt-2">
             <div class="d-flex space-x-4">
               <div 
                 v-for="(age, index) in numChildren" 
                 :key="index" 
-                class="col-6 mb-2"
               >
                 <input 
                   type="number" 
@@ -179,6 +188,7 @@
                   v-model.number="childAges[index]"
                   min="0"
                   max="17"
+                  style="width: 4rem;"
                 />
               </div>
             </div>
@@ -193,6 +203,7 @@
               />
           </div> -->
         </div>
+        
       </div>
       </div>
     </div>
@@ -209,15 +220,18 @@
                   title="tooltip 1"
                 ></i>
           </div>
-          <div 
+          <div class="d-flex flex-wrap">
+            <div 
             v-for="(modo, index) in lugares" 
             :key="index" 
-            class="d-inline-flex mb-2"
+            class="d-inline-flex mb-2 text-start"
+            style="width: 50%;"
           >
             <label class="d-flex ml-2">
               <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada"/>
               <span>{{ modo }}</span>
             </label>
+          </div>
           </div>
         </div>
       </div>
@@ -255,15 +269,20 @@
                   title="tooltip 1"
                 ></i>
           </div>
-          <div 
+          <div class="d-flex flex-wrap align-items-start">
+            <div 
             v-for="(interest, index) in interesses" 
             :key="index" 
-            class="d-inline-flex align-items-center mb-2"
+            class="d-inline-flex text-start mb-2"
+            style="width: 50%;"
           >
             <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"/>
+              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
+              :disabled="!canCheck && !inChecked[index]"
+              />
               <span>{{ interest }}</span>
             </label>
+          </div>
           </div>
         </div>
         <!-- <div class="bg-white p-3">
@@ -396,16 +415,20 @@
             </span>
           </div>
           <div class="col-start-12 d-flex">
-            <div class="col-md-12 pb-2 pr-36">
+            <div class="row align-items-center">
+            <div class="col-auto">
               <v-rating
                 v-model="starValue"
                 background-color="blue-grey lighten-2"
                 color="amber"
                 dense
-                style="float: left;"
+                class="me-2"
               ></v-rating>
-              <button class="btn btn-secondary" @click="sendRating"> Enviar </button>
             </div>
+            <div class="col-auto">
+              <button class="btn btn-secondary" @click="sendRating">Enviar</button>
+            </div>
+          </div>
           </div>
           <div class="col-start-12 d-flex">
             <div class="pl-4 pb-6" style="width:100%" v-show="starValue<=3 && starValue != null">
@@ -437,6 +460,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogRating" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>{{ RatingText }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogRating=false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -453,7 +486,7 @@
   import html2pdf from 'html2pdf.js';
 
 
-  const date = ref(new Date());
+  const date = ref();
   const numAdults = ref()
   const numChildren = ref();
   //const childAges = ref([]);
@@ -478,13 +511,17 @@
   const errMsg=ref('')
   const FinalDate=ref(null);
   const periodo_viagem=ref(null);
+  const selectedCount = computed(() => inChecked.value.filter(Boolean).length);
+  const canCheck = computed(() => selectedCount.value < 3);
+  const dialogRating = ref(false)
+  const RatingText = ref('')
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
   let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão']
   let selectedInteresses=[]
-  let lugares=['Alto luxo','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3 estrelas)']
+  let lugares=['Alto luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)']
   let Destinos=[]
   let Origem
   let lugar_nIr=[]
@@ -757,15 +794,19 @@ const sendRating = async () =>{
     txt_comentario:whyCardComentario.value,
   }
   if(!starValue.value){
-    alert('Preencha a avaliação primeiro')
+    RatingText.value='Preencha a avaliação primeiro'
+    dialogRating.value=true
   }else if(starValue.value<=3 && !whyCardComentario.value){
-    alert('Você deve preencher as razões')
+    RatingText.value='Você deve preencher as razões'
+    dialogRating.value=true
   }else if(whyCardComentario.value.length<=35){
-    alert('Motivo deve ser maior do que 35 caracteres')
+    RatingText.value='Motivo deve ser maior do que 35 caracteres'
+    dialogRating.value=true
   }else{
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
     console.log(response.data);
-    alert("Obrigado por nos informar. Já estamos trabalhar para melhorar!!!");
+    RatingText.value="Obrigado por nos informar. Já estamos trabalhando para melhorar!!!"
+    dialogRating.value=true
   }
   } catch (error) {
     console.log(error)
@@ -794,7 +835,7 @@ const customFormat = (date) => {
     };
     const pushInteresses = (event, interest) =>{
       if(event.target.checked){
-        selectedInteresses.push(interest)
+          selectedInteresses.push(interest)
       }else{
         selectedInteresses = selectedInteresses.filter(item => item !== interest);
       }
@@ -863,9 +904,6 @@ const customFormat = (date) => {
       html2pdf().from(element).set(opt).save();
     }
 
-    const handleDate=()=>{
-
-    }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
@@ -1061,6 +1099,16 @@ body {
   overflow-x: auto; /* Allow horizontal scrolling */
   white-space: nowrap; /* Prevent wrapping */
   gap: 10px; /* Optional: Add space between inputs */
+}
+@media (max-width: 1300px) {
+  .fontDestino {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 1010px) {
+  .fontDestino {
+    font-size: 1.3rem;
+  }
 }
 </style>
   
