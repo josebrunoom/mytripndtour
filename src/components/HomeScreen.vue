@@ -14,9 +14,9 @@
                 ></i>
               </h2>
             </div>
-            <button v-show="!showOrigem" class="fw-bold float-start h1" @click="setOrigem">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</button>
+            <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</button>
               <div v-show="showOrigem">
-                <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;">
+                <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
@@ -34,17 +34,16 @@
                   title="tooltip 1"
                 ></i>
               </h2>
-              <div class="h5 fw-bold mb-6 ms-auto">
-                <!-- <button @click="addDestino">
-                <i 
-                  class="fa-solid fa-plus "
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  title="adicionar destino"
-                ></i>
-              </button> -->
-              </div>
+             
             </div>
+            <div class="selected-placesDestino">
+            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+              <span class=" text-black" style="font-size: 1.3rem;">
+                {{ place }};
+            </span>
+            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
             <div v-if="!showDestino" class="d-flex justify-content-start">
               <button  class="fw-bold h1 fontDestino" @click="setDestino">Selecione o Destino</button>
             </div>
@@ -53,14 +52,7 @@
               </div>
             <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
             </vue-google-autocomplete> -->
-          <div class="selected-placesDestino">
-            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-              <span class=" text-black" style="font-size: 0.8rem;">
-                {{ place }};
-            </span>
-            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
@@ -77,8 +69,8 @@
                   title="tooltip 1"
                 ></i>
           </div>
-        <div class="row col-12 d-flex">
-          <div class="col-12 col-md-1 me-3 mt-2">
+        <div class="row">
+          <div class="col-lg-2 col-md-2">
             <input 
               type="number" 
               class="form-control" 
@@ -89,8 +81,8 @@
               @change="transformDates(date,periodo_viagem)"
             />
           </div>
-          <div class="col-1 mt-3 fw-bold">Dias</div>
-          <div class="col-md-3 mt-2">
+          <div class="col-lg-2 col-md-2 mt-2 fw-bold" style="text-align: left;margin-left: 5px;">dias, com inicio em</div>
+          <div class="col-lg-2 col-md-2 mt-2">
             <VueDatePicker 
               v-model="date"
               locale="pt-BR"
@@ -105,11 +97,11 @@
               @date-update="transformDates(date,periodo_viagem)"
             ></VueDatePicker>
           </div>
-          <div class="col-3 pt-3 fw-bold">Inicio</div>
-          <div v-if="date && periodo_viagem" class="col-1 pt-3 px-3">
+          <div class="col-lg-2 col-md-3 pt-3 fw-bold" style="text-align: left;margin-left: 5px;">e retorno em</div>
+          <div v-if="date && periodo_viagem" class="col-lg-2 col-md-1 pt-3">
             <i class="fa-solid fa-arrow-right"></i>
           </div>
-          <div v-if="date && periodo_viagem" class="col-2 pt-3 ">
+          <div v-if="date && periodo_viagem" class="col-lg-2 col-md-2 pt-3 ">
             <span class="fw-bold">
               {{ FinalDate }}
             </span>
@@ -209,10 +201,10 @@
     </div>
 
     <div class="row mb-4 col-12">
-      <div class="col-12 col-md-3 mb-3 mb-md-0">
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
-            <h2 class="h5 fw-bold mb-2">Tipo de Hospedagem</h2>
+            <h2 class="h5 fw-bold mb-2">Hospedagem</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -258,39 +250,8 @@
           </div>
         </div>
       </div> -->
-      <div class="col-12 col-md-3">
-        <div class="bg-white p-3 rounded-lg">
-          <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Lista de Interesses</h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  title="tooltip 1"
-                ></i>
-          </div>
-          <div class="d-flex flex-wrap align-items-start">
-            <div 
-            v-for="(interest, index) in interesses" 
-            :key="index" 
-            class="d-inline-flex text-start mb-2"
-            style="width: 50%;"
-          >
-            <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
-              :disabled="!canCheck && !inChecked[index]"
-              />
-              <span>{{ interest }}</span>
-            </label>
-          </div>
-          </div>
-        </div>
-        <!-- <div class="bg-white p-3">
-          <h2 class="h5 fw-bold mb-2">Moeda preferida</h2>
-          <VueSelect :options="Moedas" class="w-100"></VueSelect>
-        </div> -->
-      </div>
-      <div class="col-12 col-md-3 mb-3 mb-md-0">
+      
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
@@ -322,7 +283,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-3 mb-3 mb-md-0">
+      <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold mb-2">Não precisa incluir</h2>
@@ -356,11 +317,38 @@
       </div>
       
     </div>
-
-    <div class="row mb-4">
-
-
-    </div>
+    <div class="col-12 col-md-12 mb-4">
+        <div class="bg-white p-3 rounded-lg">
+          <div class="d-flex align-items-center justify-content-center position-relative">
+            <h2 class="h5 fw-bold mb-2">Interesses</h2>
+            <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  title="tooltip 1"
+                ></i>
+          </div>
+          <div class="d-flex flex-wrap align-items-start">
+            <div 
+            v-for="(interest, index) in interesses" 
+            :key="index" 
+            class="d-inline-flex text-start mb-2"
+            style="width: 50%;"
+          >
+            <label class="d-flex align-items-center pl-3">
+              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
+              :disabled="!canCheck && !inChecked[index]"
+              />
+              <span>{{ interest }}</span>
+            </label>
+          </div>
+          </div>
+        </div>
+        <!-- <div class="bg-white p-3">
+          <h2 class="h5 fw-bold mb-2">Moeda preferida</h2>
+          <VueSelect :options="Moedas" class="w-100"></VueSelect>
+        </div> -->
+      </div>
 
     <div class="row mb-4">
       <div style="display: none !important" class="col-12 d-flex justify-content-start">
@@ -492,8 +480,8 @@
   //const childAges = ref([]);
   const currentIndex = ref(0);
   const isLoading=ref(false)
-  const showOrigem=ref(false)
-  const showDestino=ref(false)
+  const showOrigem=ref(true)
+  const showDestino=ref(true)
   const dialog=ref(false)
   const inputOrigem = ref(null);
   const inputDestino = ref(null);
@@ -583,14 +571,14 @@
       if(elementId=='autocompleteD'){
         console.log("b");
         if(lugaresDestinosFullNames.value.length+1>5){
-          showDestino.value=false;
+          showDestino.value=true;
           alert('O número máximo de lugares é 5')
         }else{
           console.log("c");
           Destinos.push(place.name)
           DestinoCity.value=place.name
           lugaresDestinosFullNames.value.push(place.name)
-          showDestino.value=false
+          showDestino.value=true
         }
       }
     });
@@ -606,16 +594,8 @@
 });
 
   onUpdated(()=> {
-    if (showOrigem.value) {
-      nextTick(() => {
-        inputOrigem.value.focus();
-      });
-    }
-    if (showDestino.value) {
-      nextTick(() => {
-        inputDestino.value.focus();
-      });
-    }
+    
+    
   })
 
   const setOrigem = () =>{
@@ -860,8 +840,8 @@ const customFormat = (date) => {
       numChildren.value = 0;
       childAges = [];
       currentIndex.value = 0;
-      showOrigem.value = false;
-      showDestino.value = false;
+      showOrigem.value = true;
+      showDestino.value = true;
       OrigemCity.value = null;
       DestinoCity.value = null;
       lugaresConhecerFullNames.value = [];
@@ -1016,12 +996,13 @@ input[type="radio"] {
   overflow-y: auto; /* Make the div scrollable */
 }
 .selected-placesDestino {
-  max-height: 40%; /* Adjust height as needed */
+  height: 32px; /* Adjust height as needed */
   overflow-y: auto; /* Make the div scrollable */
   display: flex; /* Make items inline */
   flex-wrap: wrap; /* Wrap items to the next line if they exceed the container width */
   gap: 10px; /* Add space between items */
   align-items: center; /* Align items vertically center */
+  margin-bottom: 5px;
 }
 .place-item {
   display: block; /* Ensure each place is on its own line */
@@ -1109,6 +1090,17 @@ body {
   .fontDestino {
     font-size: 1.3rem;
   }
+}
+/* Remove as setas em navegadores baseados no WebKit (Chrome, Safari, etc.) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove as setas no Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 </style>
   
