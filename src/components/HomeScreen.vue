@@ -70,38 +70,34 @@
                 ></i>
           </div>
         <div class="row">
-          <div class="col-lg-2 col-md-2">
+          <div class="col-lg-2 col-md-2 p-0">
             <input 
               type="number" 
               class="form-control" 
               placeholder="0" 
               v-model="periodo_viagem"
               min="0"
-              style="width: 4rem;"
+              style="width: 100%; font-size:0.9rem"
               @change="transformDates(date,periodo_viagem)"
             />
           </div>
-          <div class="col-lg-2 col-md-2 mt-2 fw-bold" style="text-align: left;margin-left: 5px;">dias, com inicio em</div>
-          <div class="col-lg-2 col-md-2 mt-2">
+          <div class="col-lg-2 col-md-2 p-0 textosDuracao fw-bold" >dias, com inicio em</div>
+          <div class="col-lg-3 col-md-4 p-0">
             <VueDatePicker 
               v-model="date"
               locale="pt-BR"
               :enable-time-picker="false"
               class="w-100"
               style="z-index: 999;"
-              cancel-text="Fechar"
-              select-text="Selecionar"
               :format="customFormat"
               auto-apply
               :min-date="new Date()"
+              :hide-input-icon="true"
               @date-update="transformDates(date,periodo_viagem)"
             ></VueDatePicker>
           </div>
-          <div class="col-lg-2 col-md-3 pt-3 fw-bold" style="text-align: left;margin-left: 5px;">e retorno em</div>
-          <div v-if="date && periodo_viagem" class="col-lg-2 col-md-1 pt-3">
-            <i class="fa-solid fa-arrow-right"></i>
-          </div>
-          <div v-if="date && periodo_viagem" class="col-lg-2 col-md-2 pt-3 ">
+          <div class="col-lg-2 col-md-3 mt-1 fw-bold textosDuracao p-0">e retorno em</div>
+          <div v-if="date && periodo_viagem" class="col-lg-3 col-md-2 p-0">
             <span class="fw-bold">
               {{ FinalDate }}
             </span>
@@ -125,8 +121,8 @@
                   title="tooltip 1"
                 ></i>
           </div>
-        <div class="row d-flex align-items-center flex-wrap">
-          <div class="col-md-1 me-3 mt-2">
+        <div class="row align-items-center">
+          <div class="col-lg-2 col-md-1 me-3 mt-2">
             <input 
               type="number" 
               class="form-control" 
@@ -136,8 +132,8 @@
               style="width: 4rem;"
             />
           </div>
-          <div class="col-md-1 me-3 mt-3 fw-bold">Adultos</div>
-          <div class="col-md-1 me-3 mt-2">
+          <div class="col-lg-2 col-md-1 me-3 mt-3 fw-bold textosDuracao">Adultos e</div>
+          <div class="col-lg-2 col-md-1 me-3 mt-2">
             <input 
               type="number" 
               class="form-control" 
@@ -149,7 +145,7 @@
               style="width: 4rem;"
             />
           </div>
-          <div class="col-md-1 me-3 mt-3 fw-bold">Menores</div>
+          <div class="col-lg-2 col-md-1 me-3 mt-3 fw-bold textosDuracao">Menores</div>
           <!-- <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
@@ -167,8 +163,13 @@
             <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div> -->
-          <div class="col-md-1 me-3 mt-2">
+          <div class="col-lg-4 col-md-1 me-3 mt-2">
             <div class="d-flex space-x-4">
+              <span v-if="numChildren > 0" style="
+    font-size: 0.9rem;
+    line-height: 15px;
+    font-weight: 700;
+">com idades de</span>
               <div 
                 v-for="(age, index) in numChildren" 
                 :key="index" 
@@ -1101,6 +1102,19 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Remove as setas no Firefox */
 input[type="number"] {
     -moz-appearance: textfield;
+}
+
+.textosDuracao{
+  text-align: left;
+    padding-left: 5px !important;
+    font-size: 0.8rem;
+}
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
 }
 </style>
   

@@ -178,7 +178,7 @@ const login = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'http://localhost:5173', //must be changed later
+            redirect_uri: 'https://mytripntour.com', //must be changed later
             grant_type: 'authorization_code'
           });
           
