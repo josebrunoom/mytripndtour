@@ -221,7 +221,7 @@
             style="width: 50%;"
           >
             <label class="d-flex ml-2">
-              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada"/>
+              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
               <span>{{ modo }}</span>
             </label>
           </div>
@@ -527,9 +527,22 @@
     transformDates(newValue, periodo_viagem.value)
   console.log('Date updated:', newValue);
 });
+  const toggleSelect = (modo) =>{
+    if (hospedagemSelecionada.value === modo) {
+        hospedagemSelecionada.value = null; 
+      }
+  }
+  const getdata = () =>{
+    const queryParams = new URLSearchParams(window.location.search);
+    const receivedData = queryParams.get('data');
+    if (receivedData) {
+      const decodedData = JSON.parse(decodeURIComponent(receivedData));
+      hospedagemSelecionada.value=decodedData.hospedagemSelecionada
+      console.log('Received Data:', decodedData);
+    }
+  }
 
   onMounted(() => {
-
     
   const initAutocomplete = (elementId, types) => {
     const input = document.getElementById(elementId);
@@ -591,7 +604,7 @@
   initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
   
   document.getElementById("autocompleteO").focus();
-
+  getdata();
 });
 
   onUpdated(()=> {
