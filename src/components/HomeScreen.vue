@@ -81,7 +81,7 @@
               @change="transformDates(date,periodo_viagem)"
             />
           </div>
-          <div class="col-lg-2 col-md-2 p-0 textosDuracao fw-bold" >dias, com inicio em</div>
+          <div class="col-lg-2 col-md-2 p-0 textosDuracao fw-bold d-flex align-items-center" >dias, com inicio em</div>
           <div class="col-lg-3 col-md-4 p-0">
             <VueDatePicker 
               v-model="date"
@@ -96,7 +96,7 @@
               @date-update="transformDates(date,periodo_viagem)"
             ></VueDatePicker>
           </div>
-          <div class="col-lg-2 col-md-3 mt-1 fw-bold textosDuracao p-0">e retorno em</div>
+          <div class="col-lg-2 col-md-3 mt-1 fw-bold textosDuracao p-0 d-flex align-items-center">e retorno em</div>
           <div v-if="date && periodo_viagem" class="col-lg-3 col-md-2 p-0">
             <span class="fw-bold">
               {{ FinalDate }}
@@ -504,11 +504,12 @@
   const canCheck = computed(() => selectedCount.value < 3);
   const dialogRating = ref(false)
   const RatingText = ref('')
+  const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
-  let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão']
+  /* let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */
   let selectedInteresses=[]
   let lugares=['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)']
   let Destinos=[]
@@ -538,7 +539,12 @@
     if (receivedData) {
       const decodedData = JSON.parse(decodeURIComponent(receivedData));
       hospedagemSelecionada.value=decodedData.hospedagemSelecionada
+      lugaresDestinosFullNames.value=decodedData.lugaresDestinosFullNames
+      selectedInteresses=decodedData.interesses
+      lugaresConhecerFullNames.value=decodedData.quero_conhecer
+      inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
       console.log('Received Data:', decodedData);
+      console.log('Received Data interesses:', selectedInteresses);
     }
   }
 
@@ -1120,7 +1126,7 @@ input[type="number"] {
 .textosDuracao{
   text-align: left;
     padding-left: 5px !important;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
 }
 input::-webkit-calendar-picker-indicator{
     display: none;
