@@ -415,7 +415,7 @@
               ></v-rating>
             </div>
             <div class="col-auto">
-              <button class="btn btn-secondary" @click="sendRating">Enviar</button>
+              <button class="btn btn-primary" @click="sendRating">Enviar</button>
             </div>
           </div>
           </div>
@@ -773,6 +773,7 @@ var iframe = document.querySelector('iframe.skiptranslate');
 
 const sendRating = async () =>{
   try {
+  
     let ObjRoteiro1={
     email:user.Email,
     origem:Origem,
@@ -803,10 +804,12 @@ const sendRating = async () =>{
     RatingText.value='Motivo deve ser maior do que 35 caracteres'
     dialogRating.value=true
   }else{
+    isLoading.value=true
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
     console.log(response.data);
     RatingText.value="Obrigado por nos informar. Já estamos trabalhando para melhorar!!!"
     dialogRating.value=true
+    isLoading.value=false
   }
   } catch (error) {
     console.log(error)
