@@ -24,7 +24,7 @@
           </button> -->
         </form>
         <div class="mt-4">
-            <a href="https://mytripntour.com/politica_privacidade">Política de Privacidade</a>
+            <a href="https://roteiro.mytripntour.com/politica_privacidade">Política de Privacidade</a>
         </div>
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>
