@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
+    <div>  <!-- começo Free -->
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
@@ -10,7 +11,7 @@
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="De onde vai começar a aventura? Diga aí sua cidade natal e partiu explorar o mundo!"
                 ></i>
               </h2>
             </div>
@@ -31,7 +32,7 @@
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Quais os lugares dos seus sonhos? Coloque seus e vamos fazer magia acontecer!"
                 ></i>
               </h2>
              
@@ -66,7 +67,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Quantos dias você quer fugir da rotina? Escolha a duração dessa escapada e deixe o resto com a gente!"
                 ></i>
           </div>
         <div class="row">
@@ -118,7 +119,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Quantos aventureiros embarcam nessa jornada? Diga quantos adultos e se pequenos exploradores vão junto!"
                 ></i>
           </div>
         <div class="row align-items-center">
@@ -200,9 +201,16 @@
       </div>
       </div>
     </div>
-
+    </div> <!-- Fim Free -->
+    <div> <!--  Começo Premium -->
+      <div class="p-3 bg-[#c1bfc2] w-full h-full rounded-lg mb-2"> 
+        <div class="flex justify-start items-start">
+          <span class="text-left"><b>Premium</b> </span> 
+        </div>
+        
     <div class="row mb-4 col-12">
       <div class="col-12 col-md-4 mb-3 mb-md-0">
+        
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
             <h2 class="h5 fw-bold mb-2">Hospedagem</h2>
@@ -210,15 +218,14 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Quer luxo, conforto ou um lugar só pra cair na cama depois de um dia incrível? Escolha seu estilo de hospedagem!"
                 ></i>
           </div>
           <div class="d-flex flex-wrap">
             <div 
             v-for="(modo, index) in lugares" 
             :key="index" 
-            class="d-inline-flex mb-2 text-start"
-            style="width: 50%;"
+            class="d-inline-flex mb-2 text-start lg:w-[33.33%] md:w-[50%]"
           >
             <label class="d-flex ml-2">
               <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
@@ -260,7 +267,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Tem atrações, pontos turísticos que você sempre sonhou em conhecer? Conta pra gente que ele vai entrar no roteiro!"
                 ></i>
                 <div class="">
                   <button>
@@ -292,7 +299,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Tem algum local que você quer evitar? Diz aí e a gente risca da lista!"
                 ></i>
                 <div class="">
                   <button>
@@ -315,7 +322,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> 
       
     </div>
     <div class="col-12 col-md-12 mb-4">
@@ -326,15 +333,14 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="tooltip 1"
+                  title="Quer saber onde rola aquela comida incrível, aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!"
                 ></i>
           </div>
           <div class="d-flex flex-wrap align-items-start">
             <div 
             v-for="(interest, index) in interesses" 
             :key="index" 
-            class="d-inline-flex text-start mb-2"
-            style="width: 50%;"
+            class="d-inline-flex text-start mb-2 lg:w-[33.33%] md:w-[50%]"
           >
             <label class="d-flex align-items-center pl-3">
               <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
@@ -350,6 +356,8 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
+    </div>
+    </div> <!--  Fim Premium -->
 
     <div class="row mb-4">
       <div style="display: none !important" class="col-12 d-flex justify-content-start">
@@ -428,7 +436,7 @@
           </div>
       </div>
     </div>
-    <Loading :loading="isLoading"/>
+    <Loading :loading="isLoading" :isRoteiro="isRoteiro"/>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Atenção</v-card-title>
@@ -500,6 +508,7 @@
   const errMsg=ref('')
   const FinalDate=ref(null);
   const periodo_viagem=ref(null);
+  const isRoteiro=ref(false);
   const selectedCount = computed(() => inChecked.value.filter(Boolean).length);
   const canCheck = computed(() => selectedCount.value < 3);
   const dialogRating = ref(false)
@@ -698,6 +707,7 @@ const formatChildren = () => {
       }
 
 const postRoteiro=async () =>{
+  isRoteiro.value=true
   starValue.value=null;
   whyCardComentario.value='';
   lang = localStorage.getItem('lang')
@@ -761,6 +771,7 @@ const postRoteiro=async () =>{
     }
     finally {
       isLoading.value = false; 
+      isRoteiro.value = false;
     }
   }
   
