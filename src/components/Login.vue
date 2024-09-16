@@ -107,8 +107,8 @@
             email: response.email,
             name: response.name,
             //password: response.id, 
-            birthday:  response.birthday,
-            gender: response.gender,
+            birthday:  response.birthday ? response.birthday : null,
+            gender: response.gender ? response.gender : null,
             idioma:'PT',
             ip_origem:userIP.value
           };
@@ -118,8 +118,8 @@
             photo: response.picture.data.url,
             IdentificadorUnico: response.id,
             MetodoAutenticacao: 'Facebook',
-            birthday: response.birthday,
-            gender: response.gender,
+            birthday: response.birthday ? response.birthday : null,
+            gender: response.gender ? response.gender : null,
           };
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           await sendUser(objUser);
@@ -172,6 +172,8 @@ const login = () => {
     const client = google.accounts.oauth2.initCodeClient({
       client_id: clientId,
       scope: 'email profile openid https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read',
+      access_type: 'offline',
+      prompt: 'none',
       callback: async (response) => {
         try {
           const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
@@ -198,7 +200,7 @@ const login = () => {
           console.log("User Birthday:", userBirthday);
           console.log("User Gender:", userGender); */
           //same format
-          const formattedDate = `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}`;
+          const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
           let backUser=[]
           let objUser = {
             email: userEmail,
