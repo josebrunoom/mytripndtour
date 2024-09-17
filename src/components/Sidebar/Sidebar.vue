@@ -61,29 +61,121 @@
             </div>
             </div>
         </div>
-        <div class="w-full bg-[#faf8fd]"> 
-            <div style="height:5% !important;" class=" bg-[#faf8fd]"> 
-                <div class="d-flex justify-content-end align-items-center mt-4 pr-16">
-                    <div class="dropdown">
-                            <button class="dropdown-toggle fw-bold mr-4" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-globe"></i> {{ languageName }}</button>
-                            <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
-                                <li v-for="(langName, langCode) in languages" :key="langCode">
-                                    <a class="dropdown-item" href="#" @click.prevent="changeLanguage(langCode, langName)">
-                                    {{ langName }}
-                                    </a>
-                                </li>
-                            </div>
-                    </div>
-                    <!-- <button class="fw-bold mr-4" @click="openDialog('lang')"><i class="fa-solid fa-globe"></i> Idioma</button>
-                    <div v-show="dialog">
-                        <select class="" v-model="language" @change="changeLanguage">
-                        <option value="" disabled>Selecione o Idioma</option>
-                        <option v-for="(langName, langCode) in languages" :key="langCode" :value="langCode">{{ langName }}</option>
-                        </select>
-                    </div> -->
-                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img" alt="" />
-                    <button class="fw-bold">{{ name }}</button>
+        <div>
+    <!-- Toggle button to show/hide the sidebar -->
+    
+
+    <!-- Sidebar with transition for smooth slide -->
+        <transition name="slide" style="z-index: 99999;">
+            <div 
+            v-if="isSidebarOpen" 
+            class="fixed left-0 top-0 h-screen w-64 bg-white shadow-lg p-4 z-50"
+            style="width: 18rem;" 
+            >
+            <div class="flex justify-center mb-4 top-0">
+                <img 
+                src="../../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-01.jpg" 
+                alt="Logo" 
+                class="img-Logo" 
+                />
+            </div>
+
+            <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='home'">
+                <button 
+                    type="button" 
+                    class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                >
+                    <i class="fa-regular fa-file"></i>
+                    Roteiros
+                </button>
                 </div>
+                <div v-else>
+                <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('home')"
+                >
+                    <i class="fa-regular fa-file"></i>
+                    Roteiros
+                </button>
+                </div>
+            </div>
+
+            <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='Perfil'">
+                <button 
+                    type="button" 
+                    class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                >
+                    <i class="fa-regular fa-user"></i>
+                    Meu Perfil
+                </button>
+                </div>
+                <div v-else>
+                <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('perfil')"
+                >
+                    <i class="fa-regular fa-user"></i>
+                    Meu Perfil
+                </button>
+                </div>
+            </div>
+
+            <div class="col-12 pb-3">
+                <button 
+                type="button" 
+                class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
+                @click="openDialog('sair')"
+                >
+                <i class="fa-solid fa-door-open"></i>
+                Sair
+                </button>
+            </div>
+            </div>
+        </transition>
+        <div 
+        v-if="isSidebarOpen" 
+        @click="isSidebarOpen = false" 
+        class="fixed inset-0 bg-black bg-opacity-50 z-40"
+        ></div>
+        </div>
+        <div class="w-full bg-[#faf8fd]"> 
+            <div style="height:5% !important;" class="bg-[#faf8fd]">
+            <div class="d-flex justify-content-between align-items-center mt-4 pr-16">
+                <!-- Left-aligned button -->
+                <div class="d-flex">
+                <button 
+                    @click="isSidebarOpen = !isSidebarOpen" 
+                    class="text-black px-4 py-2 rounded-lg md:hidden"
+                >
+                    <ion-icon name="reorder-three-outline" size="large"></ion-icon>
+                </button>
+                </div>
+
+                <!-- Right-aligned content -->
+                <div class="d-flex align-items-center">
+                <div class="dropdown me-3">
+                    <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-globe"></i> {{ languageName }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                    <li v-for="(langName, langCode) in languages" :key="langCode">
+                        <a class="dropdown-item" href="#" @click.prevent="changeLanguage(langCode, langName)">
+                        {{ langName }}
+                        </a>
+                    </li>
+                    </div>
+                </div>
+
+                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img" alt="" />
+                <button class="fw-bold">{{ name }}</button>
+                </div>
+            </div>
             </div>
             <div class="h-[calc(100vh-50px)] bg-[#faf8fd]">
                 <RouterView></RouterView>
@@ -129,6 +221,7 @@ const currentRouteName=ref(route.name)
 const img = ref('')
 const dialog=ref(false)
 const dialogSair=ref(false)
+const isSidebarOpen=ref(false)
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 
@@ -176,7 +269,7 @@ const openDialog = (id) =>{
 const sairUser = () =>{
     dialogSair.value=false
     localStorage.clear();
-    router.push('/')
+    window.location.href= 'https://mytripntour.com/'
 }
 </script>
 
@@ -196,5 +289,25 @@ const sairUser = () =>{
         max-height: 200px; /* Adjust this value as needed */
         overflow-y: auto;
         width: 200px; /* Adjust this value as needed */
+    }
+    .slide-enter-active, .slide-leave-active {
+    transition: transform 0.3s ease;
+    }
+    .slide-enter {
+    transform: translateX(-100%);
+    }
+    .slide-leave-to {
+    transform: translateX(-100%);
+    }
+    .slide-enter-active, .slide-leave-active {
+    transition: transform 0.3s ease;
+    }
+
+    .slide-enter {
+    transform: translateX(-100%);
+    }
+
+    .slide-leave-to {
+    transform: translateX(-100%);
     }
 </style>
