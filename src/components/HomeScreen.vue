@@ -11,7 +11,7 @@
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="De onde vai começar a aventura? Diga aí sua cidade natal e partiu explorar o mundo!"
+                  title="De onde vai começar a aventura? Diga aí sua cidade de origem e partiu explorar o mundo!"
                 ></i>
               </h2>
             </div>
@@ -59,10 +59,10 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 col-md-6 mb-3 mb-md-0">
+      <div class="col-12 col-md-6 mb-3 md:mb-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Duração da Viagem</h2>
+            <h2 class="h5 fw-bold ">Duração da Viagem</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -71,7 +71,7 @@
                 ></i>
           </div>
         <div class="row">
-          <div class="col-lg-2 col-md-2 p-0">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-4 p-0">
             <input 
               type="number" 
               class="form-control" 
@@ -83,7 +83,7 @@
             />
           </div>
           <div class="col-lg-2 col-md-2 p-0 textosDuracao fw-bold d-flex align-items-center" >dias, com inicio em</div>
-          <div class="col-lg-3 col-md-4 p-0">
+          <div class="col-lg-2 col-md-2 col-sm-2 col-4 p-0">
             <VueDatePicker 
               v-model="date"
               locale="pt-BR"
@@ -114,7 +114,7 @@
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Pessoas</h2>
+            <h2 class="h5 fw-bold ">Pessoas</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -164,13 +164,13 @@
             <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div> -->
-          <div class="col-lg-4 col-md-1 me-3 mt-2">
+          <div class="col-lg-6 col-md-2 me-3 mt-2">
             <div class="d-flex space-x-4">
               <span v-if="numChildren > 0" style="
-    font-size: 0.9rem;
-    line-height: 15px;
-    font-weight: 700;
-">com idades de</span>
+                  font-size: 0.9rem;
+                  line-height: 15px;
+                  font-weight: 700;
+              ">com idades de</span>
               <div 
                 v-for="(age, index) in numChildren" 
                 :key="index" 
@@ -203,9 +203,9 @@
     </div>
     </div> <!-- Fim Free -->
     <div> <!--  Começo Premium -->
-      <div class="p-3 bg-[#c1bfc2] w-full h-full rounded-lg mb-2"> 
+      <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="text-left"><b>Premium</b> </span> 
+          <span class="h5 text-left"><b>Premium</b> </span> 
         </div>
         
     <div class="row mb-4 col-12">
@@ -213,7 +213,7 @@
         
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
-            <h2 class="h5 fw-bold mb-2">Hospedagem</h2>
+            <h2 class="h5 fw-bold ">Hospedagem</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -262,7 +262,7 @@
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Quero Conhecer</h2>
+            <h2 class="h5 fw-bold ">Quero Conhecer</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -294,7 +294,7 @@
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Não precisa incluir</h2>
+            <h2 class="h5 fw-bold ">Não precisa incluir</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -328,7 +328,7 @@
     <div class="col-12 col-md-12 mb-4">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Interesses</h2>
+            <h2 class="h5 fw-bold ">Interesses</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
@@ -592,8 +592,8 @@
         }
       }
       if(elementId=='autocompleteO'){
-        console.log("a");
-        Origem=place.name
+        console.log("a", place);
+        Origem=place.formatted_address
         OrigemCity.value=place.name
         showOrigem.value=false
       }
@@ -604,9 +604,9 @@
           alert('O número máximo de lugares é 5')
         }else{
           console.log("c");
-          Destinos.push(place.name)
-          DestinoCity.value=place.name
-          lugaresDestinosFullNames.value.push(place.name)
+          Destinos.push(place.formatted_address)
+          DestinoCity.value=place.formatted_address
+          lugaresDestinosFullNames.value.push(place.formatted_address)
           showDestino.value=true
         }
       }
@@ -811,7 +811,7 @@ const sendRating = async () =>{
   }else if(starValue.value<=3 && !whyCardComentario.value){
     RatingText.value='Você deve preencher as razões'
     dialogRating.value=true
-  }else if(whyCardComentario.value.length<=35){
+  }else if(starValue.value<=3 && whyCardComentario.value.length<=35){
     RatingText.value='Motivo deve ser maior do que 35 caracteres'
     dialogRating.value=true
   }else{
@@ -1138,10 +1138,26 @@ input[type="number"] {
 }
 
 .textosDuracao{
-  text-align: left;
+    text-align: left;
     padding-left: 5px !important;
     font-size: 0.7rem;
 }
+@media (min-width: 768px) { 
+  .textosDuracao {
+    text-align: left;
+    padding-left: 5px !important;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1024px) { 
+  .textosDuracao {
+    text-align: left;
+    padding-left: 5px !important;
+    font-size: 0.9rem;
+  }
+}
+
 input::-webkit-calendar-picker-indicator{
     display: none;
 }
