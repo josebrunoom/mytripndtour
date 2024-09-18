@@ -712,21 +712,24 @@ const postRoteiro=async () =>{
   whyCardComentario.value='';
   lang = localStorage.getItem('lang')
   isLoading.value=true
+  const destinoString = Destinos.map(location => `'${location}'`).join(', ');
+  const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
+  const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
   let ObjRoteiro1={
     email:user.Email,
     origem:Origem,
-    destino: Destinos,
+    destino: destinoString,
     dias:periodo_viagem.value,
     data_inicio: transformDate(date.value),
+    data_fim:FinalDate.value,
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
     idade_menores: childAges,
-    interesses: selectedInteresses,
-    quero_conhecer: lugar_Conhecer,
+    interesses: selectedInteressesString,
+    quero_conhecer: lugar_ConhecerString,
     nao_incluir: lugar_nIr,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
-    desc_detalhada:opcaoGerar=='Sim' ? 'S' : opcaoGerar=='Não' ? 'N' : 'S',
     idioma: lang ? lang : "pt",
     ip_origem: user.ip_origem
   }
@@ -784,18 +787,21 @@ var iframe = document.querySelector('iframe.skiptranslate');
 
 const sendRating = async () =>{
   try {
-  
+    const destinoString = Destinos.map(location => `'${location}'`).join(', ');
+    const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
+    const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
     let ObjRoteiro1={
     email:user.Email,
     origem:Origem,
-    destino: Destinos,
+    destino: destinoString,
     dias:periodo_viagem.value,
     data_inicio: transformDate(date.value),
+    data_fim:FinalDate.value,
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
     idade_menores: childAges,
-    interesses: selectedInteresses,
-    quero_conhecer: lugar_Conhecer,
+    interesses: selectedInteressesString,
+    quero_conhecer: lugar_ConhecerString,
     nao_incluir: lugar_nIr,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
