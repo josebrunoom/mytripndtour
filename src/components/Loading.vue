@@ -2,7 +2,7 @@
     <div v-if="loading">
     <div class="loading-screen">
       <div class="flex flex-col justify-center items-center h-screen d-flex">
-        <ProgressSpinner />
+        <div class="loader"></div>
         <span v-if="isRoteiro==true" class="mt-4 text-white">Aguarde que estamos gerando o roteiro perfeito pra você! Deve demorar 1 minuto!</span>
       </div>
     </div>
@@ -50,6 +50,37 @@
     width: 50px;
     height: 50px;
   }
+  .loader {
+  --s: 40px;
+  height: calc(var(--s)*0.9);
+  width: calc(var(--s)*5);
+  --v1: transparent, #000 0.5deg 108deg, transparent 109deg;
+  --v2: transparent, #000 0.5deg 36deg, transparent 37deg;
+  
+  background: linear-gradient(#ffb940 0 0) left/0% 100% #ddd no-repeat;
+  animation: l20 2s infinite linear;
+  
+  /* Mask settings */
+  -webkit-mask: 
+    conic-gradient(from 54deg at calc(var(--s)*0.68) calc(var(--s)*0.57), var(--v1)),
+    conic-gradient(from 90deg at calc(var(--s)*0.02) calc(var(--s)*0.35), var(--v2)),
+    conic-gradient(from 126deg at calc(var(--s)*0.5) calc(var(--s)*0.7), var(--v1)),
+    conic-gradient(from 162deg at calc(var(--s)*0.5) 0, var(--v2));
+    
+  -webkit-mask-size: var(--s) var(--s);
+  -webkit-mask-composite: xor, destination-over;
+  mask-composite: exclude, add;
+  -webkit-mask-repeat: repeat-x;
+}
+
+@keyframes l20 {
+  0% {
+    background-size: 0% 100%;
+  }
+  90%, 100% {
+    background-size: 100% 100%;
+  }
+}
   </style>
   
   
