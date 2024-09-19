@@ -268,7 +268,9 @@ const openDialog = (id) =>{
 }
 const sairUser = () =>{
     dialogSair.value=false
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
     window.location.href= 'https://mytripntour.com/'
 }
 </script>
