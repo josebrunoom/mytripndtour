@@ -356,7 +356,9 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
+      <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
     </div>
+    
     </div> <!--  Fim Premium -->
 
     <div class="row mb-4">
@@ -393,7 +395,7 @@
           Limpar Tudo
         </button>
       
-          <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
+          
         
       </div>
     </div>
