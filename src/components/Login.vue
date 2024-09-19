@@ -162,47 +162,93 @@
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    console.log('fetchuserinfo',response)
     return response.data;
   } catch (error) {
     console.error('Error fetching user info:', error);
   }
 };
 const login = () => {
+  const storedUser = localStorage.getItem('tokens');
+  const refreshToken = storedUser ? JSON.parse(storedUser).refresh_token : null;
+
+  if (refreshToken) {
+    axios.post('https://oauth2.googleapis.com/token', {
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
+      grant_type: 'refresh_token',
+    })
+    .then(async (response) => {
+      console.log('res')
+      const accessToken = response.data.access_token;
+      console.log(response)
+      const userInfo = await fetchUserInfo(accessToken);
+      processUserInfo(userInfo);
+    })
+    .catch((error) => {
+      console.error('Error refreshing token:', error);
+      requestNewGoogleLogin();
+    });
+  } else {
+    requestNewGoogleLogin();
+  }
+};
+
+const requestNewGoogleLogin = () => {
   googleSdkLoaded((google) => {
     const client = google.accounts.oauth2.initCodeClient({
       client_id: clientId,
       scope: 'email profile openid https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read',
-      access_type: 'offline',
-      prompt: 'none',
+      access_type: 'offline', 
+      prompt: 'consent', 
       callback: async (response) => {
         try {
           const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://roteiro.mytripntour.com', //must be changed later
+            redirect_uri: 'http://localhost:5173', 
             grant_type: 'authorization_code'
           });
-          
           const accessToken = tokenResponse.data.access_token;
-          
+          const refreshToken = tokenResponse.data.refresh_token; 
           const userInfo = await fetchUserInfo(accessToken);
+          const tokens = {
+            access_token: accessToken,
+            refresh_token: refreshToken 
+          }
+          localStorage.setItem('tokens', JSON.stringify(tokens));
+          processUserInfo(userInfo);
 
-          const userEmail = userInfo.emailAddresses[0].value;
-          const userName = userInfo.names[0].displayName;
-          const userPicture = userInfo.photos[0].url;
-          const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
-          const userGender = userInfo.genders ? userInfo.genders[0].value : null;
-
-          /* console.log("User Email:", userEmail);
-          console.log("User Name:", userName);
-          console.log("User Picture:", userPicture);
-          console.log("User Birthday:", userBirthday);
-          console.log("User Gender:", userGender); */
-          //same format
-          const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
-          let backUser=[]
-          let objUser = {
+        } catch (error) {
+          console.error('Error handling Google login response:', error);
+        }
+      }
+    });
+    client.requestCode();
+  });
+};
+const processUserInfo = async (userInfo) => {
+  console.log(userInfo)
+  const userEmail = userInfo.emailAddresses[0].value;
+  const userName = userInfo.names[0].displayName;
+  const userPicture = userInfo.photos[0].url;
+  const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+  const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+  const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+  const LocalStorageUser = {
+            email: userEmail,
+            name: userName,
+            photo: userPicture,
+            MetodoAutenticacao: 'Google',
+            birthday: formattedDate,
+            gender: userGender,
+            ip_origem: userIP.value,
+            
+          };
+  localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+  let objUser = {
             email: userEmail,
             name: userName,
             /* photo: userPicture, */
@@ -212,27 +258,8 @@ const login = () => {
             idioma:'PT',
             ip_origem:userIP.value
           };
-          let LocalStorageUser = {
-            Email: userEmail,
-            Nome: userName,
-            photo: userPicture,
-            password: userInfo.names[0].metadata.source.id, 
-            MetodoAutenticacao:'Google',
-            birthday: formattedDate,
-            gender: userGender,
-            ip_origem:userIP.value
-          };
-          backUser.push(objUser)
-          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           await sendUser(objUser)
-        } catch (error) {
-          console.error('Error handling Google login response:', error);
-        }
-      }
-    });
-    client.requestCode();
-  });
-}
+};
 const sendUser=async(user)=>{
   isLoading.value=true
   try {
