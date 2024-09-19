@@ -201,6 +201,7 @@
         <v-card-text>Deseja mesmo Sair?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogSair=false">não</v-btn>
           <v-btn color="[#78c0d6]" text @click="sairUser">Sim</v-btn>
         </v-card-actions>
       </v-card>
