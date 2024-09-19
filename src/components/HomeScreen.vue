@@ -205,7 +205,7 @@
     <div> <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>Premium</b> </span> 
+          <span class="h5 text-left"><b>Premium</b> <i>(Opcional)</i> </span> 
         </div>
         
     <div class="row mb-4 col-12">
@@ -225,7 +225,7 @@
             <div 
             v-for="(modo, index) in lugares" 
             :key="index" 
-            class="d-inline-flex mb-2 text-start lg:w-[33.33%] md:w-[50%]"
+            class="d-inline-flex mb-2 text-start xl:w-[33.33%] w-[50%]"
           >
             <label class="d-flex ml-2">
               <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
@@ -430,7 +430,7 @@
           </div>
           </div>
           <div class="col-start-12 d-flex">
-            <div class="pl-4 pb-6" style="width:100%" v-show="starValue<=3 && starValue != null">
+            <div class="pl-4 pb-6" style="width:100%" v-show="starValue != null">
               <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?"></textarea>
             </div>
             
@@ -826,7 +826,11 @@ const sendRating = async () =>{
     isLoading.value=true
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
     console.log(response.data);
-    RatingText.value="Obrigado por nos informar. Já estamos trabalhando para melhorar!!!"
+    if(starValue.value<=3){
+      RatingText.value="Obrigado por nos informar. Já estamos trabalhando para melhorar!"
+    }else{
+      RatingText.value="Muito Obrigado! Estamos muito felizes que você gostou!"
+    }
     dialogRating.value=true
     isLoading.value=false
   }
