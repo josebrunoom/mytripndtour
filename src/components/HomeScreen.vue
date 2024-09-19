@@ -205,7 +205,8 @@
     <div> <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>Premium</b> <i>(Opcional)</i> </span> 
+          <span class="h5 text-left"><b>Premium</b> <i style="font-style: italic;
+    font-family: 'Roboto', sans-serif;">(Opcional)</i> </span> 
         </div>
         
     <div class="row mb-4 col-12">
@@ -325,7 +326,7 @@
       </div> 
       
     </div>
-    <div class="col-12 col-md-12 mb-4">
+    <div class="col-12 col-md-12 mb-4" style="text-align:left">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">Interesses</h2>
@@ -409,8 +410,8 @@
           <div  id="pdf-content" v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
           
           <div class="col-md-12 d-flex align-items-start">
-            <span class="fw-bold pl-4">
-                Como foi o roteiro gerado?
+            <span class="fw-bold pl-4" style="text-align: left9;">
+              Como foi o roteiro gerado?<br> Críticas e/ou Elogios são sempre muito bem vindos!!!
             </span>
           </div>
           <div class="col-start-12 d-flex">
