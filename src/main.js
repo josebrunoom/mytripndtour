@@ -16,6 +16,7 @@ import 'vue-select/dist/vue-select.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import PrimeVue from "primevue/config";
 import Aura from '@primevue/themes/aura';
+import Tooltip from 'primevue/tooltip';
 import '@popperjs/core'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
@@ -41,5 +42,6 @@ app.use(PrimeVue, {
         preset: Aura
     }
 });
+app.directive('tooltip', Tooltip);
 app.use(router)
 app.mount('#app')
