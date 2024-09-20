@@ -11,7 +11,7 @@
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="De onde vai começar a aventura? Diga aí sua cidade de origem e partiu explorar o mundo!"
+                  v-tooltip.top="{ value: 'De onde vai começar a aventura?<br>Diga aí sua cidade de origem e partiu explorar o mundo!', escape: false }"
                 ></i>
               </h2>
             </div>
@@ -32,7 +32,7 @@
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Quais os lugares dos seus sonhos? Coloque seus e vamos fazer magia acontecer!"
+                  v-tooltip.top="{ value: 'Quais os lugares dos seus sonhos?<br> Coloque seus e vamos fazer magia acontecer!', escape: false }"
                 ></i>
               </h2>
              
@@ -67,7 +67,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Quantos dias você quer fugir da rotina? Escolha a duração dessa escapada e deixe o resto com a gente!"
+                  v-tooltip.top="{ value: 'Quantos dias você quer fugir da rotina?<br> Escolha a duração dessa escapada e deixe o resto com a gente!', escape: false }"
                 ></i>
           </div>
         <div class="row">
@@ -119,7 +119,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Quantos aventureiros embarcam nessa jornada? Diga quantos adultos e se pequenos exploradores vão junto!"
+                  v-tooltip.top="{ value: 'Quantos aventureiros embarcam nessa jornada?<br> Diga quantos adultos e se pequenos exploradores vão junto!', escape: false }"
                 ></i>
           </div>
         <div class="row align-items-center">
@@ -219,7 +219,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Quer luxo, conforto ou um lugar só pra cair na cama depois de um dia incrível? Escolha seu estilo de hospedagem!"
+                  v-tooltip.top="{ value: 'Quer luxo, conforto ou um lugar só pra cair na cama depois de um dia incrível?<br>Escolha seu estilo de hospedagem!', escape: false }"
                 ></i>
           </div>
           <div class="d-flex flex-wrap">
@@ -268,7 +268,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Tem atrações, pontos turísticos que você sempre sonhou em conhecer? Conta pra gente que ele vai entrar no roteiro!"
+                  v-tooltip.top="{ value: 'Tem atrações, pontos turísticos que você sempre sonhou em conhecer?<br> Conta pra gente que ele vai entrar no roteiro!', escape: false }"
                 ></i>
                 <div class="">
                   <button>
@@ -300,7 +300,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Tem algum local que você quer evitar? Diz aí e a gente risca da lista!"
+                  v-tooltip.top="{ value: 'Tem algum local que você quer evitar?<br> Diz aí e a gente risca da lista!', escape: false }"
                 ></i>
                 <div class="">
                   <button>
@@ -334,7 +334,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  title="Quer saber onde rola aquela comida incrível, aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!"
+                  v-tooltip.top="{ value: 'Quer saber onde rola aquela comida incrível,<br> aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!', escape: false }"
                 ></i>
           </div>
           <div class="d-flex flex-wrap align-items-start">
@@ -357,12 +357,15 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
-      <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
+      <div class="items-start text-start">
+        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
+      </div>
+      
     </div>
     
     </div> <!--  Fim Premium -->
 
-    <div class="row mb-4">
+    <div class="row mb-4 pl-[0.80rem]">
       <div style="display: none !important" class="col-12 d-flex justify-content-start">
         <div class="fw-bold mb-2 pl-2">Gerar com detalhes descritivos dos locais sugeridos? </div>
         <div 
@@ -423,16 +426,17 @@
                 color="amber"
                 dense
                 class="me-2"
+                :disabled="disabledRating==true"
               ></v-rating>
             </div>
             <div class="col-auto">
-              <button class="btn btn-primary" @click="sendRating">Enviar</button>
+              <button class="btn btn-primary" @click="sendRating" :disabled="disabledRating==true">Enviar</button>
             </div>
           </div>
           </div>
           <div class="col-start-12 d-flex">
             <div class="pl-4 pb-6" style="width:100%" v-show="starValue != null">
-              <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?"></textarea>
+              <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?" :disabled="disabledRating==true"></textarea>
             </div>
             
           </div>
@@ -484,6 +488,7 @@
   import Loading from './Loading.vue';
   import { marked } from 'marked';
   import html2pdf from 'html2pdf.js';
+  import Tooltip from 'primevue/tooltip';
 
 
   const date = ref();
@@ -516,6 +521,7 @@
   const canCheck = computed(() => selectedCount.value < 3);
   const dialogRating = ref(false)
   const RatingText = ref('')
+  const disabledRating = ref(false)
   const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
   const user=JSON.parse(localStorage.getItem('user'));
   let childAges=[]
@@ -719,7 +725,7 @@ const postRoteiro=async () =>{
   const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
   const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
   let ObjRoteiro1={
-    email:user.Email,
+    email:user.email,
     origem:Origem,
     destino: destinoString,
     dias:periodo_viagem.value,
@@ -768,10 +774,14 @@ const postRoteiro=async () =>{
     try {
       const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
       console.log(response.data)
+      if(disabledRating.value==true){
+        disabledRating.value=false;
+      }
       localStorage.setItem('roteiro', JSON.stringify(response.data));
       roteiroData.Roteiro=response.data
       console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
+      
     } catch (error) {
       alert('Erro ao Gerar Roteiro')
     }
@@ -794,7 +804,7 @@ const sendRating = async () =>{
     const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
     const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
     let ObjRoteiro1={
-    email:user.Email,
+    email:user.email,
     origem:Origem,
     destino: destinoString,
     dias:periodo_viagem.value,
@@ -825,8 +835,10 @@ const sendRating = async () =>{
     dialogRating.value=true
   }else{
     isLoading.value=true
+    console.log('objRoteiro',ObjRoteiro1);
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
     console.log(response.data);
+    disabledRating.value=true
     if(starValue.value<=3){
       RatingText.value="Obrigado por nos informar. Já estamos trabalhando para melhorar!"
     }else{
