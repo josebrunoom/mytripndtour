@@ -226,7 +226,8 @@
             <div 
             v-for="(modo, index) in lugares" 
             :key="index" 
-            class="d-inline-flex mb-2 text-start xl:w-[33.33%] w-[50%]"
+            class="d-inline-flex mb-2 text-start 2xl:w-[33.33%] w-[50%]"
+            style=""
           >
             <label class="d-flex ml-2">
               <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
