@@ -95,6 +95,7 @@
               :min-date="new Date()"
               :hide-input-icon="true"
               @date-update="transformDates(date,periodo_viagem)"
+              week-start="0"
             ></VueDatePicker>
           </div>
           <div class="col-lg-2 col-md-3 mt-1 fw-bold textosDuracao p-0 d-flex align-items-center">e retorno em</div>
@@ -617,7 +618,7 @@
           console.log("c");
           Destinos.push(place.formatted_address)
           DestinoCity.value=place.formatted_address
-          lugaresDestinosFullNames.value.push(place.formatted_address)
+          lugaresDestinosFullNames.value.push(place.name)
           showDestino.value=true
         }
       }
