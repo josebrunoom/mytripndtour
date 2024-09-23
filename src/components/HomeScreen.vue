@@ -164,8 +164,8 @@
             <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div> -->
-          <div class="col-lg-6 col-md-2 me-3 mt-2">
-            <div class="d-flex space-x-4">
+          <div class="col-lg-12 col-md-2 me-3 mt-2">
+            <div class="d-flex flex-wrap space-x-4">
               <span v-if="numChildren > 0" style="
                   font-size: 0.9rem;
                   line-height: 15px;
@@ -180,6 +180,7 @@
                   class="form-control" 
                   :placeholder="`Idade ${index + 1}`" 
                   v-model.number="childAges[index]"
+                  @input="formatAges(index)"
                   min="0"
                   max="17"
                   style="width: 4rem;"
@@ -414,8 +415,8 @@
           <div  id="pdf-content" v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
           
           <div class="col-md-12 d-flex align-items-start">
-            <span class="fw-bold pl-4" style="text-align: left9;">
-              Como foi o roteiro gerado?<br> Críticas e/ou Elogios são sempre muito bem vindos!!!
+            <span class="pl-4" style="text-align: left;">
+              <b>Como foi o roteiro gerado?</b><br> Críticas e/ou Elogios são sempre muito bem vindos!!!
             </span>
           </div>
           <div class="col-start-12 d-flex">
@@ -495,7 +496,7 @@
   const date = ref();
   const numAdults = ref()
   const numChildren = ref();
-  //const childAges = ref([]);
+  const childAges = ref([]);
   const currentIndex = ref(0);
   const isLoading=ref(false)
   const showOrigem=ref(true)
@@ -525,7 +526,7 @@
   const disabledRating = ref(false)
   const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
   const user=JSON.parse(localStorage.getItem('user'));
-  let childAges=[]
+  //let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
   /* let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */
@@ -649,24 +650,36 @@
   };
   
 watch(numChildren, (newCount) => {
-  if (newCount > childAges.length) {
-    for (let i = childAges.length; i < newCount; i++) {
-      childAges.push('');
+  if (newCount > childAges.value.length) {
+    for (let i = childAges.value.length; i < newCount; i++) {
+      childAges.value.push('');
     }
   } 
-  else if (newCount < childAges.length) {
-    childAges.splice(newCount);
+  else if (newCount < childAges.value.length) {
+    childAges.value.splice(newCount);
   }
 });
 
 const formatChildren = () => {
       //numChildren.value = parseInt(formattedChildren.value) || 0;
       console.log(numChildren.value)
-      while (childAges.length < numChildren.value) {
-        childAges.push(null);  
+      if (numChildren.value > 5) {
+        numChildren.value = 5;
+      } else if (numChildren.value < 0) {
+        numChildren.value = 0;
       }
-      while (childAges.length > numChildren.value) {
-        childAges.pop();
+      while (childAges.value.length < numChildren.value) {
+        childAges.value.push(null);  
+      }
+      while (childAges.value.length > numChildren.value) {
+        childAges.value.pop();
+      }
+    };
+const formatAges = (index) => {
+      if (childAges.value[index] > 17) {
+        childAges.value[index] = 17;
+      } else if (childAges.value[index] < 0) {
+        childAges.value[index] = 0;
       }
     };
 
@@ -726,7 +739,7 @@ const postRoteiro=async () =>{
   const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
   const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
   let ObjRoteiro1={
-    email:user.email,
+    email:user.Email,
     origem:Origem,
     destino: destinoString,
     dias:periodo_viagem.value,
@@ -734,7 +747,7 @@ const postRoteiro=async () =>{
     data_fim:FinalDate.value,
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
-    idade_menores: childAges,
+    idade_menores: childAges.value,
     interesses: selectedInteressesString,
     quero_conhecer: lugar_ConhecerString,
     nao_incluir: lugar_nIr,
@@ -805,7 +818,7 @@ const sendRating = async () =>{
     const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
     const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
     let ObjRoteiro1={
-    email:user.email,
+    email:user.Email,
     origem:Origem,
     destino: destinoString,
     dias:periodo_viagem.value,
@@ -813,7 +826,7 @@ const sendRating = async () =>{
     data_fim:FinalDate.value,
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
-    idade_menores: childAges,
+    idade_menores: childAges.value,
     interesses: selectedInteressesString,
     quero_conhecer: lugar_ConhecerString,
     nao_incluir: lugar_nIr,
@@ -836,7 +849,7 @@ const sendRating = async () =>{
     dialogRating.value=true
   }else{
     isLoading.value=true
-    console.log('objRoteiro',ObjRoteiro1);
+    console.log('objRoteiro SendRating',ObjRoteiro1);
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
     console.log(response.data);
     disabledRating.value=true
@@ -898,7 +911,7 @@ const customFormat = (date) => {
       dialogLimpar.value=false
       numAdults.value = 0;
       numChildren.value = 0;
-      childAges = [];
+      childAges.value = [];
       currentIndex.value = 0;
       showOrigem.value = true;
       showDestino.value = true;
