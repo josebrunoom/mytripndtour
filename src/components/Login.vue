@@ -113,6 +113,7 @@
             ip_origem:userIP.value
           };
           let LocalStorageUser = {
+            email: response.email,
             Email: response.email,
             Nome: response.name,
             photo: response.picture.data.url,
@@ -245,7 +246,7 @@ const processUserInfo = async (userInfo) => {
             birthday: formattedDate,
             gender: userGender,
             ip_origem: userIP.value,
-            
+            email: userEmail,
           };
   localStorage.setItem('user', JSON.stringify(LocalStorageUser));
   let objUser = {

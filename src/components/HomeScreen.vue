@@ -739,7 +739,7 @@ const postRoteiro=async () =>{
   const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
   const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
   let ObjRoteiro1={
-    email:user.Email,
+    email:user.Email ? user.Email : user.email,
     origem:Origem,
     destino: destinoString,
     dias:periodo_viagem.value,
@@ -818,7 +818,7 @@ const sendRating = async () =>{
     const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
     const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
     let ObjRoteiro1={
-    email:user.Email,
+    email:user.Email ? user.Email : user.email,
     origem:Origem,
     destino: destinoString,
     dias:periodo_viagem.value,
