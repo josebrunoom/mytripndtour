@@ -19,6 +19,13 @@
       function googleTranslateElementInit() {
         new google.translate.TranslateElement({pageLanguage: 'pt', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
       }
+      let googlePayClient
+      function onGooglePayLoaded() {
+        console.log('payment')
+        googlePayClient = new google.payments.api.PaymentsClient({
+          environment: 'TEST'
+        });
+      }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module">
@@ -89,6 +96,7 @@
   }
 } */
     </script>
+    <script async src="https://pay.google.com/gp/p/js/pay.js"></script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

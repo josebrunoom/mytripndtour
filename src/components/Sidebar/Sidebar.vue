@@ -49,6 +49,42 @@
                     </button>
                 </div>
             </div>
+            <!-- <div class="col-12 pb-3">
+                <google-pay-button
+                environment="TEST"
+                button-type="buy"
+                button-color="black"
+                v-bind:paymentRequest.prop="{
+                    apiVersion: 2,
+                    apiVersionMinor: 0,
+                    allowedPaymentMethods: [
+                    {
+                        type: 'CARD',
+                        parameters: {
+                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+                        allowedCardNetworks: ['AMEX', 'VISA', 'MASTERCARD']
+                        },
+                        tokenizationSpecification: {
+                        type: 'PAYMENT_GATEWAY',
+                        parameters: {
+                            gateway: 'example',
+                            gatewayMerchantId: 'BCR2DN4TSO64XXLK'
+                        }
+                        }
+                    }
+                    ],
+                    transactionInfo: {
+                    totalPriceStatus: 'FINAL',
+                    totalPriceLabel: 'Total',
+                    totalPrice: '100.00',
+                    currencyCode: 'BRL',
+                    countryCode: 'BR'
+                    }
+                }"
+                v-on:loadpaymentdata="onLoadPaymentData"
+                v-on:error="onError"
+                ></google-pay-button>
+            </div> -->
             <div class="col-12 pb-3">
                 <button 
                     type="button" 
@@ -214,6 +250,8 @@ import { ref, onMounted,watchEffect  } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import router from '../../routes';
 import languages from '../../data/lang';
+import "@google-pay/button-element";
+
 
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
@@ -242,7 +280,13 @@ const changeLanguage = (langCode, langName) => {
   savelang(langCode, langName);
 
   // Google Translate logic
-  document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
+  if (langCode === 'pt') {
+    // Clear the translation cookie
+    document.cookie = `googtrans=; path=/; domain=${location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+  } else {
+    // Google Translate logic
+    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
+  }
     
     // Reload the page to apply the language change
     location.reload();
@@ -251,6 +295,7 @@ onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
     console.log(route.name);
+    onGooglePayLoaded()
 })
 watchEffect(() => {
     currentRouteName.value = route.name;
