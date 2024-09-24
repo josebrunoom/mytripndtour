@@ -82,7 +82,7 @@
               @change="transformDates(date,periodo_viagem)"
             />
           </div>
-          <div class="col-lg-2 col-md-2 p-0 textosDuracao fw-bold d-flex align-items-center" >dias, com inicio em</div>
+          <div class="col-lg-3 col-md-2 p-0 textosDuracao fw-bold d-flex align-items-center" >dias, com inicio em</div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-4 p-0">
             <VueDatePicker 
               v-model="date"
