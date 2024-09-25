@@ -124,7 +124,9 @@
                 ></i>
           </div>
         <div class="row align-items-center">
-          <div class="col-lg-2 col-md-1 me-3 mt-2">
+
+          <div class="d-flex align-items-center mt-2">
+            <div class="me-2">
             <input 
               type="number" 
               class="form-control" 
@@ -134,8 +136,8 @@
               style="width: 4rem;"
             />
           </div>
-          <div class="col-lg-2 col-md-1 me-3 mt-3 fw-bold textosDuracao">Adultos e</div>
-          <div class="col-lg-2 col-md-1 me-3 mt-2">
+          <div class="fw-bold textosDuracao me-3">Adultos e</div>
+            <div class="me-2">
             <input 
               type="number" 
               class="form-control" 
@@ -147,7 +149,31 @@
               style="width: 4rem;"
             />
           </div>
-          <div class="col-lg-2 col-md-1 me-3 mt-3 fw-bold textosDuracao">Menores</div>
+          <div class="fw-bold textosDuracao">Menores,</div>
+          <div class=" mt-2">
+            <div class=" ms-auto">
+              <div class="d-flex flex-wrap space-x-4">
+              <span v-if="numChildren > 0" class="fw-bold textosDuracao mt-1 pl-4">com idades de</span>
+              <div 
+                v-for="(age, index) in numChildren" 
+                :key="index" 
+              >
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  :placeholder="`Idade ${index + 1}`" 
+                  v-model.number="childAges[index]"
+                  @input="formatAges(index)"
+                  min="0"
+                  max="17"
+                  style="width: 4rem;"
+                />
+              </div>
+            </div>
+            </div>
+          </div>
+          </div>
+
           <!-- <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
@@ -165,30 +191,7 @@
             <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div> -->
-          <div class="col-lg-12 col-md-2 me-3 mt-2">
-            <div class="d-flex flex-wrap space-x-4">
-              <span v-if="numChildren > 0" style="
-                  font-size: 0.9rem;
-                  line-height: 15px;
-                  font-weight: 700;
-              ">com idades de</span>
-              <div 
-                v-for="(age, index) in numChildren" 
-                :key="index" 
-              >
-                <input 
-                  type="number" 
-                  class="form-control" 
-                  :placeholder="`Idade ${index + 1}`" 
-                  v-model.number="childAges[index]"
-                  @input="formatAges(index)"
-                  min="0"
-                  max="17"
-                  style="width: 4rem;"
-                />
-              </div>
-            </div>
-          </div>
+
           <!-- <div v-if="numChildren > 0" class="col-12 col-md-4 mt-2">
               <input 
                 type="number" 
