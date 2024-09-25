@@ -49,6 +49,16 @@
                     </button>
                 </div>
             </div>
+            <div class="col-12 pb-3">
+                <button 
+                    type="button" 
+                    class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click="openModal"
+                >
+                <i class="fas fa-wallet"></i>
+                Comprar créditos
+                </button>
+            </div>
             <!-- <div class="col-12 pb-3">
                 <google-pay-button
                 environment="TEST"
@@ -161,6 +171,16 @@
                 </button>
                 </div>
             </div>
+            <div class="col-12 pb-3">
+                <button 
+                    type="button" 
+                    class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click="openModal"
+                >
+                <i class="fas fa-wallet"></i>
+                Comprar créditos
+                </button>
+            </div>
 
             <div class="col-12 pb-3">
                 <button 
@@ -243,6 +263,7 @@
       </v-card>
     </v-dialog>
     </div>
+    <compraModal v-if="showModal" :closeModal="closeModal"></compraModal>
 </template>
 
 <script setup>
@@ -251,6 +272,7 @@ import { RouterView, useRoute } from 'vue-router';
 import router from '../../routes';
 import languages from '../../data/lang';
 import "@google-pay/button-element";
+import compraModal from '../compraModal.vue';
 
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -261,6 +283,7 @@ const img = ref('')
 const dialog=ref(false)
 const dialogSair=ref(false)
 const isSidebarOpen=ref(false)
+const showModal=ref(false)
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 
@@ -273,6 +296,12 @@ const savelang = (langCode, langName) => {
     console.log(languageName.value)
 }
 
+const openModal = () =>{
+    showModal.value=true
+}
+const closeModal=()=>{
+    showModal.value=false
+}
 
 const changeLanguage = (langCode, langName) => {
 
@@ -295,7 +324,6 @@ onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
     console.log(route.name);
-    onGooglePayLoaded()
 })
 watchEffect(() => {
     currentRouteName.value = route.name;
