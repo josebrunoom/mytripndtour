@@ -302,22 +302,10 @@ const openModal = () =>{
 const closeModal=()=>{
     showModal.value=false
 }
-
 const changeLanguage = (langCode, langName) => {
-
-  // Save selected language
-  savelang(langCode, langName);
-
-  // Google Translate logic
-  if (langCode === 'pt') {
-    // Clear the translation cookie
-    document.cookie = `googtrans=; path=/; domain=${location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
-  } else {
-    // Google Translate logic
-    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
-  }
-    
-    // Reload the page to apply the language change
+    console.log('Langcode',langCode, 'langname', langName)
+    document.cookie = `googtrans=/${localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt' }/${langCode}; path=/; domain=${location.hostname}`;
+    savelang(langCode, langName);
     location.reload();
 };
 onMounted(() => {
