@@ -9,7 +9,7 @@
             </div>
             <div class="space-y-4">
                 <p class="text-lg">Escolha a quantidade de créditos que deseja comprar:</p>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-3 gap-4">
                 <button
                     v-for="(credit, index) in creditOptions"
                     :key="index"
@@ -24,8 +24,19 @@
                 </button>
                 <!-- <input type="number" class="form-control"> -->
                 </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <span>Ou digite a quantidade de Créditos: </span>
+                    <input type="number" class="form-control" v-model="selectedCredit" >
+                </div> 
             </div>
             <div class="mt-6 flex justify-end" :disabled="selectedCredit === null">
+<!--                 <button
+                    v-if="buttonSwitch == true"
+                    @click="generatePixQRCode"
+                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 disabled:bg-gray-300 pr-2"
+                >
+                    Pagar com Pix
+                </button> -->
                 <google-pay-button
                 v-if="buttonSwitch==true"
                 environment="TEST"
@@ -100,13 +111,14 @@ const confirmPurchase = () => {
 };
 const onLoadPaymentData=(event) => {
     console.log("load payment data", event.detail);
+    props.closeModal(); 
 }
 const onError=(event) => {
     console.log("onError", event.detail);
 }
 const changeButton=()=>{
     buttonSwitch.value=true
-    switch(selectCredit){
+    switch(selectedCredit.value){
         case 5:
         valueToPay.value="5.00"
         break
@@ -116,8 +128,13 @@ const changeButton=()=>{
         case 20:
         valueToPay.value="20.00"
         break
+        default: valueToPay.value=toString(selectedCredit.value)
     }
 }
+const generatePixQRCode = () => {
+    const pixLink = `https://example-pix-api.com/generate?amount=${selectedCredit.value}`;
+    pixQRCode.value = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(pixLink)}&size=150x150`;
+};
 </script>
 
 <style scoped>
