@@ -303,11 +303,11 @@ const closeModal=()=>{
     showModal.value=false
 }
 const changeLanguage = (langCode, langName) => {
-    document.cookie = `googtrans=; path=/; domain=.mytripntour.com; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    document.cookie = `googtrans=; path=/; domain=${location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     console.log('Langcode',langCode, 'langname', langName)
-    document.cookie = `googtrans=/${localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt' }/${langCode}; path=/; domain=.mytripntour.com`;
+    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
     savelang(langCode, langName);
-    location.reload();
+    window.location.reload(true); 
 };
 onMounted(() => {
     name.value=user.Nome
