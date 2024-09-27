@@ -307,7 +307,7 @@ const changeLanguage = (langCode, langName) => {
     console.log('Langcode',langCode, 'langname', langName)
     document.cookie = `googtrans=/${localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt' }/${langCode}; path=/; domain=.mytripntour.com`;
     savelang(langCode, langName);
-    window.location.href = window.location.href.split("?")[0] + `?v=${new Date().getTime()}`;
+    location.reload();
 };
 onMounted(() => {
     name.value=user.Nome
