@@ -1,11 +1,19 @@
 <script setup>
 import { RouterView, useRoute } from 'vue-router';
+import { onMounted } from 'vue';
 import HelloWorld from './components/HelloWorld.vue'
 import Sidebar from './components/Sidebar/Sidebar.vue';
 import { computed } from 'vue'
 const route=useRoute()
 const showSidebar = computed(() => route.name !== 'Login')
-
+onMounted(() => {
+  window.googleTranslateElementInit = () => {
+    new window.google.translate.TranslateElement({
+      pageLanguage: 'pt', // Change to your default language
+      layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+    }, 'google_translate_element');
+  };
+});
 </script>
 
 <template>

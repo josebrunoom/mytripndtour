@@ -287,7 +287,6 @@ const showModal=ref(false)
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 
-
 const savelang = (langCode, langName) => {
     console.log('read')
     localStorage.setItem('lang', langCode);
