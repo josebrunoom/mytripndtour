@@ -1,5 +1,5 @@
 <template>
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-9999">
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-9999 overflow-y-auto">
         <div class="bg-white rounded-lg shadow-lg p-8 w-2/3 max-w-lg relative">
             <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-bold">Adicionar Créditos</h2>
@@ -37,41 +37,7 @@
                 >
                     Pagar com Pix
                 </button> -->
-                <google-pay-button
-                v-if="buttonSwitch==true"
-                environment="TEST"
-                button-type="buy"
-                button-color="black"
-                v-bind:paymentRequest.prop="{
-                    apiVersion: 2,
-                    apiVersionMinor: 0,
-                    allowedPaymentMethods: [
-                    {
-                        type: 'CARD',
-                        parameters: {
-                        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-                        allowedCardNetworks: ['AMEX', 'VISA', 'MASTERCARD']
-                        },
-                        tokenizationSpecification: {
-                        type: 'PAYMENT_GATEWAY',
-                        parameters: {
-                            gateway: 'example',
-                            gatewayMerchantId: 'BCR2DN4TSO64XXLK'
-                        }
-                        }
-                    }
-                    ],
-                    transactionInfo: {
-                    totalPriceStatus: 'FINAL',
-                    totalPriceLabel: 'Total',
-                    totalPrice: valueToPay,
-                    currencyCode: 'BRL',
-                    countryCode: 'BR'
-                    }
-                }"
-                v-on:loadpaymentdata="onLoadPaymentData"
-                v-on:error="onError"
-                ></google-pay-button>
+                <div v-show="buttonSwitch==true" id="paypal-button-container" ref="paypalButtonContainer"></div>
                 <button
                 v-if="buttonSwitch==false"
                 @click="changeButton"
@@ -80,13 +46,14 @@
                 >
                 Confirmar Compra
                 </button>
+                
             </div>
         </div>
         </div>
 </template>
   
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import "@google-pay/button-element";
 
 const props = defineProps({
@@ -99,7 +66,43 @@ const creditOptions = [5, 10, 20];
 const selectedCredit = ref(null);
 const buttonSwitch=ref(false)
 const valueToPay=ref("1.00")
+const clientId = 'AZ26vpUzl4-BlJkNfH1maGfL7uGrHBDhi4HSCa5STbECJKneWPphBGxqmVdhZNzrM9ClD3mO8MX1Ybma';
+const paypalButtonContainer = ref(null);
 
+onMounted(async () => {
+    await loadPaypalScript(clientId);
+    if (paypalButtonContainer.value) {
+        window.paypal.Buttons({
+        createOrder: function (data, actions) {
+            return actions.order.create({
+            purchase_units: [{
+                amount: {
+                value: valueToPay.value 
+                }
+            }]
+            });
+        },
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+            });
+        },
+        onError: function (err) {
+            console.error('Error occurred during PayPal transaction', err);
+        }
+        }).render(paypalButtonContainer.value);  
+    } else {
+        console.error('PayPal button container not found!');
+    }
+});
+const loadPaypalScript = (clientId) => {
+    return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+    script.onload = resolve;
+    document.head.appendChild(script);
+    });
+};
 const selectCredit = (credit) => {
     selectedCredit.value = credit;
 };
