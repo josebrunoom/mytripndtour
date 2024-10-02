@@ -84,7 +84,8 @@ onMounted(async () => {
         },
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
-            alert('Transaction completed by ' + details.payer.name.given_name);
+            //alert('Transaction completed by ' + details.payer.name.given_name);
+            console.log(details)
             });
         },
         onError: function (err) {
@@ -98,7 +99,7 @@ onMounted(async () => {
 const loadPaypalScript = (clientId) => {
     return new Promise((resolve) => {
     const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=BRL`;
     script.onload = resolve;
     document.head.appendChild(script);
     });
