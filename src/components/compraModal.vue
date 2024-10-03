@@ -49,13 +49,14 @@
                 
             </div>
         </div>
+        
         </div>
 </template>
-  
+
 <script setup>
 import { ref, onMounted } from 'vue';
-import "@google-pay/button-element";
 
+const user = JSON.parse(localStorage.getItem('user'));
 const props = defineProps({
     closeModal: {
         type: Function,
@@ -78,18 +79,22 @@ onMounted(async () => {
             purchase_units: [{
                 amount: {
                 value: valueToPay.value 
-                }
+                },
+                custom_id: user.Email ? user.Email : user.email
             }]
             });
         },
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
-            //alert('Transaction completed by ' + details.payer.name.given_name);
+            alert('Obrigado pela sua compra!')
+            props.closeModal(); 
             console.log(details)
             });
         },
         onError: function (err) {
             console.error('Error occurred during PayPal transaction', err);
+            alert('Erro ao concluir compra')
+            props.closeModal(); 
         }
         }).render(paypalButtonContainer.value);  
     } else {
@@ -122,18 +127,9 @@ const onError=(event) => {
 }
 const changeButton=()=>{
     buttonSwitch.value=true
-    switch(selectedCredit.value){
-        case 5:
-        valueToPay.value="5.00"
-        break
-        case 10:
-        valueToPay.value="10.00"
-        break
-        case 20:
-        valueToPay.value="20.00"
-        break
-        default: valueToPay.value=toString(selectedCredit.value)
-    }
+    const credtitVal = 0.10
+    valueToPay.value = selectedCredit.value * credtitVal
+    console.log(valueToPay.value)
 }
 const generatePixQRCode = () => {
     const pixLink = `https://example-pix-api.com/generate?amount=${selectedCredit.value}`;

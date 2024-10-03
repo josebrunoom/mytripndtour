@@ -247,6 +247,7 @@ const processUserInfo = async (userInfo) => {
             gender: userGender,
             ip_origem: userIP.value,
             email: userEmail,
+            creditos: 10
           };
   localStorage.setItem('user', JSON.stringify(LocalStorageUser));
   let objUser = {

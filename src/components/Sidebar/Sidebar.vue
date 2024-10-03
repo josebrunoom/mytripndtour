@@ -215,6 +215,7 @@
 
                 <!-- Right-aligned content -->
                 <div class="d-flex align-items-center">
+                    <span class="fw-bold pr-5">Saldo: {{ saldo }} créditos</span>
                 <div class="dropdown me-3">
                     <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-globe"></i> {{ languageName }}
@@ -277,6 +278,7 @@ import compraModal from '../compraModal.vue';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
+const saldo = ref(null)
 const route = useRoute();
 const currentRouteName=ref(route.name)
 const img = ref('')
@@ -311,6 +313,7 @@ const changeLanguage = (langCode, langName) => {
 onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
+    saldo.value=user.creditos
     console.log(route.name);
 })
 watchEffect(() => {
