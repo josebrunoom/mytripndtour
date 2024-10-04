@@ -112,18 +112,8 @@
             idioma:'PT',
             ip_origem:userIP.value
           };
-          let LocalStorageUser = {
-            email: response.email,
-            Email: response.email,
-            Nome: response.name,
-            photo: response.picture.data.url,
-            IdentificadorUnico: response.id,
-            MetodoAutenticacao: 'Facebook',
-            birthday: response.birthday ? response.birthday : null,
-            gender: response.gender ? response.gender : null,
-          };
-          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-          await sendUser(objUser);
+
+          await sendUser(objUser, response, 'facebook');
         } else {
           console.error('Error fetching email:', response.error);
         }
@@ -233,23 +223,11 @@ const requestNewGoogleLogin = () => {
 const processUserInfo = async (userInfo) => {
   console.log(userInfo)
   const userEmail = userInfo.emailAddresses[0].value;
-  const userName = userInfo.names[0].displayName;
-  const userPicture = userInfo.photos[0].url;
-  const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
-  const userGender = userInfo.genders ? userInfo.genders[0].value : null;
-  const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
-  const LocalStorageUser = {
-            Email: userEmail,
-            name: userName,
-            photo: userPicture,
-            MetodoAutenticacao: 'Google',
-            birthday: formattedDate,
-            gender: userGender,
-            ip_origem: userIP.value,
-            email: userEmail,
-            creditos: 10
-          };
-  localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      const userName = userInfo.names[0].displayName;
+      const userPicture = userInfo.photos[0].url;
+      const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+      const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
   let objUser = {
             email: userEmail,
             name: userName,
@@ -260,9 +238,9 @@ const processUserInfo = async (userInfo) => {
             idioma:'PT',
             ip_origem:userIP.value
           };
-          await sendUser(objUser)
+          await sendUser(objUser, userInfo, 'google')
 };
-const sendUser=async(user)=>{
+const sendUser=async(user, userInfo, access_type)=>{ 
   isLoading.value=true
   try {
     /* const response = await fetch('https://newlogin-lm7edjmduq-uc.a.run.app', {
@@ -278,6 +256,44 @@ const sendUser=async(user)=>{
       localStorage.setItem('token', response.data.token)
       const tokenDecoded= jwtDecode(response.data.token)
       console.log(tokenDecoded)
+      if(access_type=='facebook'){
+      let LocalStorageUser = {
+              email: userInfo.email,
+              Email: userInfo.email,
+              Nome: userInfo.name,
+              photo: userInfo.picture.data.url,
+              IdentificadorUnico: userInfo.id,
+              MetodoAutenticacao: 'Facebook',
+              birthday: userInfo.birthday ? userInfo.birthday : null,
+              gender: userInfo.gender ? userInfo.gender : null,
+              saldouser: response.data.saldouser,
+              vlrpdf: response.data.vlrpdf,
+              vlrpesquisa: response.data.vlrpesquisa,
+            };
+            localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+    } else if(access_type=='google'){
+      const userEmail = userInfo.emailAddresses[0].value;
+      const userName = userInfo.names[0].displayName;
+      const userPicture = userInfo.photos[0].url;
+      const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+      const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      const LocalStorageUser = {
+                Email: userEmail,
+                name: userName,
+                photo: userPicture,
+                MetodoAutenticacao: 'Google',
+                birthday: formattedDate,
+                gender: userGender,
+                ip_origem: userIP.value,
+                email: userEmail,
+                saldouser: /* response.data.saldouser */ 4.00,
+                vlrpdf: /* response.data.vlrpdf */5.00,
+                vlrpesquisa: /* response.data.vlrpesquisa */1.00,
+              };
+              console.log(LocalStorageUser)
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+    }
       router.push('/mytrip/home');
     } else{
       alert('Aceite os termos para continuar')

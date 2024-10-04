@@ -207,7 +207,7 @@
       </div>
     </div>
     </div> <!-- Fim Free -->
-    <div> <!--  Começo Premium -->
+    <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
           <span class="h5 text-left"><b>Premium</b> <i style="font-style: italic;
@@ -231,7 +231,7 @@
             <div 
             v-for="(modo, index) in lugares" 
             :key="index" 
-            class="d-inline-flex mb-2 text-start 2xl:w-[33.33%] w-[50%]"
+            class="d-inline-flex mb-2 text-start 2xl:w-[33.33%] w-[50%] text-sm"
             style=""
           >
             <label class="d-flex ml-2">
@@ -363,7 +363,7 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
-      <div class="items-start text-start">
+      <div class="items-start text-start" id="pdf-button">
         <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
       </div>
       
@@ -480,6 +480,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogVlr" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>{{ vlrModalText }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -492,7 +502,7 @@
   import axios from 'axios';
   import moment from 'moment';
   import Loading from './Loading.vue';
-  import { marked } from 'marked';
+  import { marked, use } from 'marked';
   import html2pdf from 'html2pdf.js';
   import Tooltip from 'primevue/tooltip';
 
@@ -528,6 +538,8 @@
   const dialogRating = ref(false)
   const RatingText = ref('')
   const disabledRating = ref(false)
+  const vlrModalText = ref('')
+  const dialogVlr = ref(false)
   const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
   const user=JSON.parse(localStorage.getItem('user'));
   //let childAges=[]
@@ -742,6 +754,7 @@ const postRoteiro=async () =>{
   const destinoString = Destinos.map(location => `'${location}'`).join(', ');
   const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
   const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
+  const lugar_nIrString = lugar_nIr.map(location => `'${location}'`).join(', ');
   let ObjRoteiro1={
     email:user.Email ? user.Email : user.email,
     origem:Origem,
@@ -754,7 +767,7 @@ const postRoteiro=async () =>{
     idade_menores: childAges.value,
     interesses: selectedInteressesString,
     quero_conhecer: lugar_ConhecerString,
-    nao_incluir: lugar_nIr,
+    nao_incluir: lugar_nIrString,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
     idioma: lang ? lang : "pt",
@@ -762,7 +775,7 @@ const postRoteiro=async () =>{
   }
   console.log(date.value)
   
-  console.log(ObjRoteiro1)
+  console.log('Obj Roteiro',ObjRoteiro1)
 /*   if(!ObjRoteiro1.origem || !ObjRoteiro1.destino || !ObjRoteiro1.dias || !ObjRoteiro1.data_inicio || !ObjRoteiro1.qtd_adultos){
     dialog.value = true;
     isLoading.value = false; 
@@ -787,8 +800,16 @@ const postRoteiro=async () =>{
     isLoading.value = false; 
     errMsg.value='Adultos'
   }
-
   else{
+    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1){
+    let saldoValido = haveSaldo()
+    if(saldoValido==false){
+        dialogVlr.value=true
+        isLoading.value = false; 
+        vlrModalText.value='Créditos insuficientes para usar serviços premium.'
+        return;
+    }
+  }
     try {
       const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
       console.log(response.data)
@@ -799,7 +820,30 @@ const postRoteiro=async () =>{
       roteiroData.Roteiro=response.data
       console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
-      
+      let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            idioma:'PT',
+            ip_origem:user.ip_origem
+          };
+          const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+          const LocalStorageUser = {
+                Email: user.Email,
+                name: user.name,
+                photo: user.photo,
+                MetodoAutenticacao: user.MetodoAutenticacao,
+                birthday: user.birthday,
+                gender: user.gender,
+                ip_origem: user.ip_origem,
+                email: user.email,
+                saldouser: responseUser.data.saldouser ,
+                vlrpdf: responseUser.data.vlrpdf,
+                vlrpesquisa: responseUser.data.vlrpesquisa,
+              };
+              console.log(LocalStorageUser)
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
     } catch (error) {
       alert('Erro ao Gerar Roteiro')
     }
@@ -808,7 +852,6 @@ const postRoteiro=async () =>{
       isRoteiro.value = false;
     }
   }
-  
 }
 
 var iframe = document.querySelector('iframe.skiptranslate');
@@ -950,17 +993,30 @@ const customFormat = (date) => {
     };
 
     const downloadPdf = () => {
-      const element = document.getElementById('pdf-content'); 
-      const opt = {
-        margin:       1,
-        filename:     'MyTripNTour_Roteiro.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(element).set(opt).save();
-    }
+      if(user.saldouser<user.vlrpdf){
+        dialogVlr.value=true
+        vlrModalText.value='Créditos insuficientes para criar pdf'
+      }else{
+        const element = document.getElementById('pdf-content'); 
+        const opt = {
+          margin:       1,
+          filename:     'MyTripNTour_Roteiro.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2 },
+          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().from(element).set(opt).save();
+      }
 
+    }
+  const haveSaldo=()=>{
+    console.log('saldouser', user.saldouser, 'valorpesquisa', user.vlrpesquisa)
+    if (user.saldouser<user.vlrpesquisa) {
+      return false
+    } else {
+      return true
+    }
+  }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');

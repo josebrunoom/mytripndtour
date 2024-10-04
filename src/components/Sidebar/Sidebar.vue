@@ -268,7 +268,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted,watchEffect  } from 'vue';
+import { ref, onMounted,watchEffect, onUnmounted  } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import router from '../../routes';
 import languages from '../../data/lang';
@@ -313,9 +313,20 @@ const changeLanguage = (langCode, langName) => {
 onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
-    saldo.value=user.creditos
+    saldo.value=user.saldouser
     console.log(route.name);
+    const intervalId = setInterval(checkUserSaldo, 1000);
+    onUnmounted(() => {
+    clearInterval(intervalId);
+    });
 })
+const checkUserSaldo = () => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser.saldouser !== saldo.value) {
+        saldo.value = storedUser.saldouser;
+        console.log("User saldo updated:", saldo.value);
+    }
+};
 watchEffect(() => {
     currentRouteName.value = route.name;
     console.log('Current route name:', currentRouteName.value);
