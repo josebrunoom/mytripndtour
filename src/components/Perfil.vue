@@ -81,10 +81,10 @@
   const selectedGender=ref('')
   const date=ref('')
   const dialog=ref(false)
-  let img, perfil
+  let img
   onMounted(() => {
     console.log(user)
-    name.value=user.Nome
+    name.value=user.name
     if (user.birthday) {
       const formattedDate = moment(user.birthday, 'DD/MM/YYYY').toDate();
       birthday.value = formattedDate;
