@@ -364,7 +364,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" id="pdf-button">
-        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf"> Baixar como pdf </button>
+        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="dialogPDF=true">  Gerar PDF e Armazenar </button>
       </div>
       
     </div>
@@ -486,10 +486,26 @@
         <v-card-text>{{ vlrModalText }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">OK</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">cancelar</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">Adicionar Créditos</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogPDF" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>Qual será o nome do Roteiro?</v-card-text>
+        <div class="flex justify-center">
+        <input type="text" class="form-control w-[75%]" placeholder="Ex: Viagem" v-model="PDFname">
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogPDF=false">cancelar</v-btn>
+          <v-btn color="[#78c0d6]" text @click="downloadPdf">Gerar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <compraModal v-if="showModal" :closeModal="closeModal"></compraModal>
   </div>
 </template>
 
@@ -505,6 +521,7 @@
   import { marked, use } from 'marked';
   import html2pdf from 'html2pdf.js';
   import Tooltip from 'primevue/tooltip';
+  import compraModal from './compraModal.vue';
 
 
   const date = ref();
@@ -540,6 +557,9 @@
   const disabledRating = ref(false)
   const vlrModalText = ref('')
   const dialogVlr = ref(false)
+  const dialogPDF = ref(false)
+  const PDFname = ref('')
+  const showModal=ref(false)
   const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
   const user=JSON.parse(localStorage.getItem('user'));
   //let childAges=[]
@@ -559,6 +579,10 @@
   let location3;
   let location4;
   let lang = null;
+
+  const closeModal=()=>{
+    showModal.value=false
+  }
 
   watch(date, (newValue) => {
     transformDates(newValue, periodo_viagem.value)
@@ -806,7 +830,7 @@ const postRoteiro=async () =>{
     if(saldoValido==false){
         dialogVlr.value=true
         isLoading.value = false; 
-        vlrModalText.value='Créditos insuficientes para usar serviços premium.'
+        vlrModalText.value='Para usar campos premium são necessários créditos! Quer adicionar?'
         return;
     }
   }
@@ -993,14 +1017,21 @@ const customFormat = (date) => {
     };
 
     const downloadPdf = () => {
-      if(user.saldouser<user.vlrpdf){
+      if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
+        console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
         dialogVlr.value=true
-        vlrModalText.value='Créditos insuficientes para criar pdf'
+        vlrModalText.value='Para gerar um PDF são necessários créditos! Quer adicionar?'
       }else{
+        const obj = {
+          email: user.Email ? user.Email : user.email,
+          vlrpdf: user.vlrpdf,
+          vlrpesquisa: user.vlrpesquisa,
+          texto_roteiro:roteiroData.Roteiro.Roteiro,
+        }
         const element = document.getElementById('pdf-content'); 
         const opt = {
           margin:       1,
-          filename:     'MyTripNTour_Roteiro.pdf',
+          filename:     `${PDFname.value}.pdf`,
           image:        { type: 'jpeg', quality: 0.98 },
           html2canvas:  { scale: 2 },
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -1011,7 +1042,7 @@ const customFormat = (date) => {
     }
   const haveSaldo=()=>{
     console.log('saldouser', user.saldouser, 'valorpesquisa', user.vlrpesquisa)
-    if (user.saldouser<user.vlrpesquisa) {
+    if (typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpesquisa) : user.saldouser > user.vlrpesquisa) {
       return false
     } else {
       return true
