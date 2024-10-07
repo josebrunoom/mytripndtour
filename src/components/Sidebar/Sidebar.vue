@@ -49,7 +49,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-12 pb-3">
+            <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
                     class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
@@ -58,7 +58,7 @@
                 <i class="fas fa-wallet"></i>
                 Comprar créditos
                 </button>
-            </div>
+            </div> -->
             <!-- <div class="col-12 pb-3">
                 <google-pay-button
                 environment="TEST"
@@ -171,7 +171,7 @@
                 </button>
                 </div>
             </div>
-            <div class="col-12 pb-3">
+            <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
                     class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
@@ -180,7 +180,7 @@
                 <i class="fas fa-wallet"></i>
                 Comprar créditos
                 </button>
-            </div>
+            </div> -->
 
             <div class="col-12 pb-3">
                 <button 
