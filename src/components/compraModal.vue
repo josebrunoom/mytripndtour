@@ -1,5 +1,5 @@
 <template>
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-9999 overflow-y-auto">
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-[9999] overflow-y-auto">
         <div class="bg-white rounded-lg shadow-lg p-8 w-2/3 max-w-lg relative">
             <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-bold">Adicionar Créditos</h2>
