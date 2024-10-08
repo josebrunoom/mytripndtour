@@ -797,6 +797,9 @@ const postRoteiro=async () =>{
     idioma: lang ? lang : "pt",
     ip_origem: user.ip_origem
   }
+  if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){
+
+  }
   console.log(date.value)
   
   console.log('Obj Roteiro',ObjRoteiro1)
@@ -835,7 +838,29 @@ const postRoteiro=async () =>{
     }
   }
     try {
-      const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
+      if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){ /* if is admin testing */
+        let ObjRoteiroAdmin={
+          email:user.Email ? user.Email : user.email,
+          origem:Origem,
+          destino: destinoString,
+          dias:periodo_viagem.value,
+          data_inicio: transformDate(date.value),
+          data_fim:FinalDate.value,
+          qtd_adultos: numAdults.value,
+          qtd_menores: numChildren.value ? numChildren.value : 0,
+          idade_menores: childAges.value,
+          interesses: selectedInteressesString,
+          quero_conhecer: lugar_ConhecerString,
+          nao_incluir: lugar_nIrString,
+          meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
+          tipo_hospedagem:hospedagemSelecionada.value,
+          idioma: lang ? lang : "pt",
+          ip_origem: user.ip_origem,
+          idAgent_start: localStorage.getItem('idAgent_start'),
+          idAgent_end: localStorage.getItem('idAgent_end')
+        }
+        console.log('admin',ObjRoteiroAdmin)
+        const response = await axios.post('https://mytripntour-dev-667280034337.us-central1.run.app/', ObjRoteiroAdmin)
       console.log(response.data)
       if(disabledRating.value==true){
         disabledRating.value=false;
@@ -868,6 +893,41 @@ const postRoteiro=async () =>{
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      }else{
+        const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
+      console.log(response.data)
+      if(disabledRating.value==true){
+        disabledRating.value=false;
+      }
+      localStorage.setItem('roteiro', JSON.stringify(response.data));
+      roteiroData.Roteiro=response.data
+      console.log(ObjRoteiro1.origem);
+      document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
+      let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            idioma:'PT',
+            ip_origem:user.ip_origem
+          };
+          const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+          const LocalStorageUser = {
+                Email: user.Email,
+                name: user.name,
+                photo: user.photo,
+                MetodoAutenticacao: user.MetodoAutenticacao,
+                birthday: user.birthday,
+                gender: user.gender,
+                ip_origem: user.ip_origem,
+                email: user.email,
+                saldouser: responseUser.data.saldouser ,
+                vlrpdf: responseUser.data.vlrpdf,
+                vlrpesquisa: responseUser.data.vlrpesquisa,
+              };
+              console.log(LocalStorageUser)
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      }
     } catch (error) {
       alert('Erro ao Gerar Roteiro')
     }

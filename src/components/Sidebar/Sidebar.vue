@@ -211,6 +211,19 @@
                 >
                     <ion-icon name="reorder-three-outline" size="large"></ion-icon>
                 </button>
+                <div v-if="isAdmin" class="pr-2">
+                    <input type="radio" value="dev" v-model="optDev">
+                    <span class="pr-3">DEV</span>
+                    <input type="radio" value="prod" v-model="optDev">
+                    <span>PROD</span>
+                </div>
+                <div v-if="optDev=='dev'" class="d-flex">
+                    <span>idAgent_start: </span>
+                    <input type="number" v-model="idAgent_start" class="form-control" @change="saveIdAgent">
+                    <span>idAgent_end: </span>
+                    <input type="number" v-model="idAgent_end" class="form-control" @change="saveIdAgent">
+                </div>
+
                 </div>
 
                 <!-- Right-aligned content -->
@@ -286,8 +299,17 @@ const dialog=ref(false)
 const dialogSair=ref(false)
 const isSidebarOpen=ref(false)
 const showModal=ref(false)
+const isAdmin=ref(false)
+const optDev=ref('prod')
+const idAgent_start=ref(null)
+const idAgent_end=ref(null)
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
+
+function saveIdAgent(){
+    localStorage.setItem('idAgent_start', idAgent_start.value);
+    localStorage.setItem('idAgent_end', idAgent_end.value);
+}
 
 const savelang = (langCode, langName) => {
     console.log('read')
@@ -315,6 +337,9 @@ onMounted(() => {
     img.value=user.photo
     saldo.value=user.saldouser
     console.log(route.name);
+    if(user.email.includes('cezar.santos') || user.Email.includes('cezar.santos')){
+        isAdmin.value=true
+    }
     const intervalId = setInterval(checkUserSaldo, 1000);
     onUnmounted(() => {
     clearInterval(intervalId);
