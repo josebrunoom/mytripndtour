@@ -338,7 +338,7 @@ onMounted(() => {
     img.value=user.photo
     saldo.value=user.saldouser
     console.log(route.name);
-    if(user.email.includes('cezar.santos') || user.Email.includes('cezar.santos')){
+    if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos')){
         isAdmin.value=true
     }
     const intervalId = setInterval(checkUserSaldo, 1000);
