@@ -303,6 +303,7 @@ const isAdmin=ref(false)
 const optDev=ref('prod')
 const idAgent_start=ref(null)
 const idAgent_end=ref(null)
+let teste
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 
