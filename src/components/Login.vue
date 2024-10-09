@@ -287,9 +287,9 @@ const sendUser=async(user, userInfo, access_type)=>{
                 gender: userGender,
                 ip_origem: userIP.value,
                 email: userEmail,
-                saldouser: /* response.data.saldouser */ 4.00,
-                vlrpdf: /* response.data.vlrpdf */5.00,
-                vlrpesquisa: /* response.data.vlrpesquisa */1.00,
+                saldouser: response.data.saldouser,
+                vlrpdf: response.data.vlrpdf,
+                vlrpesquisa: response.data.vlrpesquisa,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));

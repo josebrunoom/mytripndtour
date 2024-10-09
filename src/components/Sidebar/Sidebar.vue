@@ -303,7 +303,6 @@ const isAdmin=ref(false)
 const optDev=ref('prod')
 const idAgent_start=ref(null)
 const idAgent_end=ref(null)
-let teste
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 
@@ -336,7 +335,7 @@ const changeLanguage = (langCode, langName) => {
 onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
-    saldo.value=user.saldouser
+    saldo.value=convertNumberFormat(user.saldouser)
     console.log(route.name);
     if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos')){
         isAdmin.value=true
@@ -349,7 +348,7 @@ onMounted(() => {
 const checkUserSaldo = () => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (storedUser.saldouser !== saldo.value) {
-        saldo.value = storedUser.saldouser;
+        saldo.value = convertNumberFormat(storedUser.saldouser)
         console.log("User saldo updated:", saldo.value);
     }
 };
@@ -374,6 +373,16 @@ const sairUser = () =>{
     localStorage.removeItem('user');
     
     window.location.href= 'https://mytripntour.com/'
+}
+function convertNumberFormat(value) {
+    if (value.includes(",")) {
+        return value.replace(",", ".");
+    }
+    else if (value.includes(".")) {
+        return value.replace(".", ",");
+    }
+    console.log('val', value)
+    return value;
 }
 </script>
 
