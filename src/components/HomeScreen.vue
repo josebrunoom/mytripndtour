@@ -1081,17 +1081,36 @@ const customFormat = (date) => {
       console.log(selectedInteresses)
     };
 
-    const downloadPdf = () => {
+    const downloadPdf = async () => {
       if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
         console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
         dialogVlr.value=true
         vlrModalText.value='Para gerar um PDF são necessários créditos! Quer adicionar?'
       }else{
-        const obj = {
-          email: user.Email ? user.Email : user.email,
-          vlrpdf: user.vlrpdf,
-          vlrpesquisa: user.vlrpesquisa,
-          texto_roteiro:roteiroData.Roteiro.Roteiro,
+        const destinoString = Destinos.map(location => `'${location}'`).join(', ');
+        const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
+        const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
+        let ObjRoteiro1={
+          email:user.Email ? user.Email : user.email,
+          origem:Origem,
+          destino: destinoString,
+          dias:periodo_viagem.value,
+          data_inicio: transformDate(date.value),
+          data_fim:FinalDate.value,
+          qtd_adultos: numAdults.value,
+          qtd_menores: numChildren.value ? numChildren.value : 0,
+          idade_menores: childAges.value,
+          interesses: selectedInteressesString,
+          quero_conhecer: lugar_ConhecerString,
+          nao_incluir: lugar_nIr,
+          meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
+          tipo_hospedagem:hospedagemSelecionada.value,
+          idioma: lang ? lang : "PT-BR",
+          ip_origem: user.ip_origem,
+          txt_Roteiro:roteiroData.Roteiro.Roteiro,
+          data_fim:FinalDate.value,
+          nome_roteiro: PDFname.value,
+          tpacao: 'i',
         }
         const element = document.getElementById('pdf-content'); 
         const opt = {
@@ -1102,6 +1121,7 @@ const customFormat = (date) => {
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save();
+        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app  ', ObjRoteiro1)
       }
 
     }
