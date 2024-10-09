@@ -64,51 +64,56 @@
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">Duração da Viagem</h2>
             <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: 'Quantos dias você quer fugir da rotina?<br> Escolha a duração dessa escapada e deixe o resto com a gente!', escape: false }"
-                ></i>
+              class="bi bi-question-circle-fill mb-2 pl-1"
+              data-toggle="tooltip" 
+              data-placement="top"
+              v-tooltip.top="{ value: 'Quantos dias você quer fugir da rotina?<br> Escolha a duração dessa escapada e deixe o resto com a gente!', escape: false }"
+            ></i>
           </div>
-        <div class="row">
-          <div class="col-lg-2 col-md-2 col-sm-2 col-4 p-0">
-            <input 
-              type="number" 
-              class="form-control" 
-              placeholder="0" 
-              v-model="periodo_viagem"
-              min="0"
-              style="width: 100%; font-size:0.9rem"
-              @change="transformDates(date,periodo_viagem)"
-            />
-          </div>
-          <div class="col-lg-3 col-md-2 p-0 textosDuracao fw-bold d-flex align-items-center" >dias, com inicio em</div>
-          <div class="col-lg-2 col-md-2 col-sm-2 col-4 p-0">
-            <VueDatePicker 
-              v-model="date"
-              locale="pt-BR"
-              :enable-time-picker="false"
-              class="w-100"
-              style="z-index: 999;"
-              :format="customFormat"
-              auto-apply
-              :min-date="new Date()"
-              :hide-input-icon="true"
-              @date-update="transformDates(date,periodo_viagem)"
-              week-start="0"
-            ></VueDatePicker>
-          </div>
-          <div class="col-lg-2 col-md-3 mt-1 fw-bold textosDuracao p-0 d-flex align-items-center">e retorno em</div>
-          <div v-if="date && periodo_viagem" class="col-lg-3 col-md-2 p-0">
-            <span class="fw-bold">
-              {{ FinalDate }}
-            </span>
+
+          <!-- Flexbox layout for the inputs -->
+          <div class="d-flex flex-wrap align-items-center">
+            <!-- Travel duration input -->
+            <div class="me-2" style="flex: 1 1 100px;">
+              <input 
+                type="number" 
+                class="form-control form-control-sm" 
+                placeholder="0" 
+                v-model="periodo_viagem"
+                min="0"
+                @change="transformDates(date, periodo_viagem)"
+                style="width: 100%; font-size: 0.9rem;"
+              />
+            </div>
+            
+            <!-- Text next to duration input -->
+            <div class="fw-bold me-2 textosDuracao">dias, com inicio em</div>
+
+            <!-- Date picker input -->
+            <div class="me-2" style="flex: 1 1 100px;">
+              <VueDatePicker 
+                v-model="date"
+                locale="pt-BR"
+                :enable-time-picker="false"
+                :format="customFormat"
+                auto-apply
+                :min-date="new Date()"
+                :hide-input-icon="true"
+                @date-update="transformDates(date, periodo_viagem)"
+                week-start="0"
+                class="small-datepicker"
+              />
+            </div>
+
+            <!-- Text next to date picker -->
+            <div class="fw-bold me-2 textosDuracao">e retorno em</div>
+
+            <!-- Final date display -->
+            <div v-if="date && periodo_viagem">
+              <span class="fw-bold">{{ FinalDate }}</span>
+            </div>
           </div>
         </div>
-        <div class="d-flex">
-          
-        </div>
-      </div>
       </div>
       
     
@@ -1354,6 +1359,24 @@ input::-webkit-calendar-picker-indicator{
 
 input[type="date"]::-webkit-input-placeholder{ 
     visibility: hidden !important;
+}
+.small-datepicker {
+  font-size: 0.85rem;  /* Smaller font size */
+  padding: 4px 8px;    /* Smaller padding */
+  width: 100%;         /* Ensure it stays responsive */
+  height: auto;        /* Adjust height automatically */
+}
+
+@media (max-width: 768px) {
+  .small-datepicker {
+    width: 80px;  /* Adjust width for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .small-datepicker {
+    width: 60px;  /* Even smaller on mobile */
+  }
 }
 </style>
   
