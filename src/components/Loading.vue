@@ -3,7 +3,7 @@
     <div class="loading-screen">
       <div class="flex flex-col justify-center items-center h-screen d-flex">
         <div class="loader"></div>
-        <span v-if="isRoteiro==true" class="mt-4 text-white">Aguarde que estamos gerando o roteiro perfeito pra você! Deve demorar 1 minuto!</span>
+        <span v-if="isRoteiro==true" class="mt-4 text-white">Aguarde que estamos gerando o roteiro perfeito pra você! Demora menos de 1 minuto!</span>
       </div>
     </div>
 </div>
