@@ -269,6 +269,7 @@ const sendUser=async(user, userInfo, access_type)=>{
               saldouser: response.data.saldouser,
               vlrpdf: response.data.vlrpdf,
               vlrpesquisa: response.data.vlrpesquisa,
+              iduser: response.data.iduser,
             };
             localStorage.setItem('user', JSON.stringify(LocalStorageUser));
     } else if(access_type=='google'){
@@ -290,6 +291,7 @@ const sendUser=async(user, userInfo, access_type)=>{
                 saldouser: response.data.saldouser,
                 vlrpdf: response.data.vlrpdf,
                 vlrpesquisa: response.data.vlrpesquisa,
+                iduser: response.data.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));

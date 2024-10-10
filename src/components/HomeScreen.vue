@@ -895,6 +895,7 @@ const postRoteiro=async () =>{
                 saldouser: responseUser.data.saldouser ,
                 vlrpdf: responseUser.data.vlrpdf,
                 vlrpesquisa: responseUser.data.vlrpesquisa,
+                iduser: responseUser.data.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
@@ -929,6 +930,7 @@ const postRoteiro=async () =>{
                 saldouser: responseUser.data.saldouser ,
                 vlrpdf: responseUser.data.vlrpdf,
                 vlrpesquisa: responseUser.data.vlrpesquisa,
+                iduser: responseUser.data.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
@@ -1087,7 +1089,9 @@ const customFormat = (date) => {
         dialogVlr.value=true
         vlrModalText.value='Para gerar um PDF são necessários créditos! Quer adicionar?'
       }else{
-        const destinoString = Destinos.map(location => `'${location}'`).join(', ');
+        
+        try {
+          const destinoString = Destinos.map(location => `'${location}'`).join(', ');
         const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
         const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
         let ObjRoteiro1={
@@ -1111,6 +1115,7 @@ const customFormat = (date) => {
           data_fim:FinalDate.value,
           nome_roteiro: PDFname.value,
           tpacao: 'I',
+          iduser: user.iduser,
         }
         const element = document.getElementById('pdf-content'); 
         const opt = {
@@ -1122,6 +1127,35 @@ const customFormat = (date) => {
         };
         html2pdf().from(element).set(opt).save();
         const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
+        let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            idioma:'PT',
+            ip_origem:user.ip_origem
+          };
+          const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+          const LocalStorageUser = {
+                Email: user.Email,
+                name: user.name,
+                photo: user.photo,
+                MetodoAutenticacao: user.MetodoAutenticacao,
+                birthday: user.birthday,
+                gender: user.gender,
+                ip_origem: user.ip_origem,
+                email: user.email,
+                saldouser: responseUser.data.saldouser ,
+                vlrpdf: responseUser.data.vlrpdf,
+                vlrpesquisa: responseUser.data.vlrpesquisa,
+                iduser: responseUser.data.iduser,
+              };
+              console.log(LocalStorageUser)
+          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+          dialogPDF.value=false;
+        } catch (error) {
+          console.log(error)
+        }
       }
 
     }
