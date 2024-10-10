@@ -369,7 +369,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" id="pdf-button">
-        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="dialogPDF=true">  Gerar PDF e Armazenar </button>
+        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  Gerar PDF e Armazenar </button>
       </div>
       
     </div>
@@ -510,6 +510,19 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogConfirm" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-text>Para usar esse serviço premium, será gasto(s) {{ dialogPesqPdf == 'pesquisa' ? user.vlrpesquisa : user.vlrpdf }} crédito(s) do seu saldo</v-card-text>
+        <div class="flex justify-center">
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogConfirm=false, confirmHandler(false)">cancelar</v-btn>
+          <v-btn color="[#78c0d6]" text @click="confirmHandler(true), dialogConfirm=false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <compraModal v-if="showModal" :closeModal="closeModal"></compraModal>
   </div>
 </template>
@@ -565,6 +578,9 @@
   const dialogPDF = ref(false)
   const PDFname = ref('')
   const showModal=ref(false)
+  const dialogConfirm=ref(false)
+  const dialogPesqPdf=ref('')
+  let resolveConfirm;
   const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
   const user=JSON.parse(localStorage.getItem('user'));
   //let childAges=[]
@@ -840,6 +856,13 @@ const postRoteiro=async () =>{
         isLoading.value = false; 
         vlrModalText.value='Para usar campos premium são necessários créditos! Quer adicionar?'
         return;
+    }else{
+      dialogPesqPdf.value = 'pesquisa'
+      let confirmed = await confirmUseCredits();
+      if (!confirmed) {
+        isLoading.value = false;
+        return; 
+      }
     }
   }
     try {
@@ -1089,7 +1112,6 @@ const customFormat = (date) => {
         dialogVlr.value=true
         vlrModalText.value='Para gerar um PDF são necessários créditos! Quer adicionar?'
       }else{
-        
         try {
           const destinoString = Destinos.map(location => `'${location}'`).join(', ');
         const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
@@ -1167,6 +1189,35 @@ const customFormat = (date) => {
       return true
     }
   }
+  const askModal = async (ObjRoteiro1) =>{
+    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1){
+      dialogConfirm.value=true
+    }else{
+      return true
+    }
+  }
+  const askModalPDF = async () =>{
+    dialogPesqPdf.value = 'pdf'
+        let confirmed = await confirmUseCredits();
+        if (!confirmed) {
+          return; 
+        }else{
+          dialogPDF.value=true
+        }
+  }
+  const confirmUseCredits = () => {
+    console.log('reafaegtawg')
+  return new Promise((resolve) => {
+    dialogConfirm.value = true; // Open the dialog
+    resolveConfirm = resolve; // Save resolve function to call later
+  });
+};
+
+// Function to handle Yes/No clicks
+const confirmHandler = (confirmed) => {
+  dialogConfirm.value = false; 
+  resolveConfirm(confirmed); // Resolve the promise with the confirmed value
+};
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
