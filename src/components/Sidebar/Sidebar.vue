@@ -212,9 +212,9 @@
                     <ion-icon name="reorder-three-outline" size="large"></ion-icon>
                 </button>
                 <div v-if="isAdmin" class="pr-2">
-                    <input type="radio" value="dev" v-model="optDev">
+                    <input type="radio" value="dev" v-model="optDev" @change="saveisdevprod">
                     <span class="pr-3">DEV</span>
-                    <input type="radio" value="prod" v-model="optDev">
+                    <input type="radio" value="prod" v-model="optDev" @change="saveisdevprod">
                     <span>PROD</span>
                 </div>
                 <div v-if="optDev=='dev'" class="d-flex">
@@ -383,6 +383,9 @@ function convertNumberFormat(value) {
     }
     console.log('val', value)
     return value;
+}
+function saveisdevprod(){
+    localStorage.setItem('isDev', optDev.value)
 }
 </script>
 

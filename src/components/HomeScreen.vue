@@ -843,7 +843,7 @@ const postRoteiro=async () =>{
     }
   }
     try {
-      if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){ /* if is admin testing */
+      if(localStorage.getItem('isDev')=='dev'){ /* if is admin testing */
         let ObjRoteiroAdmin={
           email:user.Email ? user.Email : user.email,
           origem:Origem,
@@ -1110,7 +1110,7 @@ const customFormat = (date) => {
           txt_Roteiro:roteiroData.Roteiro.Roteiro,
           data_fim:FinalDate.value,
           nome_roteiro: PDFname.value,
-          tpacao: 'i',
+          tpacao: 'I',
         }
         const element = document.getElementById('pdf-content'); 
         const opt = {
@@ -1121,7 +1121,7 @@ const customFormat = (date) => {
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save();
-        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app  ', ObjRoteiro1)
+        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
       }
 
     }
