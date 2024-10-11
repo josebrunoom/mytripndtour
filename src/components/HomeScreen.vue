@@ -801,6 +801,7 @@ const postRoteiro=async () =>{
   const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
   const lugar_nIrString = lugar_nIr.map(location => `'${location}'`).join(', ');
   let ObjRoteiro1={
+    iduser:user.iduser,
     email:user.Email ? user.Email : user.email,
     origem:Origem,
     destino: destinoString,
@@ -868,6 +869,7 @@ const postRoteiro=async () =>{
     try {
       if(localStorage.getItem('isDev')=='dev'){ /* if is admin testing */
         let ObjRoteiroAdmin={
+          iduser:user.iduser,
           email:user.Email ? user.Email : user.email,
           origem:Origem,
           destino: destinoString,
@@ -915,7 +917,7 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: responseUser.data.saldouser ,
+                saldouser: response.data.novo_saldo,
                 vlrpdf: responseUser.data.vlrpdf,
                 vlrpesquisa: responseUser.data.vlrpesquisa,
                 iduser: responseUser.data.iduser,
@@ -950,7 +952,7 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: responseUser.data.saldouser ,
+                saldouser: response.data.novo_saldo,
                 vlrpdf: responseUser.data.vlrpdf,
                 vlrpesquisa: responseUser.data.vlrpesquisa,
                 iduser: responseUser.data.iduser,
@@ -1167,7 +1169,7 @@ const customFormat = (date) => {
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: responseUser.data.saldouser ,
+                saldouser: response.data.novo_saldo,
                 vlrpdf: responseUser.data.vlrpdf,
                 vlrpesquisa: responseUser.data.vlrpesquisa,
                 iduser: responseUser.data.iduser,

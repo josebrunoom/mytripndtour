@@ -337,7 +337,7 @@ onMounted(() => {
     img.value=user.photo
     saldo.value=convertNumberFormat(user.saldouser)
     console.log(route.name);
-    if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos')){
+    if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos') || user.email.includes('luisalbergoni717')){
         isAdmin.value=true
     }
     const intervalId = setInterval(checkUserSaldo, 1000);
@@ -346,8 +346,7 @@ onMounted(() => {
     });
 })
 const checkUserSaldo = () => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (storedUser.saldouser !== saldo.value) {
+    if ( user.saldouser !== saldo.value) {
         saldo.value = convertNumberFormat(storedUser.saldouser)
         console.log("User saldo updated:", saldo.value);
     }
