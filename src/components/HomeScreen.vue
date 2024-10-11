@@ -425,7 +425,7 @@
           
           <div class="col-md-12 d-flex align-items-start">
             <span class="pl-4" style="text-align: left;">
-              <b>Como foi o roteiro gerado?</b><br> Críticas e/ou Elogios são sempre muito bem vindos!!!
+              <b>Como foi o roteiro gerado?</b><br> Críticas e/ou Elogios são sempre muito bem vindos!
             </span>
           </div>
           <div class="col-start-12 d-flex">

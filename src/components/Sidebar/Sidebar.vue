@@ -374,12 +374,12 @@ const sairUser = () =>{
     window.location.href= 'https://mytripntour.com/'
 }
 function convertNumberFormat(value) {
-    if (value.includes(",")) {
+/*     if (value.includes(",")) {
         return value.replace(",", ".");
     }
     else if (value.includes(".")) {
         return value.replace(".", ",");
-    }
+    } */
     console.log('val', value)
     return value;
 }
