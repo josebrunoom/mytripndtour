@@ -8,7 +8,7 @@
           <div  class=" flex justify-center items-center">
             <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
               <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
-              Entrar com o Google
+              {{ TextLang.EntrarGoogle }}
             </button>
           </div>
         </form>
@@ -16,7 +16,7 @@
           <div  class=" flex justify-center items-center">
             <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
               <img src="../assets/Facebook_icon.svg" alt="Facebook" class="img-Facebook mr-1" />
-              Entrar com o Facebook
+              {{ TextLang.EntrarFace }}
             </button>
           </div>
           <!-- <button class="btn btn-primary" @click="tap">
@@ -24,7 +24,7 @@
           </button> -->
         </form>
         <div class="mt-4">
-            <a href="https://roteiro.mytripntour.com/politica_privacidade">Política de Privacidade</a>
+            <a href="https://roteiro.mytripntour.com/politica_privacidade">{{ TextLang.PoliticaDePriv }}</a>
         </div>
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>
@@ -42,6 +42,7 @@
   import axios from 'axios';
   import Loading from './Loading.vue';
   import { jwtDecode } from "jwt-decode";
+  import ptLang from '../data/ptlang';
 
   const isProd=ref(true)
   const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
@@ -52,6 +53,8 @@
   const showModal = ref(false);
   const userIP=ref('')
   let token=localStorage.getItem('token')
+
+  const TextLang=ref(ptLang)
 
   const tap = () => {
     router.push('/politica_privacidade')
