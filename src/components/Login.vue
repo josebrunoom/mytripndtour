@@ -202,7 +202,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://roteiro.mytripntour.com', 
+            redirect_uri: 'http://localhost:5173', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -230,6 +230,7 @@ const processUserInfo = async (userInfo) => {
       const userPicture = userInfo.photos[0].url;
       const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
       const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const userLocale = navigator.language
       const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
   let objUser = {
             email: userEmail,
@@ -238,8 +239,9 @@ const processUserInfo = async (userInfo) => {
             //password: userInfo.names[0].metadata.source.id, 
             birthday: formattedDate,
             gender: userGender,
-            idioma:'PT',
-            ip_origem:userIP.value
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:userIP.value,
+            pagina:'Roteiros'
           };
           await sendUser(objUser, userInfo, 'google')
 };
@@ -274,7 +276,8 @@ const sendUser=async(user, userInfo, access_type)=>{
               vlrpesquisa: response.data.vlrpesquisa,
               iduser: response.data.iduser,
             };
-            localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
     } else if(access_type=='google'){
       const userEmail = userInfo.emailAddresses[0].value;
       const userName = userInfo.names[0].displayName;
@@ -298,6 +301,7 @@ const sendUser=async(user, userInfo, access_type)=>{
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
     }
       router.push('/mytrip/home');
     } else{

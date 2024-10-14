@@ -6,16 +6,16 @@
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold text-left">
-                Cidade de Origem
+                {{ traducao.CidadeO }}
                 <i 
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'De onde vai começar a aventura?<br>Diga aí sua cidade de origem e partiu explorar o mundo!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip1, escape: false }"
                 ></i>
               </h2>
             </div>
-            <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : 'Selecione a Origem' }}</button>
+            <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
               <div v-show="showOrigem">
                 <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
@@ -27,12 +27,12 @@
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold  text-left">
-                Destino(s)
+                {{ traducao.Destino  }}
                 <i 
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'Quais os lugares dos seus sonhos?<br> Coloque seus e vamos fazer magia acontecer!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
                 ></i>
               </h2>
              
@@ -46,7 +46,7 @@
             </div>
           </div>
             <div v-if="!showDestino" class="d-flex justify-content-start">
-              <button  class="fw-bold h1 fontDestino" @click="setDestino">Selecione o Destino</button>
+              <button  class="fw-bold h1 fontDestino" @click="setDestino">{{ traducao.SelectDestino }}</button>
             </div>
               <div v-show="showDestino">
                 <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
@@ -62,12 +62,12 @@
       <div class="col-12 col-md-6 mb-3 md:mb-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">Duração da Viagem</h2>
+            <h2 class="h5 fw-bold ">{{ traducao.Duration }}</h2>
             <i 
               class="bi bi-question-circle-fill mb-2 pl-1"
               data-toggle="tooltip" 
               data-placement="top"
-              v-tooltip.top="{ value: 'Quantos dias você quer fugir da rotina?<br> Escolha a duração dessa escapada e deixe o resto com a gente!', escape: false }"
+              v-tooltip.top="{ value: traducao.Tooltip3, escape: false }"
             ></i>
           </div>
 
@@ -87,7 +87,7 @@
             </div>
             
             <!-- Text next to duration input -->
-            <div class="fw-bold me-2 textosDuracao">dias, com inicio em</div>
+            <div class="fw-bold me-2 textosDuracao">{{ traducao.Dias }}</div>
 
             <!-- Date picker input -->
             <div class="me-2" style="flex: 1 1 100px;">
@@ -106,7 +106,7 @@
             </div>
 
             <!-- Text next to date picker -->
-            <div class="fw-bold me-2 textosDuracao">e retorno em</div>
+            <div class="fw-bold me-2 textosDuracao">{{ traducao.retrn }}</div>
 
             <!-- Final date display -->
             <div v-if="date && periodo_viagem">
@@ -120,12 +120,12 @@
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">Pessoas</h2>
+            <h2 class="h5 fw-bold ">{{ traducao.Pessoas }}</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'Quantos aventureiros embarcam nessa jornada?<br> Diga quantos adultos e se pequenos exploradores vão junto!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip4, escape: false }"
                 ></i>
           </div>
         <div class="row align-items-center">
@@ -141,7 +141,7 @@
               style="width: 4rem;"
             />
           </div>
-          <div class="fw-bold textosDuracao me-3">Adultos e</div>
+          <div class="fw-bold textosDuracao me-3">{{ traducao.Adultos }}</div>
             <div class="me-2">
             <input 
               type="number" 
@@ -154,11 +154,11 @@
               style="width: 4rem;"
             />
           </div>
-          <div class="fw-bold textosDuracao">Menores,</div>
+          <div class="fw-bold textosDuracao">{{ traducao.Menores }}</div>
           <div class=" mt-2">
             <div class=" ms-auto">
               <div class="d-flex flex-wrap space-x-4">
-              <span v-if="numChildren > 0" class="fw-bold textosDuracao mt-1 pl-4">com idades de</span>
+              <span v-if="numChildren > 0" class="fw-bold textosDuracao mt-1 pl-4">{{ traducao.CidadesDe }}</span>
               <div 
                 v-for="(age, index) in numChildren" 
                 :key="index" 
@@ -215,8 +215,8 @@
     <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>Premium</b> <i style="font-style: italic;
-    font-family: 'Roboto', sans-serif;">(Opcional)</i> </span> 
+          <span class="h5 text-left"><b>{{ traducao.Premium }}</b> <i style="font-style: italic;
+    font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
         
     <div class="row mb-4 col-12">
@@ -224,12 +224,12 @@
         
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
-            <h2 class="h5 fw-bold ">Hospedagem</h2>
+            <h2 class="h5 fw-bold ">{{ traducao.Hospedagem }}</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'Quer luxo, conforto ou um lugar só pra cair na cama depois de um dia incrível?<br>Escolha seu estilo de hospedagem!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip5, escape: false }"
                 ></i>
           </div>
           <div class="d-flex flex-wrap">
@@ -274,12 +274,12 @@
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">Quero Conhecer</h2>
+            <h2 class="h5 fw-bold ">{{ traducao.QConhecer }}</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'Tem atrações, pontos turísticos que você sempre sonhou em conhecer?<br> Conta pra gente que ele vai entrar no roteiro!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip6, escape: false }"
                 ></i>
                 <div class="">
                   <button>
@@ -306,12 +306,12 @@
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">Não precisa incluir</h2>
+            <h2 class="h5 fw-bold ">{{ traducao.NaoPrecisa }}</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'Tem algum local que você quer evitar?<br> Diz aí e a gente risca da lista!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip7, escape: false }"
                 ></i>
                 <div class="">
                   <button>
@@ -340,12 +340,12 @@
     <div class="col-12 col-md-12 mb-4" style="text-align:left">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">Interesses</h2>
+            <h2 class="h5 fw-bold ">{{ traducao.Interesses }}</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: 'Quer saber onde rola aquela comida incrível,<br> aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!', escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip8, escape: false }"
                 ></i>
           </div>
           <div class="d-flex flex-wrap align-items-start">
@@ -400,14 +400,14 @@
           class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
           @click="postRoteiro"
         >
-          Gerar Roteiro
+          {{ traducao.Gerar }}
         </button>
         <button 
           type="button" 
           class="btn btn-warning me-2 "
           @click="dialogLimpar=true"
         >
-          Limpar Tudo
+          {{ traducao.Limpar }}
         </button>
       
           
@@ -425,7 +425,7 @@
           
           <div class="col-md-12 d-flex align-items-start">
             <span class="pl-4" style="text-align: left;">
-              <b>Como foi o roteiro gerado?</b><br> Críticas e/ou Elogios são sempre muito bem vindos!
+              <b>{{ traducao.ComoFoi }}</b><br> {{ traducao.Criticas }}
             </span>
           </div>
           <div class="col-start-12 d-flex">
@@ -441,7 +441,7 @@
               ></v-rating>
             </div>
             <div class="col-auto">
-              <button class="btn btn-primary" @click="sendRating" :disabled="disabledRating==true">Enviar</button>
+              <button class="btn btn-primary" @click="sendRating" :disabled="disabledRating==true">{{ traducao.Enviar }}</button>
             </div>
           </div>
           </div>
@@ -457,8 +457,8 @@
     <Loading :loading="isLoading" :isRoteiro="isRoteiro"/>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
-        <v-card-text>O campo: {{ errMsg }} é obrigatório!</v-card-text>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>{{ errMsg }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="[#78c0d6]" text @click="dialog=false">OK</v-btn>
@@ -467,17 +467,17 @@
     </v-dialog>
     <v-dialog v-model="dialogLimpar" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
-        <v-card-text>Deseja mesmo limpar tudo?</v-card-text>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>{{traducao.DialogLimpar}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="resetData">Sim</v-btn>
+          <v-btn color="[#78c0d6]" text @click="resetData">{{ traducao.Sim }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogRating" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
         <v-card-text>{{ RatingText }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -487,38 +487,38 @@
     </v-dialog>
     <v-dialog v-model="dialogVlr" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
         <v-card-text>{{ vlrModalText }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">cancelar</v-btn>
-          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">Adicionar Créditos</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">{{traducao.Cancelar}}</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">{{ traducao.Adcionar }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogPDF" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
-        <v-card-text>Qual será o nome do Roteiro?</v-card-text>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>{{ traducao.NameRoteiro }}</v-card-text>
         <div class="flex justify-center">
         <input type="text" class="form-control w-[75%]" placeholder="Ex: Viagem" v-model="PDFname">
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialogPDF=false">cancelar</v-btn>
-          <v-btn color="[#78c0d6]" text @click="downloadPdf">Gerar</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogPDF=false">{{traducao.Cancelar}}</v-btn>
+          <v-btn color="[#78c0d6]" text @click="downloadPdf">{{ traducao.GerarBtn }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogConfirm" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
-        <v-card-text>Para usar esse serviço premium, será gasto(s) {{ dialogPesqPdf == 'pesquisa' ? user.vlrpesquisa : user.vlrpdf }} crédito(s) do seu saldo</v-card-text>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>{{ traducao.PremiumService1 }} {{ dialogPesqPdf == 'pesquisa' ? user.vlrpesquisa : user.vlrpdf }} {{ traducao.PremiumService2 }}</v-card-text>
         <div class="flex justify-center">
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialogConfirm=false, confirmHandler(false)">cancelar</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogConfirm=false, confirmHandler(false)">{{traducao.Cancelar}}</v-btn>
           <v-btn color="[#78c0d6]" text @click="confirmHandler(true), dialogConfirm=false">OK</v-btn>
         </v-card-actions>
       </v-card>
@@ -540,8 +540,10 @@
   import html2pdf from 'html2pdf.js';
   import Tooltip from 'primevue/tooltip';
   import compraModal from './compraModal.vue';
+import ptLang from '../data/ptlang';
 
 
+  const traducao = ref(JSON.parse(localStorage.getItem('Traducao')))
   const date = ref();
   const numAdults = ref()
   const numChildren = ref();
@@ -581,14 +583,14 @@
   const dialogConfirm=ref(false)
   const dialogPesqPdf=ref('')
   let resolveConfirm;
-  const interesses = ref(['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'])
+  const interesses = ref(traducao.value.ListInteresses/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
   const user=JSON.parse(localStorage.getItem('user'));
   //let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
   /* let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */
   let selectedInteresses=[]
-  let lugares=['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)']
+  let lugares=/* ['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)'] */ traducao.value.lugares
   let Destinos=[]
   let Origem
   let lugar_nIr=[]
@@ -692,6 +694,7 @@
   
   document.getElementById("autocompleteO").focus();
   getdata();
+  console.log("tradcaga", traducao.value)
 });
 
   onUpdated(()=> {
@@ -781,7 +784,7 @@ const formatAges = (index) => {
         if(!initialDateStr){
           dialog.value = true;
           isLoading.value = false; 
-          errMsg.value='Data de início'
+          errMsg.value=traducao.ErrMsg4
         } else {
           const initialDate = moment(initialDateStr);
           const formattedStartDate = initialDate.format('DD/MM/YYYY');
@@ -832,22 +835,22 @@ const postRoteiro=async () =>{
   if(!ObjRoteiro1.origem){
     dialog.value = true;
     isLoading.value = false; 
-    errMsg.value='Ponto de Origem'
+    errMsg.value=traducao.ErrMsg1
   }
   else if(!ObjRoteiro1.destino){
     dialog.value = true;
     isLoading.value = false;
-    errMsg.value='Destino' 
+    errMsg.value=traducao.ErrMsg2
   }
   else if(!ObjRoteiro1.dias){
     dialog.value = true;
     isLoading.value = false; 
-    errMsg.value='Quantidade de dias'
+    errMsg.value=traducao.ErrMsg3
   }
   else if(!ObjRoteiro1.qtd_adultos){
     dialog.value = true;
     isLoading.value = false; 
-    errMsg.value='Adultos'
+    errMsg.value=traducao.ErrMsg4
   }
   else{
     if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1){
@@ -855,7 +858,7 @@ const postRoteiro=async () =>{
     if(saldoValido==false){
         dialogVlr.value=true
         isLoading.value = false; 
-        vlrModalText.value='Para usar campos premium são necessários créditos! Quer adicionar?'
+        vlrModalText.value=traducao.VlrModal1
         return;
     }else{
       dialogPesqPdf.value = 'pesquisa'
@@ -1002,13 +1005,13 @@ const sendRating = async () =>{
     txt_comentario:whyCardComentario.value,
   }
   if(!starValue.value){
-    RatingText.value='Preencha a avaliação primeiro'
+    RatingText.value=traducao.RatinText1
     dialogRating.value=true
   }else if(starValue.value<=3 && !whyCardComentario.value){
-    RatingText.value='Você deve preencher as razões'
+    RatingText.value=traducao.RatinText2
     dialogRating.value=true
   }else if(starValue.value<=3 && whyCardComentario.value.length<=35){
-    RatingText.value='Motivo deve ser maior do que 35 caracteres'
+    RatingText.value=traducao.RatinText3
     dialogRating.value=true
   }else{
     isLoading.value=true
@@ -1017,9 +1020,9 @@ const sendRating = async () =>{
     console.log(response.data);
     disabledRating.value=true
     if(starValue.value<=3){
-      RatingText.value="Obrigado por nos informar. Já estamos trabalhando para melhorar!"
+      RatingText.value=traducao.RatinText4
     }else{
-      RatingText.value="Muito Obrigado! Estamos muito felizes que você gostou!"
+      RatingText.value=traducao.RatinText5
     }
     dialogRating.value=true
     isLoading.value=false
@@ -1112,7 +1115,7 @@ const customFormat = (date) => {
       if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
         console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
         dialogVlr.value=true
-        vlrModalText.value='Para gerar um PDF são necessários créditos! Quer adicionar?'
+        vlrModalText.value=traducao.VlrModal2
       }else{
         try {
           const destinoString = Destinos.map(location => `'${location}'`).join(', ');

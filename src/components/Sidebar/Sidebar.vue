@@ -13,7 +13,7 @@
                             @click=""
                         >
                         <i class="fa-regular fa-file"></i>
-                        Roteiros
+                        {{ traducao.Roteiros }}
                         </button>
                     </div>
                     <div v-else>
@@ -23,7 +23,7 @@
                             @click="goTo('home')"
                         >
                         <i class="fa-regular fa-file"></i>
-                        Roteiros
+                        {{ traducao.Roteiros }}
                         </button>
                     </div>
             </div>
@@ -35,7 +35,7 @@
                     @click=""
                     >
                     <i class="fa-regular fa-user"></i>
-                    Meu Perfil
+                    {{ traducao.MeuPerfil }}
                     </button>
                 </div>
                 <div v-else>
@@ -45,7 +45,7 @@
                     @click="goTo('perfil')"
                     >
                     <i class="fa-regular fa-user"></i>
-                    Meu Perfil
+                    {{ traducao.MeuPerfil }}
                     </button>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                     @click="openDialog('sair')"
                 >
                 <i class="fa-solid fa-door-open"></i>
-                Sair
+                {{ traducao.Sair }}
                 </button>
             </div>
             </div>
@@ -134,7 +134,7 @@
                     @click=""
                 >
                     <i class="fa-regular fa-file"></i>
-                    Roteiros
+                    {{ traducao.Roteiros }}
                 </button>
                 </div>
                 <div v-else>
@@ -144,7 +144,7 @@
                     @click="goTo('home')"
                 >
                     <i class="fa-regular fa-file"></i>
-                    Roteiros
+                    {{ traducao.Roteiros }}
                 </button>
                 </div>
             </div>
@@ -157,7 +157,7 @@
                     @click=""
                 >
                     <i class="fa-regular fa-user"></i>
-                    Meu Perfil
+                    {{ traducao.MeuPerfil }}
                 </button>
                 </div>
                 <div v-else>
@@ -167,7 +167,7 @@
                     @click="goTo('perfil')"
                 >
                     <i class="fa-regular fa-user"></i>
-                    Meu Perfil
+                    {{ traducao.MeuPerfil }}
                 </button>
                 </div>
             </div>
@@ -189,7 +189,7 @@
                 @click="openDialog('sair')"
                 >
                 <i class="fa-solid fa-door-open"></i>
-                Sair
+                {{ traducao.Sair }}
                 </button>
             </div>
             </div>
@@ -228,14 +228,14 @@
 
                 <!-- Right-aligned content -->
                 <div class="d-flex align-items-center">
-                    <span class="fw-bold pr-5">Saldo: {{ saldo }} créditos</span>
+                    <span class="fw-bold pr-5">{{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
                 <div class="dropdown me-3">
                     <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-globe"></i> {{ languageName }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
                     <li v-for="(langName, langCode) in languages" :key="langCode">
-                        <a class="dropdown-item" href="#" @click.prevent="changeLanguage(langCode, langName)">
+                        <a class="dropdown-item" href="#" @click.prevent="Translate(langCode, langName)">
                         {{ langName }}
                         </a>
                     </li>
@@ -267,12 +267,12 @@
     </v-dialog> -->
     <v-dialog v-model="dialogSair" max-width="500px">
       <v-card>
-        <v-card-title class="headline">Atenção</v-card-title>
-        <v-card-text>Deseja mesmo Sair?</v-card-text>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>{{ traducao.DialogSair }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialogSair=false">não</v-btn>
-          <v-btn color="[#78c0d6]" text @click="sairUser">Sim</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogSair=false">{{ traducao.Nao }}</v-btn>
+          <v-btn color="[#78c0d6]" text @click="sairUser">{{ traducao.Sim }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -287,8 +287,9 @@ import router from '../../routes';
 import languages from '../../data/lang';
 import "@google-pay/button-element";
 import compraModal from '../compraModal.vue';
+import ptLang from '../../data/ptlang';
 
-
+const traducao = ref(JSON.parse(localStorage.getItem('Traducao')))
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
 const saldo = ref(null)
@@ -385,6 +386,23 @@ function convertNumberFormat(value) {
 }
 function saveisdevprod(){
     localStorage.setItem('isDev', optDev.value)
+}
+const Translate = async (lang, langName) => {
+    localStorage.setItem('lang', lang);
+    localStorage.setItem('langName', langName);
+    languageName.value=langName
+    let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            idioma:lang,
+            pagina:'Roteiros',
+            ip_origem:user.ip_origem,
+        };
+        const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+    localStorage.setItem('Traducao', responseUser.data.traducao);
+    location.reload()
 }
 </script>
 

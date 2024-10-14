@@ -1,3 +1,5 @@
+import Tooltip from "primevue/tooltip";
+
 const ptLang = {
     CidadeO:"Cidade de Origem",
     Destino:"Destino(s)",
@@ -22,6 +24,7 @@ const ptLang = {
     ErrRoteiro:"Erro ao Gerar Roteiro",
     Atencao:"Atenção",
     DialogLimpar:"Deseja mesmo limpar tudo?",
+    DialogSair:"Deseja mesmo Sair?",
     RatinText1:"Preencha a avaliação primeiro",
     RatinText2:"Você deve preencher as razões",
     RatinText3:"Motivo deve ser maior do que 35 caracteres",
@@ -49,8 +52,14 @@ const ptLang = {
     Nome:"Nome",
     Aniversario:"Aniversário:",
     Genero:"Gênero:",
+    Masculino:"Masculino:",
+    Feminino:"Feminino:",
+    Outro:"Outro:",
     EditPerfil:"Editar Perfil",
     ApagarPerfil:"Apagar Perfil",
+    ConfirmAcao:"Confirmar Ação",
+    Ctz:"Tem certeza de que deseja apagar o seu perfil?",
+    Apagar:"Apagar",
     Saldo:"Saldo",
     Creditos:"creditos",
     PoliticaDePriv:"Política de Privacidade",
@@ -58,6 +67,20 @@ const ptLang = {
     EntrarGoogle:"Entrar com o Google",
     Loading1:"Aguarde que estamos gerando o roteiro perfeito pra você!",
     Loading2:"Demora menos de 1 minuto!",
+    Nao: "Não",
+    Sim: "Sim",
+    SelectOrigem:"Selecione a Origem",
+    SelectDestino:"Selecione o Destino",
+    VlrModal1:"Para usar campos premium são necessários créditos! Quer adicionar?",
+    VlrModal2:"Para gerar um PDF são necessários créditos! Quer adicionar?",
+    Tooltip1:"De onde vai começar a aventura?<br>Diga aí sua cidade de origem e partiu explorar o mundo!",
+    Tooltip2:"Quais os lugares dos seus sonhos?<br> Coloque seus e vamos fazer magia acontecer!",
+    Tooltip3:"Quantos dias você quer fugir da rotina?<br> Escolha a duração dessa escapada e deixe o resto com a gente!",
+    Tooltip4:"Quantos aventureiros embarcam nessa jornada?<br> Diga quantos adultos e se pequenos exploradores vão junto!",
+    Tooltip5:"Quer luxo, conforto ou um lugar só pra cair na cama depois de um dia incrível?<br>Escolha seu estilo de hospedagem!",
+    Tooltip6:"Tem atrações, pontos turísticos que você sempre sonhou em conhecer?<br> Conta pra gente que ele vai entrar no roteiro!",
+    Tooltip7:"Tem algum local que você quer evitar?<br> Diz aí e a gente risca da lista!",
+    Tooltip8:"Quer saber onde rola aquela comida incrível,<br> aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!",
 };
 
 export default ptLang 
