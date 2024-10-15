@@ -396,7 +396,7 @@ const Translate = async (lang, langName) => {
             name: user.name,
             birthday: user.birthday,
             gender: user.gender,
-            idioma:lang,
+            sigla_idioma:lang.toUpperCase(),
             pagina:'Roteiros',
             ip_origem:user.ip_origem,
         };
