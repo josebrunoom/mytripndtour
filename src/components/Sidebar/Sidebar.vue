@@ -289,7 +289,7 @@ import "@google-pay/button-element";
 import compraModal from '../compraModal.vue';
 import ptLang from '../../data/ptlang';
 
-const traducao = ref(JSON.parse(localStorage.getItem('Traducao')))
+const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
 const saldo = ref(null)

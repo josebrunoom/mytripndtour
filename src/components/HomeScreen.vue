@@ -543,7 +543,7 @@
 import ptLang from '../data/ptlang';
 
 
-  const traducao = ref(JSON.parse(localStorage.getItem('Traducao')))
+  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
   const date = ref();
   const numAdults = ref()
   const numChildren = ref();
