@@ -3,8 +3,8 @@
       <div class="loading-screen">
         <div class="flex flex-col justify-center items-center h-screen d-flex">
           <div class="loader"></div>
-          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ ptLang.Loading1 }}</span>
-          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ ptLang.Loading2 }}</span>
+          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ traducao.Loading1 }}</span>
+          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ traducao.Loading2 }}</span>
         </div>
       </div>
     </div>
@@ -15,7 +15,8 @@
   import ProgressSpinner from 'primevue/progressspinner';
   import ptLang from '../data/ptlang';
 
-  
+  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
+
   export default {
     components: {
       ProgressSpinner,
@@ -30,6 +31,24 @@
       default: false,
     }
     },
+    setup() {
+      const traducao = ref(localStorage.getItem('Traducao') 
+        ? JSON.parse(localStorage.getItem('Traducao')) 
+        : ptLang);
+      const loading = ref(true);
+      const isRoteiro = ref(true);
+      onMounted(() => {
+        setTimeout(() => {
+          loading.value = false;
+        }, 2000);
+      });
+
+      return {
+        loading,
+        isRoteiro,
+        traducao
+      };
+    }
   };
   </script>
   

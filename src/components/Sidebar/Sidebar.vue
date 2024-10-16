@@ -50,6 +50,28 @@
                 </div>
             </div>
             <!-- <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='Lista'">
+                    <button 
+                    type="button" 
+                    class= "me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                    >
+                    <i class="fa-regular fa-user"></i>
+                    Lista de Roteiros
+                    </button>
+                </div>
+                <div v-else>
+                    <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('lista')"
+                    >
+                    <i class="fa-regular fa-user"></i>
+                    Lista de Roteiros
+                    </button>
+                </div>
+            </div> -->
+            <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
                     class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 

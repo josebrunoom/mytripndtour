@@ -56,9 +56,20 @@
 
   const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
 
-  const tap = () => {
-    router.push('/politica_privacidade')
-  }
+  const Translate = async (lang, langName) => {
+    let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            sigla_idioma:navigator.language.toUpperCase() || navigator.languages[0].toUpperCase(),
+            pagina:'Roteiros',
+            ip_origem:user.ip_origem,
+        };
+        const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+    localStorage.setItem('Traducao', responseUser.data.traducao);
+    location.reload()
+}
 
   onMounted(()=>{
     ipGet();
@@ -95,7 +106,9 @@
     js.src = "https://connect.facebook.net/pt_BR/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-  })
+  //Translate();
+  }
+)
 
   const loginWithFacebook = () => {
   FB.login(function(response) {

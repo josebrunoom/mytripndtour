@@ -487,7 +487,7 @@
     </v-dialog>
     <v-dialog v-model="dialogVlr" max-width="500px">
       <v-card>
-        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <!-- <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title> -->
         <v-card-text>{{ vlrModalText }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
