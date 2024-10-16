@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar/Sidebar.vue";
 import Perfil from "../components/Perfil.vue";
 import Politica_privacidade from "../components/politica_privacidade.vue";
 import HelloWorld from "../components/HelloWorld.vue";
+import ListRoteiro from "../components/ListRoteiro.vue";
 
 const routes = [
     {
@@ -29,6 +30,11 @@ const routes = [
                 path: "perfil",
                 name: "Perfil",
                 component: Perfil,
+            },
+            {
+                path: "lista",
+                name: "Lista",
+                component: ListRoteiro,
             },
         ]
     },
