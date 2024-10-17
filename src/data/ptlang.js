@@ -38,7 +38,7 @@ const ptLang = {
     NameRoteiro:"Qual será o nome do Roteiro?",
     Cancelar:"cancelar",
     Adcionar:"Adicionar Créditos",
-    GerarBtn:"Gerar",
+    GerarBtn:"Gerar e Gravar",
     PremiumService1:"Para usar esse serviço premium, será gasto(s)",
     PremiumService2:"crédito(s) do seu saldo",
     Enviar:"Enviar",
