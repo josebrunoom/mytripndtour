@@ -568,6 +568,7 @@ import ptLang from '../data/ptlang';
   const whyCardComentario=ref('')
   const errMsg=ref('')
   const FinalDate=ref(null);
+  const InitDate=ref(null);
   const periodo_viagem=ref(null);
   const isRoteiro=ref(false);
   const selectedCount = computed(() => inChecked.value.filter(Boolean).length);
@@ -780,6 +781,19 @@ const formatAges = (index) => {
           console.log(FinalDate.value)
         }
       }
+      async function transformDatesToSave(initialDateStr, numberOfDays) {
+        if(date&&periodo_viagem){
+          console.log('initdate',initialDateStr, 'numdays', numberOfDays)
+          const initialDate = moment(date.value);
+          const formattedInitDate = initialDate.format('YYYY-MM-DD');
+          InitDate.value = `${formattedInitDate}`
+          const endDate = initialDate.clone().add(periodo_viagem.value, 'days');
+          console.log(endDate)
+          const formattedEndDate = endDate.format('YYYY-MM-DD');
+          FinalDate.value= `${formattedEndDate}`;
+          console.log(FinalDate.value)
+        }
+      }
       function transformDate(initialDateStr) {
         if(!initialDateStr){
           dialog.value = true;
@@ -909,7 +923,8 @@ const postRoteiro=async () =>{
             birthday: user.birthday,
             gender: user.gender,
             sigla_idioma:userLocale.toUpperCase(),
-            ip_origem:user.ip_origem
+            ip_origem:user.ip_origem,
+            pagina:'Roteiros',
           };
           const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
           const LocalStorageUser = {
@@ -945,6 +960,7 @@ const postRoteiro=async () =>{
             birthday: user.birthday,
             gender: user.gender,
             sigla_idioma:userLocale.toUpperCase(),
+            pagina:'Roteiros',
             ip_origem:user.ip_origem
           };
           const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
@@ -1123,12 +1139,13 @@ const customFormat = (date) => {
           const destinoString = Destinos.map(location => `'${location}'`).join(', ');
         const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
         const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
+        await transformDatesToSave(date.value)
         let ObjRoteiro1={
           email:user.Email ? user.Email : user.email,
           origem:Origem,
           destino: destinoString,
           dias:periodo_viagem.value,
-          data_inicio: transformDate(date.value),
+          data_inicio: InitDate.value,
           data_fim:FinalDate.value,
           qtd_adultos: numAdults.value,
           qtd_menores: numChildren.value ? numChildren.value : 0,
@@ -1161,9 +1178,11 @@ const customFormat = (date) => {
             name: user.name,
             birthday: user.birthday,
             gender: user.gender,
-            idioma:'PT',
-            ip_origem:user.ip_origem
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:user.ip_origem,
+            pagina:'Roteiros',
           };
+          
           const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
           const LocalStorageUser = {
                 Email: user.Email,
