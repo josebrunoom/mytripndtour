@@ -1,59 +1,84 @@
 <template>
-    <div class="scrollable-container container-fluid px-3 px-md-5">
-        <DataTable :value="data" tableStyle="width: 100%">
-            <Column field="NomeRoteiro" header="Nome do Roteiro"></Column>
-            <Column field="Destino" header="Destino"></Column>
-            <Column field="QtdAdultos" header="Quantidade de Adultos"></Column>
-            <Column header="Ações">
-                <template #body="{ data }">
-                    <div class="button-container">
-                        <button 
-                            type="button" 
-                            class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
-                            @click="viewRoteiro(data)"
-                        >Ver Roteiro</button>
-                        <button 
-                            type="button" 
-                            class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
-                            @click="useParametros(data)"
-                        >Usar Parâmetros</button>
-                    </div>
-                </template>
-            </Column>
-        </DataTable>
+    <div class="w-full">
+        <div v-for="(Roteiros, index) in Roteiros" :key="index" class="p-4 border-b scrollable-container">
+            <div class="flex items-center">
+            <!-- Arrow icon to toggle visibility, aligned to the left -->
+            <button @click="toggleDetails(index)" class="mr-2">
+                <span :class="openIndex === index ? 'rotate-180' : 'rotate-0'">
+                &#x25BC;
+                </span>
+            </button>
+            <span class="text-lg font-bold">{{ Roteiros.nome_roteiro }}</span>
+            </div>
+            <!-- Conditionally display additional properties -->
+            <div v-if="openIndex === index" class="mt-2 text-gray-600 text-left">
+            <p><strong>Origem:</strong> {{ Roteiros.origem }}</p>
+            <p><strong>Destino:</strong> {{ Roteiros.destino }}</p>
+            </div>
+        </div>
+        <Loading :loading="isLoading" ></Loading>
     </div>
 </template>
 
 <script setup>
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import { ref } from 'vue';
+import Loading from './Loading.vue';
+import { onMounted, ref } from 'vue';
 
-const data = ref([
-    {
-        NomeRoteiro: 'Viagem1',
-        Destino: 'Destino1',
-        QtdAdultos: 5,
-    },
-    {
-        NomeRoteiro: 'Viagem2',
-        Destino: 'Destino2',
-        QtdAdultos: 4,
-    },
-    {
-        NomeRoteiro: 'Viagem3',
-        Destino: 'Destino3',
-        QtdAdultos: 3,
-    },
+const Roteiros = ref(null)
+const isLoading = ref(false)
+
+onMounted(()=>{
+    isLoading.value=true
+    getRoteiros()
+})
+
+const getRoteiros= async ()=>{
+    let obj ={
+    email: "luisalbergoni717@gmail.com",
+    origem: "Reading, Reino Unido",
+    destino: "'Redding, CA, EUA'",
+    dias: 5,
+    data_inicio: "2024-10-17",
+    data_fim: "2024-10-22",
+    qtd_adultos: 3,
+    qtd_menores: 0,
+    idade_menores: [],
+    interesses: "",
+    quero_conhecer: "",
+    nao_incluir: [],
+    idioma: "PT-BR",
+    ip_origem: "186.193.138.75",
+    txt_Roteir: "1",
+    nome_roteiro: "dsasdad",
+    tpacao: "S",
+    iduser: 7
+    }
+try {
+    let objRoteiro1={
+        tpacao: 'S',
+    }
+    const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', obj)
+    Roteiros.value=response.data.result
+    console.log('rada',Roteiros.value)
+    isLoading.value=false
+} catch (error) {
+    console.log(error)
+    isLoading.value=false
+}
+}
+
+const objects = ref([
+  { name: "Object 1", description: "Description 1", details: "More details about Object 1" },
+  { name: "Object 2", description: "Description 2", details: "More details about Object 2" },
+  { name: "Object 3", description: "Description 3", details: "More details about Object 3" },
 ]);
 
-const viewRoteiro = (item) => {
-    console.log('Ver Roteiro:', item);
-};
+// Track which object is currently expanded
+const openIndex = ref(null);
 
-const useParametros = (item) => {
-    console.log('Usar Parâmetros:', item);
+// Toggle function to open/close the details
+const toggleDetails = (index) => {
+  openIndex.value = openIndex.value === index ? null : index;
 };
 </script>
 

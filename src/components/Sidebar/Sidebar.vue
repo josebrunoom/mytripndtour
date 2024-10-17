@@ -49,7 +49,7 @@
                     </button>
                 </div>
             </div>
-            <!-- <div class="col-12 pb-3">
+<!--             <div class="col-12 pb-3">
                 <div v-if="currentRouteName=='Lista'">
                     <button 
                     type="button" 
@@ -70,7 +70,7 @@
                     Lista de Roteiros
                     </button>
                 </div>
-            </div> -->
+            </div>  -->
             <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
