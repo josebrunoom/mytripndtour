@@ -3,8 +3,8 @@
       <div class="loading-screen">
         <div class="flex flex-col justify-center items-center h-screen d-flex">
           <div class="loader"></div>
-          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ traducao.Loading1 }}</span>
-          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ traducao.Loading2 }}</span>
+          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ LoadingText1 }}</span>
+          <span v-if="isRoteiro==true" class="mt-4 text-white">{{ LoadingText2 }}</span>
         </div>
       </div>
     </div>
@@ -29,9 +29,17 @@
     isRoteiro:{
       type: Boolean,
       default: false,
-    }
     },
-    setup() {
+    LoadingText1:{
+      type: String,
+      default: false,
+    },
+    LoadingText2:{
+      type: String,
+      default: false,
+    },
+    },
+    /* setup() {
       const traducao = ref(localStorage.getItem('Traducao') 
         ? JSON.parse(localStorage.getItem('Traducao')) 
         : ptLang);
@@ -48,7 +56,7 @@
         isRoteiro,
         traducao
       };
-    }
+    } */
   };
   </script>
   

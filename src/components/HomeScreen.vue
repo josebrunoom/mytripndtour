@@ -454,7 +454,7 @@
           </div>
       </div>
     </div>
-    <Loading :loading="isLoading" :isRoteiro="isRoteiro"/>
+    <Loading :loading="isLoading" :isRoteiro="isRoteiro" :LoadingText1="traducao.Loading1" :LoadingText2="traducao.Loading2"/>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
@@ -902,12 +902,13 @@ const postRoteiro=async () =>{
       roteiroData.Roteiro=response.data
       console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
+      const userLocale = navigator.language
       let objUser = {
             email: user.email ? user.email : user.Email,
             name: user.name,
             birthday: user.birthday,
             gender: user.gender,
-            idioma:'PT',
+            sigla_idioma:userLocale.toUpperCase(),
             ip_origem:user.ip_origem
           };
           const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
@@ -937,12 +938,13 @@ const postRoteiro=async () =>{
       roteiroData.Roteiro=response.data
       console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
+      const userLocale = navigator.language
       let objUser = {
             email: user.email ? user.email : user.Email,
             name: user.name,
             birthday: user.birthday,
             gender: user.gender,
-            idioma:'PT',
+            sigla_idioma:userLocale.toUpperCase(),
             ip_origem:user.ip_origem
           };
           const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
