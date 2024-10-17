@@ -568,6 +568,7 @@ import ptLang from '../data/ptlang';
   const whyCardComentario=ref('')
   const errMsg=ref('')
   const FinalDate=ref(null);
+  const FinalDatePDF=ref(null);
   const InitDate=ref(null);
   const periodo_viagem=ref(null);
   const isRoteiro=ref(false);
@@ -791,8 +792,7 @@ const formatAges = (index) => {
           const endDate = initialDate.clone().add(periodo_viagem.value, 'days');
           console.log(endDate)
           const formattedEndDate = endDate.format('YYYY-MM-DD');
-          FinalDate.value= `${formattedEndDate}`;
-          console.log(FinalDate.value)
+          FinalDatePDF.value= `${formattedEndDate}`;
         }
       }
       function transformDate(initialDateStr) {
@@ -1148,7 +1148,7 @@ const customFormat = (date) => {
           destino: destinoString,
           dias:periodo_viagem.value,
           data_inicio: InitDate.value,
-          data_fim:FinalDate.value,
+          data_fim:FinalDatePDF.value,
           qtd_adultos: numAdults.value,
           qtd_menores: numChildren.value ? numChildren.value : 0,
           idade_menores: childAges.value,
@@ -1160,7 +1160,6 @@ const customFormat = (date) => {
           idioma: lang ? lang : "PT-BR",
           ip_origem: user.ip_origem,
           txt_Roteiro:roteiroData.Roteiro.Roteiro,
-          data_fim:FinalDate.value,
           nome_roteiro: PDFname.value,
           tpacao: 'I',
           iduser: user.iduser,
