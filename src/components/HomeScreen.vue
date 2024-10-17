@@ -368,7 +368,7 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
-      <div class="items-start text-start" id="pdf-button">
+      <div class="items-start text-start" ref="pdf_button">
         <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  Gerar PDF e Armazenar </button>
       </div>
       
@@ -583,6 +583,7 @@ import ptLang from '../data/ptlang';
   const showModal=ref(false)
   const dialogConfirm=ref(false)
   const dialogPesqPdf=ref('')
+  const pdf_button = ref(null);
   let resolveConfirm;
   const interesses = ref(traducao.value.ListInteresses/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
   const user=JSON.parse(localStorage.getItem('user'));
@@ -987,6 +988,7 @@ const postRoteiro=async () =>{
     finally {
       isLoading.value = false; 
       isRoteiro.value = false;
+      pdf_button.value.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
@@ -1203,6 +1205,7 @@ const customFormat = (date) => {
           dialogPDF.value=false;
         } catch (error) {
           console.log(error)
+          dialogPDF.value=false
         }
       }
 
