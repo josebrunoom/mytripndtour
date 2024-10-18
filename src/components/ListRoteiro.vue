@@ -1,6 +1,6 @@
 <template>
-    <div class="w-full">
-        <div v-for="(Roteiros, index) in Roteiros" :key="index" class="p-4 border-b scrollable-container">
+    <div class="scrollable-container">
+        <div v-for="(roteiro, index) in Roteiros" :key="index" class="p-4 border-b ">
             <div class="flex items-center">
             <!-- Arrow icon to toggle visibility, aligned to the left -->
             <button @click="toggleDetails(index)" class="mr-2">
@@ -8,79 +8,138 @@
                 &#x25BC;
                 </span>
             </button>
-            <span class="text-lg font-bold">{{ Roteiros.nome_roteiro }}</span>
+            <!-- Editable route name -->
+            <input
+                v-if="openIndex === index"
+                v-model="roteiro.nome_roteiro"
+                class="text-lg font-bold border border-gray-300 px-2 py-1 rounded"
+                type="text"
+                placeholder="Edit Route Name"
+            />
+            <span v-else class="text-lg font-bold">{{ roteiro.nome_roteiro }}</span>
             </div>
+            
             <!-- Conditionally display additional properties -->
             <div v-if="openIndex === index" class="mt-2 text-gray-600 text-left">
-            <p><strong>Origem:</strong> {{ Roteiros.origem }}</p>
-            <p><strong>Destino:</strong> {{ Roteiros.destino }}</p>
+            <p><strong>Origem:</strong> {{ roteiro.origem }}</p>
+            <p><strong>Destino:</strong> {{ roteiro.destino }}</p>
+            <p><strong>Periodo de Viagem:</strong> {{ roteiro.dias }} dias</p>
+            <p><strong>Data de inicio:</strong> {{ moment(roteiro.data_inicio).format("DD/MM/YYYY") }}</p>
+            <p><strong>Quantidade de Adultos:</strong> {{ roteiro.qtd_adultos }}</p>
+            
+            <div v-if="roteiro.qtd_menores > 0">
+                <p><strong>Crianças:</strong> {{ roteiro.qtd_menores }}</p>
+            </div>
+            <div v-if="roteiro.interesses">
+                <p><strong>Interesses:</strong> {{ roteiro.interesses }}</p>
+            </div>
+            <div v-if="roteiro.quero_conhecer">
+                <p><strong>Quero conhecer:</strong> {{ roteiro.quero_conhecer }}</p>
+            </div>
+            <div v-if="roteiro.nao_incluir.length > 0">
+                <p><strong>Não incluir:</strong> {{ roteiro.nao_incluir }}</p>
+            </div>
+    
+            <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+                Save
+            </button>
             </div>
         </div>
-        <Loading :loading="isLoading" ></Loading>
+        <Loading :loading="isLoading"></Loading>
     </div>
 </template>
 
+
 <script setup>
-import Loading from './Loading.vue';
-import { onMounted, ref } from 'vue';
+    import moment from 'moment';
+    import Loading from './Loading.vue';
+    import axios from 'axios';
+    import { onMounted, ref } from 'vue';
+    
+    const Roteiros = ref([]);
+    const isLoading = ref(false);
+    
+    onMounted(() => {
+        isLoading.value = true;
+        getRoteiros();
+    });
+    
+    const getRoteiros = async () => {
+        let obj = {
+        email: "luisalbergoni717@gmail.com",
+        origem: "Reading, Reino Unido",
+        destino: "Redding, CA, EUA",
+        dias: 5,
+        data_inicio: "2024-10-17",
+        data_fim: "2024-10-22",
+        qtd_adultos: 3,
+        qtd_menores: 0,
+        idade_menores: [],
+        interesses: "",
+        quero_conhecer: "",
+        nao_incluir: [],
+        idioma: "PT-BR",
+        ip_origem: "186.193.138.75",
+        txt_Roteir: "1",
+        nome_roteiro: "dsasdad",
+        tpacao: "S",
+        iduser: 7
+        };
+        
+        try {
+        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', obj);
+        Roteiros.value = response.data.result;
+        isLoading.value = false;
+        } catch (error) {
+        console.log(error);
+        isLoading.value = false;
+        }
+    };
+    
+    const openIndex = ref(null);
+    
+    const toggleDetails = (index) => {
+        openIndex.value = openIndex.value === index ? null : index;
+    };
 
-const Roteiros = ref(null)
-const isLoading = ref(false)
-
-onMounted(()=>{
-    isLoading.value=true
-    getRoteiros()
-})
-
-const getRoteiros= async ()=>{
-    let obj ={
-    email: "luisalbergoni717@gmail.com",
-    origem: "Reading, Reino Unido",
-    destino: "'Redding, CA, EUA'",
-    dias: 5,
-    data_inicio: "2024-10-17",
-    data_fim: "2024-10-22",
-    qtd_adultos: 3,
-    qtd_menores: 0,
-    idade_menores: [],
-    interesses: "",
-    quero_conhecer: "",
-    nao_incluir: [],
-    idioma: "PT-BR",
-    ip_origem: "186.193.138.75",
-    txt_Roteir: "1",
-    nome_roteiro: "dsasdad",
-    tpacao: "S",
-    iduser: 7
-    }
-try {
-    let objRoteiro1={
-        tpacao: 'S',
-    }
-    const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', obj)
-    Roteiros.value=response.data.result
-    console.log('rada',Roteiros.value)
-    isLoading.value=false
-} catch (error) {
-    console.log(error)
-    isLoading.value=false
-}
-}
-
-const objects = ref([
-  { name: "Object 1", description: "Description 1", details: "More details about Object 1" },
-  { name: "Object 2", description: "Description 2", details: "More details about Object 2" },
-  { name: "Object 3", description: "Description 3", details: "More details about Object 3" },
-]);
-
-// Track which object is currently expanded
-const openIndex = ref(null);
-
-// Toggle function to open/close the details
-const toggleDetails = (index) => {
-  openIndex.value = openIndex.value === index ? null : index;
-};
+    const saveRoteiro = async (index) => {
+        isLoading.value = true;
+    
+        try {
+        const roteiro = Roteiros.value[index];
+        console.log(roteiro)
+        let objRoteiro={
+            data_inicio: roteiro.data_inicio,
+            destino: roteiro.destino,
+            dias: roteiro.dias,
+            dth_insert: roteiro.dth_insert,
+            idade_menores: roteiro.idade_menores,
+            idioma: roteiro.idioma,
+            idrotsalvo: roteiro.idrotsalvo,
+            iduser: roteiro.iduser,
+            interesses: roteiro.interesses,
+            ip_origem: roteiro.ip_origem,
+            nao_incluir: roteiro.nao_incluir,
+            nome_roteiro: roteiro.nome_roteiro,
+            origem: roteiro.origem,
+            qtd_adultos: roteiro.qtd_adultos,
+            qtd_menores: roteiro.qtd_menores,
+            quero_conhecer: roteiro.quero_conhecer,
+            tipo_hospedage: roteiro.tipo_hospedage,
+            txt_roteiro: roteiro.txt_roteiro,
+            tpacao: 'U',
+        }
+        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', objRoteiro);
+        
+        console.log('Updated roteiro:', response.data.result);
+        isLoading.value = false;
+        } catch (error) {
+        console.log('Error saving roteiro:', error);
+        isLoading.value = false;
+        }
+    };
 </script>
+
 
 <style>
 .scrollable-container {
