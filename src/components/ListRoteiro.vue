@@ -40,12 +40,17 @@
                 <p><strong>Não incluir:</strong> {{ roteiro.nao_incluir }}</p>
             </div>
     
-            <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+            <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-2">
                 Save
             </button>
+            <button @click="openModal(roteiro)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+                Visualizar Roteiro
+            </button>
             </div>
+            
         </div>
         <Loading :loading="isLoading"></Loading>
+        <HomeScreenSeeOnly v-if="ModalVisible " :isVisible="ModalVisible" :Roteiros="selectedRoteiro"></HomeScreenSeeOnly>
     </div>
 </template>
 
@@ -53,16 +58,26 @@
 <script setup>
     import moment from 'moment';
     import Loading from './Loading.vue';
+    import HomeScreenSeeOnly from './HomeScreen-See-Only.vue';
     import axios from 'axios';
     import { onMounted, ref } from 'vue';
     
     const Roteiros = ref([]);
     const isLoading = ref(false);
+    const ModalVisible=ref(false)
+    const selectedRoteiro = ref(null);
     
     onMounted(() => {
         isLoading.value = true;
         getRoteiros();
     });
+
+    const openModal = (roteiro) => {
+        
+        selectedRoteiro.value = roteiro;  // Set the selected roteiro
+        ModalVisible.value = true;        // Open the modal
+        console.log('aetaeyahwa4heatdjaeiwsoghjwnsohíubwneytgw', selectedRoteiro.value)
+    };
     
     const getRoteiros = async () => {
         let obj = {

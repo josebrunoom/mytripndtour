@@ -81,6 +81,15 @@ const ptLang = {
     Tooltip6:"Tem atrações, pontos turísticos que você sempre sonhou em conhecer?<br> Conta pra gente que ele vai entrar no roteiro!",
     Tooltip7:"Tem algum local que você quer evitar?<br> Diz aí e a gente risca da lista!",
     Tooltip8:"Quer saber onde rola aquela comida incrível,<br> aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!",
+    ListaRoteiro:"Lista de Roteiros",
+    Origem:"Origem",
+    Destino:"Destino",
+    Periodo_de_Viagem: "Periodo de Viagem",
+    Data_inicio: "Data de inicio",
+    Quantidade_Adultos: "Quantidade de adultos",
+    Não_incluir: "Não Incluir",
+    Crianças:"Crianças",
+    Salvar:"Salvar",
 };
 
 export default ptLang 
