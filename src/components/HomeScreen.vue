@@ -676,6 +676,10 @@ import ptLang from '../data/ptlang';
       }
       if(elementId=='autocompleteD'){
         console.log("b");
+        if(lugaresDestinosFullNames.value.length+1>1){
+          showDestino.value=true;
+          alert('A adição de mais de um destino é um serviço premium!')
+        }
         if(lugaresDestinosFullNames.value.length+1>5){
           showDestino.value=true;
           alert('O número máximo de lugares é 5')
@@ -974,10 +978,10 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: response.data.novo_saldo,
-                vlrpdf: responseUser.data.vlrpdf,
-                vlrpesquisa: responseUser.data.vlrpesquisa,
-                iduser: responseUser.data.iduser,
+                saldouser: responseUser.data.novo_saldo,
+                vlrpdf: user.data.vlrpdf,
+                vlrpesquisa: user.data.vlrpesquisa,
+                iduser: user.data.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
