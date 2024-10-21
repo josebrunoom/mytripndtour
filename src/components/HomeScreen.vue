@@ -27,7 +27,7 @@
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold  text-left">
-                {{ traducao.Destino  }}
+                Destino
                 <i 
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
@@ -35,25 +35,11 @@
                   v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
                 ></i>
               </h2>
-             
-            </div>
-            <div class="selected-placesDestino">
-            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-              <span class=" text-black" style="font-size: 1.3rem;">
-                {{ place }};
-            </span>
-            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
-            </div>
           </div>
-            <div v-if="!showDestino" class="d-flex justify-content-start">
-              <button  class="fw-bold h1 fontDestino" @click="setDestino">{{ traducao.SelectDestino }}</button>
-            </div>
+          <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
               <div v-show="showDestino">
-                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
-            <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
-            </vue-google-autocomplete> -->
-          
         </div>
       </div>
     </div>
@@ -218,7 +204,37 @@
           <span class="h5 text-left"><b>{{ traducao.Premium }}</b> <i style="font-style: italic;
     font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
-        
+
+        <div class="col-12 col-md-12 mb-4">
+        <div class="p-4 rounded-lg shadow-md h-44 w-full" style="background-color: #ffff;">
+          <div class="d-flex align-items-center justify-content-center position-relative">
+              <h2 class="h3 fw-bold  text-left">
+                {{ traducao.Destino  }}
+                <i 
+                  class="bi bi-question-circle-fill mr-2"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
+                ></i>
+              </h2>
+             
+            </div>
+            <div class="selected-placesDestino">
+            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+              <span class=" text-black" style="font-size: 1.3rem;">
+                {{ place }};
+            </span>
+            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+              <div>
+                <input ref="inputDestinoMult" id="autocompleteDMult" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+              </div>
+            <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
+            </vue-google-autocomplete> -->
+          
+        </div>
+      </div>
     <div class="row mb-4 col-12">
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         
@@ -498,10 +514,10 @@
     </v-dialog>
     <v-dialog v-model="dialogPDF" max-width="500px">
       <v-card>
-        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <!-- <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title> -->
         <v-card-text>{{ traducao.NameRoteiro }}</v-card-text>
-        <div class="flex justify-center">
-        <input type="text" class="form-control w-[75%]" placeholder="Ex: Viagem" v-model="PDFname">
+        <div class="flex justify-center items-center w-[85%] mx-auto">
+          <input type="text" class="form-control" placeholder="Ex: Viagem" v-model="PDFname">
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -555,6 +571,7 @@ import ptLang from '../data/ptlang';
   const dialog=ref(false)
   const inputOrigem = ref(null);
   const inputDestino = ref(null);
+  const inputDestinoMult = ref(null);
   const OrigemCity=ref(null)
   const DestinoCity=ref(null)
   const lugaresConhecerFullNames=ref([])
@@ -627,6 +644,8 @@ import ptLang from '../data/ptlang';
       hospedagemSelecionada.value=decodedData.hospedagemSelecionada
       lugaresDestinosFullNames.value=decodedData.lugaresDestinosFullNames
       selectedInteresses=decodedData.interesses
+      DestinoCity.value=decodedData.lugaresDestinosFullNames.join()
+      Destinos=decodedData.lugaresDestinosFullNames.join()
       lugaresConhecerFullNames.value=decodedData.quero_conhecer
       inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
       console.log('Received Data:', decodedData);
@@ -678,17 +697,27 @@ import ptLang from '../data/ptlang';
         console.log("b");
         if(lugaresDestinosFullNames.value.length+1>1){
           showDestino.value=true;
-          alert('A adição de mais de um destino é um serviço premium!')
+          alert('O número máximo de lugares no serviço grátis é 1')
+        }else{
+          console.log("c");
+          Destinos.push(place.formatted_address)
+          DestinoCity.value=place.name
+          console.log(DestinoCity.value)
+          //lugaresDestinosFullNames.value.push(place.name)
+          showDestino.value=false
         }
+      }
+      if(elementId=='autocompleteDMult'){
+        console.log("b");
         if(lugaresDestinosFullNames.value.length+1>5){
-          showDestino.value=true;
+          //showDestino.value=true;
           alert('O número máximo de lugares é 5')
         }else{
           console.log("c");
           Destinos.push(place.formatted_address)
-          DestinoCity.value=place.formatted_address
+          //DestinoCity.value=place.formatted_address
           lugaresDestinosFullNames.value.push(place.name)
-          showDestino.value=true
+          //showDestino.value=true
         }
       }
     });
@@ -697,7 +726,8 @@ import ptLang from '../data/ptlang';
   initAutocomplete('autocompleteQ', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
-  initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
+  initAutocomplete('autocompleteD', ['locality', 'country', 'continent', 'administrative_area_level_1',]);
+  initAutocomplete('autocompleteDMult', ['locality', 'country', 'continent', 'administrative_area_level_1',]);
   
   document.getElementById("autocompleteO").focus();
   getdata();
@@ -872,7 +902,7 @@ const postRoteiro=async () =>{
     errMsg.value=traducao.ErrMsg4
   }
   else{
-    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1){
+    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0){
     let saldoValido = haveSaldo()
     if(saldoValido==false){
         dialogVlr.value=true
@@ -941,7 +971,7 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: response.data.novo_saldo,
+                saldouser: responseUser.data.saldouser,
                 vlrpdf: user.vlrpdf,
                 vlrpesquisa: user.vlrpesquisa,
                 iduser: user.iduser,
@@ -978,7 +1008,7 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: responseUser.data.novo_saldo,
+                saldouser: responseUser.data.saldouser,
                 vlrpdf: user.vlrpdf,
                 vlrpesquisa: user.vlrpesquisa,
                 iduser: user.iduser,
@@ -1200,13 +1230,14 @@ const customFormat = (date) => {
                 ip_origem: user.ip_origem,
                 email: user.email,
                 saldouser: response.data.novo_saldo,
-                vlrpdf: responseUser.data.vlrpdf,
-                vlrpesquisa: responseUser.data.vlrpesquisa,
-                iduser: responseUser.data.iduser,
+                vlrpdf: user.vlrpdf,
+                vlrpesquisa: user.vlrpesquisa,
+                iduser: user.iduser,
               };
               console.log(LocalStorageUser)
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           dialogPDF.value=false;
+          alert('Roteiro Salvo!')
         } catch (error) {
           console.log(error)
           dialogPDF.value=false
