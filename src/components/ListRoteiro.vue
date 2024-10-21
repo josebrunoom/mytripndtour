@@ -36,19 +36,31 @@
             <div v-if="roteiro.quero_conhecer">
                 <p><strong>Quero conhecer:</strong> {{ roteiro.quero_conhecer }}</p>
             </div>
-            <div v-if="roteiro.nao_incluir.length > 0">
+            <div v-if="roteiro.nao_incluir !== '{}'">
                 <p><strong>Não incluir:</strong> {{ roteiro.nao_incluir }}</p>
             </div>
     
-            <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-2">
-                Save
+            <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded mr-2">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar
             </button>
-            <button @click="openModal(roteiro)" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-                Visualizar Roteiro
+            <button @click="openModal(roteiro)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded">
+                <i class="fa-solid fa-eye"></i> Visualizar Roteiro
             </button>
             </div>
             
         </div>
+        <v-dialog v-model="dialogNameChange" max-width="500px">
+            <v-card>
+                <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+                <v-card-text>O nome do roteiro foi editado com sucesso!</v-card-text>
+                <div class="flex justify-center">
+                </div>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="[#78c0d6]" text @click="dialogNameChange">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <Loading :loading="isLoading"></Loading>
         <HomeScreenSeeOnly v-if="ModalVisible " :isVisible="ModalVisible" :Roteiros="selectedRoteiro"></HomeScreenSeeOnly>
     </div>
@@ -66,6 +78,7 @@
     const isLoading = ref(false);
     const ModalVisible=ref(false)
     const selectedRoteiro = ref(null);
+    const dialogNameChange = ref(false)
     
     onMounted(() => {
         isLoading.value = true;
@@ -145,9 +158,9 @@
             tpacao: 'U',
         }
         const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', objRoteiro);
-        
         console.log('Updated roteiro:', response.data.result);
         isLoading.value = false;
+        dialogNameChange.value=true
         } catch (error) {
         console.log('Error saving roteiro:', error);
         isLoading.value = false;
