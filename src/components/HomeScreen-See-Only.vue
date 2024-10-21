@@ -15,9 +15,9 @@
                 ></i>
               </h2>
             </div>
-            <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
+            <button disabled v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
               <div v-show="showOrigem">
-                <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
+                <input disabled ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
@@ -27,7 +27,7 @@
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold  text-left">
-                {{ traducao.Destino  }}
+                Destino
                 <i 
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
@@ -35,25 +35,11 @@
                   v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
                 ></i>
               </h2>
-             
-            </div>
-            <div class="selected-placesDestino">
-            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-              <span class=" text-black" style="font-size: 1.3rem;">
-                {{ place }};
-            </span>
-            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
-            </div>
           </div>
-            <div v-if="!showDestino" class="d-flex justify-content-start">
-              <button  class="fw-bold h1 fontDestino" @click="setDestino">{{ traducao.SelectDestino }}</button>
-            </div>
+          <button disabled v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
               <div v-show="showDestino">
-                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
-            <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
-            </vue-google-autocomplete> -->
-          
         </div>
       </div>
     </div>
@@ -76,6 +62,7 @@
             <!-- Travel duration input -->
             <div class="me-2" style="flex: 1 1 100px;">
               <input 
+              disabled
                 type="number" 
                 class="form-control form-control-sm" 
                 placeholder="0" 
@@ -92,6 +79,7 @@
             <!-- Date picker input -->
             <div class="me-2" style="flex: 1 1 100px;">
               <VueDatePicker 
+              disabled
                 v-model="date"
                 locale="pt-BR"
                 :enable-time-picker="false"
@@ -133,6 +121,7 @@
           <div class="d-flex align-items-center mt-2">
             <div class="me-2">
             <input 
+            disabled
               type="number" 
               class="form-control" 
               placeholder="0" 
@@ -144,6 +133,7 @@
           <div class="fw-bold textosDuracao me-3">{{ traducao.Adultos }}</div>
             <div class="me-2">
             <input 
+            disabled
               type="number" 
               class="form-control" 
               placeholder="0"  
@@ -164,6 +154,7 @@
                 :key="index" 
               >
                 <input 
+                disabled
                   type="number" 
                   class="form-control" 
                   :placeholder="`Idade ${index + 1}`" 
@@ -218,7 +209,37 @@
           <span class="h5 text-left"><b>{{ traducao.Premium }}</b> <i style="font-style: italic;
     font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
-        
+
+        <div class="col-12 col-md-12 mb-4">
+        <div class="p-4 rounded-lg shadow-md h-44 w-full" style="background-color: #ffff;">
+          <div class="d-flex align-items-center justify-content-center position-relative">
+              <h2 class="h3 fw-bold  text-left">
+                {{ traducao.Destino  }}
+                <i 
+                  class="bi bi-question-circle-fill mr-2"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
+                ></i>
+              </h2>
+             
+            </div>
+            <div class="selected-placesDestino">
+            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+              <span class=" text-black" style="font-size: 1.3rem;">
+                {{ place }};
+            </span>
+            <button disabled @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+              <div>
+                <input disabled ref="inputDestinoMult" id="autocompleteDMult" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+              </div>
+            <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
+            </vue-google-autocomplete> -->
+          
+        </div>
+      </div>
     <div class="row mb-4 col-12">
       <div class="col-12 col-md-4 mb-3 mb-md-0">
         
@@ -240,7 +261,7 @@
             style=""
           >
             <label class="d-flex ml-2">
-              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
+              <input disabled type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
               <span>{{ modo }}</span>
             </label>
           </div>
@@ -292,13 +313,13 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
+          <input disabled id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
                 {{ place }};
             </span>
-            <button @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            <button disabled @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>
@@ -324,13 +345,13 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
+          <input disabled id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
                 {{ place }};
             </span>
-            <button @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+            <button disabled @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>
@@ -355,7 +376,7 @@
             class="d-inline-flex text-start mb-2 lg:w-[33.33%] md:w-[50%]"
           >
             <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
+              <input disabled type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
               :disabled="!canCheck && !inChecked[index]"
               />
               <span>{{ interest }}</span>
@@ -394,64 +415,15 @@
           </div>
           </div>
       </div>
-      <div class="col-12 d-flex justify-content-start">
-        <button 
-          type="button" 
-          class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
-          @click="postRoteiro"
-        >
-          {{ traducao.Gerar }}
-        </button>
-        <button 
-          type="button" 
-          class="btn btn-warning me-2 "
-          @click="dialogLimpar=true"
-        >
-          {{ traducao.Limpar }}
-        </button>
-      
-          
-        
-      </div>
     </div>
 
     <div class="row mb-4">
       <div class="col-12 roteiro-container bg-white">
         
         <!-- Render each item after parsing with marked -->
-         <div v-if="roteiroData.Roteiro!=null">
-          
-          <div  id="pdf-content" v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
-          
-          <div class="col-md-12 d-flex align-items-start">
-            <span class="pl-4" style="text-align: left;">
-              <b>{{ traducao.ComoFoi }}</b><br> {{ traducao.Criticas }}
-            </span>
-          </div>
-          <div class="col-start-12 d-flex">
-            <div class="row align-items-center">
-            <div class="col-auto">
-              <v-rating
-                v-model="starValue"
-                background-color="blue-grey lighten-2"
-                color="amber"
-                dense
-                class="me-2"
-                :disabled="disabledRating==true"
-              ></v-rating>
-            </div>
-            <div class="col-auto">
-              <button class="btn btn-primary" @click="sendRating" :disabled="disabledRating==true">{{ traducao.Enviar }}</button>
-            </div>
-          </div>
-          </div>
-          <div class="col-start-12 d-flex">
-            <div class="pl-4 pb-6" style="width:100%" v-show="starValue != null">
-              <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?" :disabled="disabledRating==true"></textarea>
-            </div>
-            
-          </div>
-          </div>
+        <div v-if="roteiroData.Roteiro!=null">
+          <div  id="pdf-content" v-html="roteiroData.Roteiro" class="roteiro-item"></div>
+        </div>
       </div>
     </div>
     <Loading :loading="isLoading" :isRoteiro="isRoteiro" :LoadingText1="traducao.Loading1" :LoadingText2="traducao.Loading2"/>
@@ -498,10 +470,10 @@
     </v-dialog>
     <v-dialog v-model="dialogPDF" max-width="500px">
       <v-card>
-        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <!-- <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title> -->
         <v-card-text>{{ traducao.NameRoteiro }}</v-card-text>
-        <div class="flex justify-center">
-        <input type="text" class="form-control w-[75%]" placeholder="Ex: Viagem" v-model="PDFname">
+        <div class="flex justify-center items-center w-[85%] mx-auto">
+          <input type="text" class="form-control" placeholder="Ex: Viagem" v-model="PDFname">
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -540,20 +512,16 @@
   import html2pdf from 'html2pdf.js';
   import Tooltip from 'primevue/tooltip';
   import compraModal from './compraModal.vue';
-import ptLang from '../data/ptlang';
-import { defineProps, defineEmits } from 'vue';
+  import ptLang from '../data/ptlang';
 
-const props = defineProps({
-  isVisible: Boolean,
-  Roteiro: Object, // Ensure it's defined as an object
-});
-  console.log(props)
+  const decodedData=ref(null)
+
 
   const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
-  const date = ref(props.Roteiro.data_inicio);
-  const numAdults = ref(props.Roteiro.qtd_adultos)
-  const numChildren = ref(props.Roteiro.qtd_menores);
-  const childAges = ref(props.Roteiro.idade_menores);
+  const date = ref();
+  const numAdults = ref()
+  const numChildren = ref();
+  const childAges = ref([]);
   const currentIndex = ref(0);
   const isLoading=ref(false)
   const showOrigem=ref(true)
@@ -561,6 +529,7 @@ const props = defineProps({
   const dialog=ref(false)
   const inputOrigem = ref(null);
   const inputDestino = ref(null);
+  const inputDestinoMult = ref(null);
   const OrigemCity=ref(null)
   const DestinoCity=ref(null)
   const lugaresConhecerFullNames=ref([])
@@ -576,7 +545,7 @@ const props = defineProps({
   const FinalDate=ref(null);
   const FinalDatePDF=ref(null);
   const InitDate=ref(null);
-  const periodo_viagem=ref(props.Roteiro.periodo_viagem);
+  const periodo_viagem=ref(null);
   const isRoteiro=ref(false);
   const selectedCount = computed(() => inChecked.value.filter(Boolean).length);
   const canCheck = computed(() => selectedCount.value < 3);
@@ -598,12 +567,12 @@ const props = defineProps({
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
   /* let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */
-  let selectedInteresses=props.Roteiro.interesses
+  let selectedInteresses=[]
   let lugares=/* ['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)'] */ traducao.value.lugares
   let Destinos=[]
   let Origem
-  let lugar_nIr=props.Roteiro.nao_incluir
-  let lugar_Conhecer=props.Roteiro.quero_conhecer
+  let lugar_nIr=[]
+  let lugar_Conhecer=[]
   let roteiroData = {Roteiro:null,}
   let opcaoGerar = 'Sim'
   let location1;
@@ -611,8 +580,6 @@ const props = defineProps({
   let location3;
   let location4;
   let lang = null;
-
-
 
   const closeModal=()=>{
     showModal.value=false
@@ -628,18 +595,28 @@ const props = defineProps({
       }
   }
   const getdata = () =>{
-    const queryParams = new URLSearchParams(window.location.search);
-    const receivedData = queryParams.get('data');
-    if (receivedData) {
-      const decodedData = JSON.parse(decodeURIComponent(receivedData));
-      hospedagemSelecionada.value=decodedData.hospedagemSelecionada
-      lugaresDestinosFullNames.value=decodedData.lugaresDestinosFullNames
-      selectedInteresses=decodedData.interesses
-      lugaresConhecerFullNames.value=decodedData.quero_conhecer
+      decodedData.value = JSON.parse(localStorage.getItem('roteiroSee'));
+      hospedagemSelecionada.value=decodedData.value.tipo_hospedage
+      lugaresDestinosFullNames.value=[decodedData.value.destino]
+      Destinos=decodedData.value.destino
+      DestinoCity.value=decodedData.value.destino.split("', '")[0] + "'";
+      selectedInteresses=decodedData.value.interesses
+      date.value=decodedData.value.data_inicio
+      periodo_viagem.value=decodedData.value.dias
       inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
-      console.log('Received Data:', decodedData);
+      console.log('Received Data:', decodedData.value);
       console.log('Received Data interesses:', selectedInteresses);
-    }
+      showOrigem.value=false
+      showDestino.value=false
+      OrigemCity.value=decodedData.value.origem
+      numAdults.value=decodedData.value.qtd_adultos
+      numChildren.value=decodedData.value.qtd_menores
+      childAges.value=decodedData.value.idade_menores.replace(/[{}/]/g, '')
+      childAges.value=childAges.value.split(',').map(Number);
+      lugaresConhecerFullNames.value=[decodedData.value.quero_conhecer]
+      lugaresNaoIrFullNames.value=decodedData.value.nao_incluir.replace(/[{}/]/g, '')
+      lugaresNaoIrFullNames.value=lugaresNaoIrFullNames.value.split(',').map(item => item.trim())
+      roteiroData.Roteiro=decodedData.value.txt_roteiro
   }
 
   onMounted(() => {
@@ -686,17 +663,27 @@ const props = defineProps({
         console.log("b");
         if(lugaresDestinosFullNames.value.length+1>1){
           showDestino.value=true;
-          alert('A adição de mais de um destino é um serviço premium!')
+          alert('O número máximo de lugares no serviço grátis é 1')
+        }else{
+          console.log("c");
+          Destinos.push(place.formatted_address)
+          DestinoCity.value=place.name
+          console.log(DestinoCity.value)
+          //lugaresDestinosFullNames.value.push(place.name)
+          showDestino.value=false
         }
+      }
+      if(elementId=='autocompleteDMult'){
+        console.log("b");
         if(lugaresDestinosFullNames.value.length+1>5){
-          showDestino.value=true;
+          //showDestino.value=true;
           alert('O número máximo de lugares é 5')
         }else{
           console.log("c");
           Destinos.push(place.formatted_address)
-          DestinoCity.value=place.formatted_address
+          //DestinoCity.value=place.formatted_address
           lugaresDestinosFullNames.value.push(place.name)
-          showDestino.value=true
+          //showDestino.value=true
         }
       }
     });
@@ -706,10 +693,11 @@ const props = defineProps({
   initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
   initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
+  initAutocomplete('autocompleteDMult', ['locality', 'country', 'continent']);
   
   document.getElementById("autocompleteO").focus();
   getdata();
-  console.log("roteiro props", props)
+  console.log("tradcaga", traducao.value)
 });
 
   onUpdated(()=> {
@@ -880,7 +868,7 @@ const postRoteiro=async () =>{
     errMsg.value=traducao.ErrMsg4
   }
   else{
-    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1){
+    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0){
     let saldoValido = haveSaldo()
     if(saldoValido==false){
         dialogVlr.value=true
@@ -950,9 +938,9 @@ const postRoteiro=async () =>{
                 ip_origem: user.ip_origem,
                 email: user.email,
                 saldouser: response.data.novo_saldo,
-                vlrpdf: responseUser.data.vlrpdf,
-                vlrpesquisa: responseUser.data.vlrpesquisa,
-                iduser: responseUser.data.iduser,
+                vlrpdf: user.vlrpdf,
+                vlrpesquisa: user.vlrpesquisa,
+                iduser: user.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
@@ -987,14 +975,15 @@ const postRoteiro=async () =>{
                 ip_origem: user.ip_origem,
                 email: user.email,
                 saldouser: responseUser.data.novo_saldo,
-                vlrpdf: user.data.vlrpdf,
-                vlrpesquisa: user.data.vlrpesquisa,
-                iduser: user.data.iduser,
+                vlrpdf: user.vlrpdf,
+                vlrpesquisa: user.vlrpesquisa,
+                iduser: user.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }
     } catch (error) {
+      console.log('error in postRoteiro:',error)
       alert('Erro ao Gerar Roteiro')
     }
     finally {
@@ -1144,11 +1133,11 @@ const customFormat = (date) => {
     };
 
     const downloadPdf = async () => {
-      if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
+      /* if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
         console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
         dialogVlr.value=true
         vlrModalText.value=traducao.VlrModal2
-      }else{
+      }else{ */
         try {
           const destinoString = Destinos.map(location => `'${location}'`).join(', ');
         const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
@@ -1185,7 +1174,7 @@ const customFormat = (date) => {
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save();
-        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
+/*         const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
         let objUser = {
             email: user.email ? user.email : user.Email,
             name: user.name,
@@ -1213,12 +1202,12 @@ const customFormat = (date) => {
               };
               console.log(LocalStorageUser)
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-          dialogPDF.value=false;
+          dialogPDF.value=false; */
         } catch (error) {
           console.log(error)
           dialogPDF.value=false
         }
-      }
+      /* } */
 
     }
   const haveSaldo=()=>{

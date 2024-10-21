@@ -4,7 +4,8 @@ import Sidebar from "../components/Sidebar/Sidebar.vue";
 import Perfil from "../components/Perfil.vue";
 import Politica_privacidade from "../components/politica_privacidade.vue";
 import HelloWorld from "../components/HelloWorld.vue";
-import ListRoteiro from "../components/ListRoteiro.vue";
+import ListRoteiro from "../components/ListRoteiro.vue"
+import HomeScreenSeeOnly from "../components/HomeScreen-See-Only.vue";
 
 const routes = [
     {
@@ -35,6 +36,11 @@ const routes = [
                 path: "lista",
                 name: "Lista",
                 component: ListRoteiro,
+            },
+            {
+                path: "visualizacao",
+                name: "Visualizacao",
+                component: HomeScreenSeeOnly,
             },
         ]
     },
