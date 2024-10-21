@@ -942,9 +942,9 @@ const postRoteiro=async () =>{
                 ip_origem: user.ip_origem,
                 email: user.email,
                 saldouser: response.data.novo_saldo,
-                vlrpdf: responseUser.data.vlrpdf,
-                vlrpesquisa: responseUser.data.vlrpesquisa,
-                iduser: responseUser.data.iduser,
+                vlrpdf: user.vlrpdf,
+                vlrpesquisa: user.vlrpesquisa,
+                iduser: user.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
@@ -979,14 +979,15 @@ const postRoteiro=async () =>{
                 ip_origem: user.ip_origem,
                 email: user.email,
                 saldouser: responseUser.data.novo_saldo,
-                vlrpdf: user.data.vlrpdf,
-                vlrpesquisa: user.data.vlrpesquisa,
-                iduser: user.data.iduser,
+                vlrpdf: user.vlrpdf,
+                vlrpesquisa: user.vlrpesquisa,
+                iduser: user.iduser,
               };
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }
     } catch (error) {
+      console.log('error in postRoteiro:',error)
       alert('Erro ao Gerar Roteiro')
     }
     finally {
