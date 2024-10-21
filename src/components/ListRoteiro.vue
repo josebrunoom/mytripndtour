@@ -43,7 +43,7 @@
             <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded mr-2">
                 <i class="fa-solid fa-floppy-disk"></i> Salvar
             </button>
-            <button @click="openModal(roteiro)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded">
+            <button @click="sendData(roteiro)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded">
                 <i class="fa-solid fa-eye"></i> Visualizar Roteiro
             </button>
             </div>
@@ -79,6 +79,7 @@
     const ModalVisible=ref(false)
     const selectedRoteiro = ref(null);
     const dialogNameChange = ref(false)
+    const dataToSend = ref(null)
     
     onMounted(() => {
         isLoading.value = true;
@@ -166,6 +167,29 @@
         isLoading.value = false;
         }
     };
+    const sendData = (roteiro) => {
+    console.log(roteiro)
+    let objRoteiro={
+            data_inicio: roteiro.data_inicio,
+            destino: roteiro.destino,
+            dias: roteiro.dias,
+            idade_menores: roteiro.idade_menores,
+            interesses: roteiro.interesses,
+            nao_incluir: roteiro.nao_incluir,
+            origem: roteiro.origem,
+            qtd_adultos: roteiro.qtd_adultos,
+            qtd_menores: roteiro.qtd_menores,
+            quero_conhecer: roteiro.quero_conhecer,
+            tipo_hospedage: roteiro.tipo_hospedage,
+            txt_roteiro: roteiro.txt_roteiro,
+        }
+        
+    dataToSend.value = JSON.stringify(objRoteiro)
+    localStorage.setItem('roteiroSee',dataToSend.value)
+    //const encodedData = encodeURIComponent(dataToSend.value);
+    //console.log(encodedData)
+    window.location.href = `https://roteiro.mytripntour.com/mytrip/visualizacao`;
+    }
 </script>
 
 
