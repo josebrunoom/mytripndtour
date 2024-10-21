@@ -83,13 +83,14 @@ const ptLang = {
     Tooltip8:"Quer saber onde rola aquela comida incrível,<br> aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!",
     ListaRoteiro:"Lista de Roteiros",
     Origem:"Origem",
-    Destino:"Destino",
+    DestinoSingle:"Destino",
     Periodo_de_Viagem: "Periodo de Viagem",
     Data_inicio: "Data de inicio",
     Quantidade_Adultos: "Quantidade de adultos",
     Não_incluir: "Não Incluir",
     Crianças:"Crianças",
     Salvar:"Salvar",
+    MultDestinos:"Múltiplos Destinos",
 };
 
 export default ptLang 
