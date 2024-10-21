@@ -57,7 +57,7 @@
                     @click=""
                     >
                     <i class="fa-solid fa-list"></i>
-                    Lista de Roteiros
+                    Histórico de Roteiros
                     </button>
                 </div>
                 <div v-else>
@@ -67,7 +67,7 @@
                     @click="goTo('lista')"
                     >
                     <i class="fa-solid fa-list"></i>
-                    Lista de Roteiros
+                    Histórico de Roteiros
                     </button>
                 </div>
             </div>  
@@ -201,7 +201,7 @@
                     @click=""
                     >
                     <i class="fa-solid fa-list"></i>
-                    Lista de Roteiros
+                    Histórico de Roteiros
                     </button>
                 </div>
                 <div v-else>
@@ -211,7 +211,7 @@
                     @click="goTo('lista')"
                     >
                     <i class="fa-solid fa-list"></i>
-                    Lista de Roteiros
+                    Histórico de Roteiros
                     </button>
                 </div>
             </div> 
