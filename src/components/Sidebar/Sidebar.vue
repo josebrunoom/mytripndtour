@@ -380,7 +380,7 @@ const changeLanguage = (langCode, langName) => {
 onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
-    saldo.value=convertNumberFormat(user.saldouser)
+    saldo.value=user.saldouser
     console.log(route.name);
     if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos') || user.email.includes('luisalbergoni717')){
         isAdmin.value=true
