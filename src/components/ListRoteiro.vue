@@ -26,9 +26,8 @@
             <p><strong>Periodo de Viagem:</strong> {{ roteiro.dias }} dias</p>
             <p><strong>Data de inicio:</strong> {{ moment(roteiro.data_inicio).format("DD/MM/YYYY") }}</p>
             <p><strong>Quantidade de Adultos:</strong> {{ roteiro.qtd_adultos }}</p>
-            
-            <div v-if="roteiro.qtd_menores > 0">
-                <p><strong>Crianças:</strong> {{ roteiro.qtd_menores }}</p>
+            <div >
+                <p><strong>Quantidade de Menores:</strong> {{ roteiro.qtd_menores }}</p>
             </div>
             <div v-if="roteiro.interesses">
                 <p><strong>Interesses:</strong> {{ roteiro.interesses }}</p>
@@ -73,6 +72,8 @@
     import HomeScreenSeeOnly from './HomeScreen-See-Only.vue';
     import axios from 'axios';
     import { onMounted, ref } from 'vue';
+
+    const user = ref(JSON.parse(localStorage.getItem('user')))
     
     const Roteiros = ref([]);
     const isLoading = ref(false);
@@ -95,24 +96,8 @@
     
     const getRoteiros = async () => {
         let obj = {
-        email: "luisalbergoni717@gmail.com",
-        origem: "Reading, Reino Unido",
-        destino: "Redding, CA, EUA",
-        dias: 5,
-        data_inicio: "2024-10-17",
-        data_fim: "2024-10-22",
-        qtd_adultos: 3,
-        qtd_menores: 0,
-        idade_menores: [],
-        interesses: "",
-        quero_conhecer: "",
-        nao_incluir: [],
-        idioma: "PT-BR",
-        ip_origem: "186.193.138.75",
-        txt_Roteir: "1",
-        nome_roteiro: "dsasdad",
         tpacao: "S",
-        iduser: 7
+        iduser: user.value.iduser
         };
         
         try {
