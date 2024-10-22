@@ -1060,8 +1060,8 @@ const sendRating = async () =>{
     qtd_menores: numChildren.value ? numChildren.value : 0,
     idade_menores: childAges.value,
     interesses: selectedInteressesString,
-    quero_conhecer: lugar_nIrString,
-    nao_incluir: lugar_nIr,
+    quero_conhecer: lugar_ConhecerString,
+    nao_incluir: lugar_nIrString,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
     idioma: lang ? lang : "PT-BR",
@@ -1187,6 +1187,7 @@ const customFormat = (date) => {
           const destinoString = Destinos.map(location => `'${location}'`).join(', ');
         const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
         const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
+        const lugar_nIrString = lugar_nIr ? lugar_nIr.map(location => `'${location}'`).join(', ') : "";
         await transformDatesToSave(date.value)
         let ObjRoteiro1={
           email:user.Email ? user.Email : user.email,
@@ -1200,7 +1201,7 @@ const customFormat = (date) => {
           idade_menores: childAges.value,
           interesses: selectedInteressesString,
           quero_conhecer: lugar_ConhecerString,
-          nao_incluir: lugar_nIr,
+          nao_incluir: lugar_nIrString,
           meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
           tipo_hospedagem:hospedagemSelecionada.value,
           idioma: lang ? lang : "PT-BR",
