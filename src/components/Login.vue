@@ -12,17 +12,14 @@
             </button>
           </div>
         </form>
-        <form @submit.prevent="">
+<!--         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">
             <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
               <img src="../assets/Facebook_icon.svg" alt="Facebook" class="img-Facebook mr-1" />
               {{ traducao.EntrarFace }}
             </button>
           </div>
-          <!-- <button class="btn btn-primary" @click="tap">
-            ModalTermsAndPolitics
-          </button> -->
-        </form>
+        </form> -->
         <div class="mt-4">
             <a href="https://roteiro.mytripntour.com/politica_privacidade">{{ traducao.PoliticaDePriv }}</a>
         </div>
