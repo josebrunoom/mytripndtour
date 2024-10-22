@@ -205,39 +205,27 @@
     font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
 
-        <div class="col-12 col-md-12 mb-4">
-        <div class="p-4 rounded-lg shadow-md h-44 w-full" style="background-color: #ffff;">
-          <div class="d-flex align-items-center justify-content-center position-relative">
-              <h2 class="h3 fw-bold  text-left">
-                {{ traducao.Destino  }}
-                <i 
-                  class="bi bi-question-circle-fill mr-2"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
-                ></i>
-              </h2>
-             
-            </div>
-            <div class="selected-placesDestino">
-            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-              <span class=" text-black" style="font-size: 1.3rem;">
-                {{ place }};
-            </span>
-            <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+      <div class="col-12 col-md-12 mb-4">
+        <div class="p-4 rounded-lg shadow-md h-24 w-full" style="background-color: #ffff;">
+          <div class="d-flex  position-relative">
+            <h2 class="h4 fw-bold pt-1">
+                {{ traducao.Destino  }}:
+                </h2>
+                <input ref="inputDestinoMult" id="autocompleteDMult" type="text" placeholder="Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                <div class="selected-placesDestino">
+              <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+                  <span class=" text-black" style="font-size: 1.3rem;">
+                    {{ place }};
+                </span>
+                <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+              </div>
             </div>
           </div>
-              <div>
-                <input ref="inputDestinoMult" id="autocompleteDMult" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
-              </div>
-            <!-- <vue-google-autocomplete id="map2" types="(cities)" classname="form-control" placeholder="Destino" v-on:placechanged="handlePlaceDestino">
-            </vue-google-autocomplete> -->
-          
+            
         </div>
       </div>
     <div class="row mb-4 col-12">
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
-        
+      <div class="col-12 col-md-4 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
             <h2 class="h5 fw-bold ">{{ traducao.Hospedagem }}</h2>
@@ -287,7 +275,7 @@
         </div>
       </div> -->
       
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <div class="col-12 col-md-4  mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">{{ traducao.QConhecer }}</h2>
@@ -319,7 +307,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-4 mb-3 mb-md-0">
+      <div class="col-12 col-md-4 mb-md-0">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">{{ traducao.NaoPrecisa }}</h2>
@@ -384,8 +372,8 @@
           <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
       </div>
-      <div class="items-start text-start" ref="pdf_button">
-        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  Gerar PDF e Armazenar </button>
+      <div class="items-start text-start" >
+        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  Gerar PDF e Armazenar </button>
       </div>
       
     </div>
@@ -435,9 +423,9 @@
       <div class="col-12 roteiro-container bg-white">
         
         <!-- Render each item after parsing with marked -->
-         <div v-if="roteiroData.Roteiro!=null">
+         <div ref="pdfButton" v-if="roteiroData.Roteiro!=null">
           
-          <div  id="pdf-content" v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
+          <div id="pdf-content"  v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
           
           <div class="col-md-12 d-flex align-items-start">
             <span class="pl-4" style="text-align: left;">
@@ -615,13 +603,15 @@ import ptLang from '../data/ptlang';
   let Origem
   let lugar_nIr=[]
   let lugar_Conhecer=[]
-  let roteiroData = {Roteiro:null,}
+  const roteiroData = ref({Roteiro:null,})
   let opcaoGerar = 'Sim'
   let location1;
   let location2;
   let location3;
   let location4;
   let lang = null;
+
+  const pdfButton = ref(null)
 
   const closeModal=()=>{
     showModal.value=false
@@ -948,7 +938,7 @@ const postRoteiro=async () =>{
         disabledRating.value=false;
       }
       localStorage.setItem('roteiro', JSON.stringify(response.data));
-      roteiroData.Roteiro=response.data
+      roteiroData.value.Roteiro=response.data
       console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
       const userLocale = navigator.language
@@ -985,7 +975,7 @@ const postRoteiro=async () =>{
         disabledRating.value=false;
       }
       localStorage.setItem('roteiro', JSON.stringify(response.data));
-      roteiroData.Roteiro=response.data
+      roteiroData.value.Roteiro=response.data
       console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
       const userLocale = navigator.language
@@ -1016,6 +1006,12 @@ const postRoteiro=async () =>{
               console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }
+      await nextTick()
+      if (pdfButton.value) {
+        pdfButton.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }else{
+        console.log('asegaegaget scroll fucked up')
+      }
     } catch (error) {
       console.log('error in postRoteiro:',error)
       alert('Erro ao Gerar Roteiro')
@@ -1023,10 +1019,24 @@ const postRoteiro=async () =>{
     finally {
       isLoading.value = false; 
       isRoteiro.value = false;
-      pdf_button.value.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
+
+watch(
+  () => roteiroData.value.Roteiro,
+  async (newVal) => {
+    if (newVal) {
+      // Wait for DOM to update
+      await nextTick()
+
+      // Scroll to the button after DOM is updated
+      if (pdfButton.value) {
+        pdfButton.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+  }
+)
 
 var iframe = document.querySelector('iframe.skiptranslate');
     if (iframe) {
@@ -1055,7 +1065,7 @@ const sendRating = async () =>{
     tipo_hospedagem:hospedagemSelecionada.value,
     idioma: lang ? lang : "PT-BR",
     ip_origem: user.ip_origem,
-    txt_Roteiro:roteiroData.Roteiro.Roteiro,
+    txt_Roteiro:roteiroData.value.Roteiro.Roteiro,
     qtd_estrelas:starValue.value,
     txt_comentario:whyCardComentario.value,
   }
@@ -1158,7 +1168,7 @@ const customFormat = (date) => {
       date.value = null;
       meio_transporte.value = null;
       hospedagemSelecionada.value = null;
-      roteiroData = { Roteiro: null };
+      roteiroData.value = { Roteiro: null };
       opcaoGerar = 'Sim';
       selectedInteresses = [];
       lugar_nIr = [];
@@ -1194,7 +1204,7 @@ const customFormat = (date) => {
           tipo_hospedagem:hospedagemSelecionada.value,
           idioma: lang ? lang : "PT-BR",
           ip_origem: user.ip_origem,
-          txt_Roteiro:roteiroData.Roteiro.Roteiro,
+          txt_Roteiro:roteiroData.value.Roteiro.Roteiro,
           nome_roteiro: PDFname.value,
           tpacao: 'I',
           iduser: user.iduser,
