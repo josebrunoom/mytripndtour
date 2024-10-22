@@ -841,7 +841,7 @@ const postRoteiro=async () =>{
   const destinoString = Destinos.map(location => `'${location}'`).join(', ');
   const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
   const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
-  const lugar_nIrString = lugar_nIr.map(location => `'${location}'`).join(', ');
+  const lugar_nIrString = lugar_nIr ? lugar_nIr.map(location => `'${location}'`).join(', ') : "";
   let ObjRoteiro1={
     iduser:user.iduser,
     email:user.Email ? user.Email : user.email,
@@ -1048,6 +1048,7 @@ const sendRating = async () =>{
     const destinoString = Destinos.map(location => `'${location}'`).join(', ');
     const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
     const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
+    const lugar_nIrString = lugar_nIr ? lugar_nIr.map(location => `'${location}'`).join(', ') : "";
     let ObjRoteiro1={
     email:user.Email ? user.Email : user.email,
     origem:Origem,
@@ -1059,7 +1060,7 @@ const sendRating = async () =>{
     qtd_menores: numChildren.value ? numChildren.value : 0,
     idade_menores: childAges.value,
     interesses: selectedInteressesString,
-    quero_conhecer: lugar_ConhecerString,
+    quero_conhecer: lugar_nIrString,
     nao_incluir: lugar_nIr,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
