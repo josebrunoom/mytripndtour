@@ -29,7 +29,6 @@
       <!-- <button @click="sendUser" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24"> Logar</button> -->
     </div>
   </template>
-  
   <script setup>
   import { ref, onMounted } from 'vue';
   import { googleOneTap, GoogleLogin, googleTokenLogin, googleAuthCodeLogin, googleSdkLoaded } from "vue3-google-login";
@@ -213,7 +212,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'http://localhost:5173', 
+            redirect_uri: 'https://roteiro.mytripntour.com', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -335,7 +334,8 @@ const sendUser=async(user, userInfo, access_type)=>{
       console.error('Facebook login function is not available.');
     }
   };
-  </script>
+</script> 
+
   
   <style scoped>
   .img-Logo {

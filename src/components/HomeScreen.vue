@@ -17,7 +17,7 @@
             </div>
             <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
               <div v-show="showOrigem">
-                <input ref="inputOrigem" id="autocompleteO" type="text" placeholder="Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
+                <input ref="inputOrigem" id="autocompleteO" type="text" :placeholder="traducao.Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
@@ -27,7 +27,7 @@
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold  text-left">
-                Destino
+                {{ traducao.Destino  }}
                 <i 
                   class="bi bi-question-circle-fill mr-2"
                   data-toggle="tooltip" 
@@ -38,7 +38,7 @@
           </div>
           <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
               <div v-show="showDestino">
-                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
+                <input ref="inputDestino" id="autocompleteD" type="text" :placeholder="traducao.Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
         </div>
       </div>
@@ -209,9 +209,9 @@
         <div class="p-4 rounded-lg shadow-md h-24 w-full" style="background-color: #ffff;">
           <div class="d-flex  position-relative">
             <h2 class="h4 fw-bold pt-1">
-                {{ traducao.Destino  }}:
+                {{ traducao.MultDestinos  }}:
                 </h2>
-                <input ref="inputDestinoMult" id="autocompleteDMult" type="text" placeholder="Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
                 <div class="selected-placesDestino">
               <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
                   <span class=" text-black" style="font-size: 1.3rem;">
