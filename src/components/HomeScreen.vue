@@ -404,7 +404,7 @@
           class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
           @click="postRoteiro"
         >
-          {{ traducao.GerarPDF }}
+          {{ traducao.Gerar }}
         </button>
         <button 
           type="button" 
@@ -458,6 +458,8 @@
           </div>
       </div>
     </div>
+
+
     <Loading :loading="isLoading" :isRoteiro="isRoteiro" :LoadingText1="traducao.Loading1" :LoadingText2="traducao.Loading2"/>
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
