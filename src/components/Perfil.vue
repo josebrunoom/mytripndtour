@@ -76,7 +76,7 @@
   import moment from 'moment';
   import ptLang from '../data/ptlang';
 
-  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
+  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')).Perfil : ptLang)
   const user = JSON.parse(localStorage.getItem('user'));
   const name = ref('')
   const birthday = ref('')

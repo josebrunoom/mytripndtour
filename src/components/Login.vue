@@ -40,6 +40,7 @@
   import Loading from './Loading.vue';
   import { jwtDecode } from "jwt-decode";
   import ptLang from '../data/ptlang';
+  import newlang from '../data/newlang';
 
   const isProd=ref(true)
   const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
@@ -51,7 +52,7 @@
   const userIP=ref('')
   let token=localStorage.getItem('token')
 
-  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
+  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')).Login : ptLang)
 
   const Translate = async (lang, langName) => {
     let objUser = {
@@ -212,7 +213,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://roteiro.mytripntour.com', 
+            redirect_uri: 'http://localhost:5173', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -309,7 +310,7 @@ const sendUser=async(user, userInfo, access_type)=>{
                 vlrpesquisa: response.data.vlrpesquisa,
                 iduser: response.data.iduser,
               };
-              console.log(LocalStorageUser)
+              console.log(typeof response.data.traducao)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       localStorage.setItem('Traducao', response.data.traducao);
     }

@@ -333,7 +333,8 @@ import "@google-pay/button-element";
 import compraModal from '../compraModal.vue';
 import ptLang from '../../data/ptlang';
 
-const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
+const TRoteiro = JSON.parse(localStorage.getItem('Traducao'))
+const traducao = ref(localStorage.getItem('Traducao') ? TRoteiro.Sidebar : ptLang)
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
 const saldo = ref(null)
@@ -391,8 +392,9 @@ onMounted(() => {
     });
 })
 const checkUserSaldo = () => {
-    if ( user.saldouser !== saldo.value) {
-        saldo.value = convertNumberFormat(storedUser.saldouser)
+    const Nuser = JSON.parse(localStorage.getItem('user'))
+    if ( Nuser.saldouser !== saldo.value) {
+        saldo.value = convertNumberFormat(Nuser.saldouser)
         console.log("User saldo updated:", saldo.value);
     }
 };

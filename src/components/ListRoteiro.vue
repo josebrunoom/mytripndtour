@@ -1,5 +1,8 @@
 <template>
     <div class="scrollable-container">
+        <div v-if="!Roteiros">
+            <span class="">Não existem roteiros salvos</span>
+        </div>
         <div v-for="(roteiro, index) in Roteiros" :key="index" class="p-4 border-b ">
             <div class="flex items-center">
             <!-- Arrow icon to toggle visibility, aligned to the left -->
@@ -150,6 +153,7 @@
         } catch (error) {
         console.log('Error saving roteiro:', error);
         isLoading.value = false;
+        alert('Erro ao Salvar Roteiro')
         }
     };
     const sendData = (roteiro) => {
