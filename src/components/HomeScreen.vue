@@ -713,8 +713,8 @@ import ptLang from '../data/ptlang';
     });
   };
   console.log(user)
-  initAutocomplete('autocompleteQ', ['point_of_interest', 'country', 'continent','locality']);
-  initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
+  initAutocomplete('autocompleteQ', ['point_of_interest', 'locality']);
+  initAutocomplete('autocompleteN', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
   initAutocomplete('autocompleteD', ['locality', 'country', 'continent', 'administrative_area_level_1',]);
   initAutocomplete('autocompleteDMult', ['locality', 'country', 'continent', 'administrative_area_level_1',]);
@@ -840,8 +840,9 @@ const postRoteiro=async () =>{
   isLoading.value=true
   const destinoString = Destinos.map(location => `'${location}'`).join(', ');
   const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
-  const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
+  const lugar_ConhecerString = lugar_Conhecer ? lugar_Conhecer.map(location => `'${location}'`).join(', ') : "";
   const lugar_nIrString = lugar_nIr ? lugar_nIr.map(location => `'${location}'`).join(', ') : "";
+  const childAgesString = childAges.value ? childAges.value.map(age=> `${age}`).join(', ') : ""
   let ObjRoteiro1={
     iduser:user.iduser,
     email:user.Email ? user.Email : user.email,
@@ -852,7 +853,7 @@ const postRoteiro=async () =>{
     data_fim:FinalDate.value,
     qtd_adultos: numAdults.value,
     qtd_menores: numChildren.value ? numChildren.value : 0,
-    idade_menores: childAges.value,
+    idade_menores: childAgesString,
     interesses: selectedInteressesString,
     quero_conhecer: lugar_ConhecerString,
     nao_incluir: lugar_nIrString,
@@ -920,7 +921,7 @@ const postRoteiro=async () =>{
           data_fim:FinalDate.value,
           qtd_adultos: numAdults.value,
           qtd_menores: numChildren.value ? numChildren.value : 0,
-          idade_menores: childAges.value,
+          idade_menores: childAgesString,
           interesses: selectedInteressesString,
           quero_conhecer: lugar_ConhecerString,
           nao_incluir: lugar_nIrString,
