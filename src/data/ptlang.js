@@ -1,5 +1,3 @@
-import Tooltip from "primevue/tooltip";
-
 const ptLang = {
     CidadeO:"Cidade de Origem",
     Destino:"Destino(s)",
@@ -88,7 +86,7 @@ const ptLang = {
     Data_inicio: "Data de inicio",
     Quantidade_Adultos: "Quantidade de adultos",
     Não_incluir: "Não Incluir",
-    Crianças:"Crianças",
+    Crianças:"Quantidade de Menores",
     Salvar:"Salvar",
     MultDestinos:"Múltiplos Destinos",
 };
