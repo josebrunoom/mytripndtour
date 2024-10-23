@@ -373,7 +373,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" >
-        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  Gerar PDF e Armazenar </button>
+        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }} </button>
       </div>
       
     </div>
@@ -404,7 +404,7 @@
           class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
           @click="postRoteiro"
         >
-          {{ traducao.Gerar }}
+          {{ traducao.GerarPDF }}
         </button>
         <button 
           type="button" 
@@ -544,10 +544,11 @@
   import html2pdf from 'html2pdf.js';
   import Tooltip from 'primevue/tooltip';
   import compraModal from './compraModal.vue';
-import ptLang from '../data/ptlang';
+  import ptLang from '../data/ptlang';
 
-
-  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
+  const TRoteiro = JSON.parse(localStorage.getItem('Traducao'))
+  const traducao = ref(localStorage.getItem('Traducao') ? TRoteiro.Roteiros : ptLang)
+  console.log(TRoteiro)
   const date = ref();
   const numAdults = ref()
   const numChildren = ref();
@@ -1096,6 +1097,7 @@ const sendRating = async () =>{
   }
   } catch (error) {
     console.log(error)
+    alert('Erro ao Mandar Avaliação')
   }
 }
 function parseMarkdown(text) {
@@ -1254,6 +1256,7 @@ const customFormat = (date) => {
         } catch (error) {
           console.log(error)
           dialogPDF.value=false
+          alert('Erro ao Salvar Roteiro')
         }
       }
 
@@ -1283,7 +1286,6 @@ const customFormat = (date) => {
         }
   }
   const confirmUseCredits = () => {
-    console.log('reafaegtawg')
   return new Promise((resolve) => {
     dialogConfirm.value = true; // Open the dialog
     resolveConfirm = resolve; // Save resolve function to call later
