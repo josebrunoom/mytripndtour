@@ -79,6 +79,7 @@ const ptLang = {
     Tooltip6:"Tem atrações, pontos turísticos que você sempre sonhou em conhecer?<br> Conta pra gente que ele vai entrar no roteiro!",
     Tooltip7:"Tem algum local que você quer evitar?<br> Diz aí e a gente risca da lista!",
     Tooltip8:"Quer saber onde rola aquela comida incrível,<br> aventuras na natureza ou onde fazer compras? Seleciona aqui o que mais te interessa!",
+    Tooltip9: "Quais os lugares dos seus sonhos?<br> Coloque seus e vamos fazer magia acontecer!",
     ListaRoteiro:"Lista de Roteiros",
     Origem:"Origem",
     DestinoSingle:"Destino",
