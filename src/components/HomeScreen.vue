@@ -209,8 +209,14 @@
         <div class="p-4 rounded-lg shadow-md h-24 w-full" style="background-color: #ffff;">
           <div class="d-flex  position-relative">
             <h2 class="h4 fw-bold pt-1">
-                {{ traducao.MultDestinos  }}:
-                </h2>
+                {{ traducao.MultDestinos  }}
+                <i 
+                  class="bi bi-question-circle-fill mb-2 pl-1"
+                  data-toggle="tooltip" 
+                  data-placement="top"
+                  v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
+                ></i>
+            </h2>
                 <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
                 <div class="selected-placesDestino">
               <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
@@ -296,7 +302,7 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
+          <input id="autocompleteQ" type="text" :placeholder="traducao.PlaceHolder2" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
@@ -328,7 +334,7 @@
                 </button>
                 </div>
           </div>
-          <input id="autocompleteN" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
+          <input id="autocompleteN" type="text" :placeholder="traducao.PlaceHolder2" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
               <span class=" text-black place-item">
@@ -451,7 +457,7 @@
           </div>
           <div class="col-start-12 d-flex">
             <div class="pl-4 pb-6" style="width:100%" v-show="starValue != null">
-              <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" placeholder="Quais as razões para essa avaliação?" :disabled="disabledRating==true"></textarea>
+              <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" :placeholder="traducao.PlaceHolder3" :disabled="disabledRating==true"></textarea>
             </div>
             
           </div>
@@ -507,7 +513,7 @@
         <!-- <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title> -->
         <v-card-text>{{ traducao.NameRoteiro }}</v-card-text>
         <div class="flex justify-center items-center w-[85%] mx-auto">
-          <input type="text" class="form-control" placeholder="Ex: Viagem" v-model="PDFname">
+          <input type="text" class="form-control" :placeholder="traducao.PlaceHolder4" v-model="PDFname">
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -548,8 +554,8 @@
   import compraModal from './compraModal.vue';
   import ptLang from '../data/ptlang';
 
-  const TRoteiro = JSON.parse(localStorage.getItem('Traducao'))
-  const traducao = ref(localStorage.getItem('Traducao') ? TRoteiro.Roteiros : ptLang)
+  let TRoteiro 
+  const traducao = ref(ptLang)
   console.log(TRoteiro)
   const date = ref();
   const numAdults = ref()
@@ -647,13 +653,10 @@
   }
 
   onMounted(() => {
-    
   const initAutocomplete = (elementId, types) => {
     const input = document.getElementById(elementId);
     const autocomplete = new google.maps.places.Autocomplete(input, { types });
-
     autocomplete.addListener('place_changed', () => {
-
       const place = autocomplete.getPlace();
       if (!place.geometry) {
       console.log('No details available for input: ' + input.value);
@@ -661,12 +664,11 @@
     }
       console.log(place.name); // Handle the place name as needed
       console.log(place)
-
       if(elementId=='autocompleteQ'){
         if(lugaresConhecerFullNames.value.length+1>5){
           alert('O número máximo de lugares é 5')
         } else{
-          lugaresConhecerFullNames.value.push(document.getElementById('autocompleteQ').value)
+          lugaresConhecerFullNames.value.push(place.name)
           console.log(lugaresConhecerFullNames.value)
           lugar_Conhecer.push(place.name)
         }
@@ -675,7 +677,7 @@
         if(lugaresNaoIrFullNames.value.length+1>5){
           alert('O número máximo de lugares é 5')
         } else {
-          lugaresNaoIrFullNames.value.push(document.getElementById('autocompleteN').value)
+          lugaresNaoIrFullNames.value.push(place.name)
           console.log(lugaresNaoIrFullNames.value)
           lugar_nIr.push(place.name)
         }
@@ -719,19 +721,35 @@
   initAutocomplete('autocompleteQ', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteN', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
-  initAutocomplete('autocompleteD', ['locality', 'country', 'continent', 'administrative_area_level_1',]);
-  initAutocomplete('autocompleteDMult', ['locality', 'country', 'continent', 'administrative_area_level_1',]);
+  initAutocomplete('autocompleteD', ['locality', 'country']);
+  initAutocomplete('autocompleteDMult', ['locality', 'country']);
   
   document.getElementById("autocompleteO").focus();
   getdata();
-  console.log("tradcaga", traducao.value)
+  getTraducao()
 });
-
-  onUpdated(()=> {
-    
-    
-  })
-
+  const getTraducao = async () => {
+    isLoading.value=true
+    const userLocale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt-br'
+    try {
+      let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:user.ip_origem,
+            pagina:'Roteiros',
+          };
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+    TRoteiro=JSON.parse(response.data.traducao)
+    traducao.value=TRoteiro.Roteiros
+    isLoading.value=false
+    } catch (error) {
+      console.log(error)
+      isLoading.value=false
+    }
+  }
   const setOrigem = () =>{
     showOrigem.value=true
   }

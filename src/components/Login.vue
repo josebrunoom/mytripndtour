@@ -242,6 +242,7 @@ const processUserInfo = async (userInfo) => {
       const userGender = userInfo.genders ? userInfo.genders[0].value : null;
       const userLocale = navigator.language
       const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      localStorage.setItem('langName', userLocale.toUpperCase());
   let objUser = {
             email: userEmail,
             name: userName,

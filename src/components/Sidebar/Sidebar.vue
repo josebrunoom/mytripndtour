@@ -322,6 +322,7 @@
     </v-dialog>
     </div>
     <compraModal v-if="showModal" :closeModal="closeModal"></compraModal>
+    <Loading :loading="isLoading"/>
 </template>
 
 <script setup>
@@ -332,9 +333,10 @@ import languages from '../../data/lang';
 import "@google-pay/button-element";
 import compraModal from '../compraModal.vue';
 import ptLang from '../../data/ptlang';
+import Loading from '../Loading.vue';
 
-const TRoteiro = JSON.parse(localStorage.getItem('Traducao'))
-const traducao = ref(localStorage.getItem('Traducao') ? TRoteiro.Sidebar : ptLang)
+let TRoteiro 
+const traducao = ref(ptLang)
 const user = JSON.parse(localStorage.getItem('user'));
 const name = ref('')
 const saldo = ref(null)
@@ -351,6 +353,7 @@ const idAgent_start=ref(null)
 const idAgent_end=ref(null)
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
+const isLoading = ref(false)
 
 function saveIdAgent(){
     localStorage.setItem('idAgent_start', idAgent_start.value);
@@ -390,7 +393,32 @@ onMounted(() => {
     onUnmounted(() => {
     clearInterval(intervalId);
     });
+    getTraducao()
 })
+const getTraducao = async () => {
+    console.log('faaw')
+    isLoading.value=true
+    const userLocale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt-br'
+    try {
+      let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:user.ip_origem,
+            pagina:'Roteiros',
+          };
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+    console.log('traduaca', response.data)
+    TRoteiro=JSON.parse(response.data.traducao)
+    traducao.value=TRoteiro.Sidebar
+    isLoading.value=false
+    } catch (error) {
+      console.log(error)
+      isLoading.value=false
+    }
+  }
 const checkUserSaldo = () => {
     const Nuser = JSON.parse(localStorage.getItem('user'))
     if ( Nuser.saldouser !== saldo.value) {
@@ -434,21 +462,26 @@ function saveisdevprod(){
     localStorage.setItem('isDev', optDev.value)
 }
 const Translate = async (lang, langName) => {
-    localStorage.setItem('lang', lang);
-    localStorage.setItem('langName', langName);
-    languageName.value=langName
-    let objUser = {
-            email: user.email ? user.email : user.Email,
-            name: user.name,
-            birthday: user.birthday,
-            gender: user.gender,
-            sigla_idioma:lang.toUpperCase(),
-            pagina:'Roteiros',
-            ip_origem:user.ip_origem,
-        };
-        const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-    localStorage.setItem('Traducao', responseUser.data.traducao);
-    location.reload()
+    try {
+        localStorage.setItem('lang', lang);
+        localStorage.setItem('langName', langName);
+        languageName.value=langName
+/*         let objUser = {
+                email: user.email ? user.email : user.Email,
+                name: user.name,
+                birthday: user.birthday,
+                gender: user.gender,
+                sigla_idioma:lang.toUpperCase(),
+                pagina:'Roteiros',
+                ip_origem:user.ip_origem,
+            };
+            const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+        localStorage.setItem('Traducao', responseUser.data.traducao); */
+        location.reload()
+    } catch (error) {
+        console.log(error)
+    }
+
 }
 </script>
 

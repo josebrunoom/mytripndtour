@@ -80,7 +80,11 @@
         "Loading1": "Aguarde que estamos gerando o roteiro perfeito pra você!",
         "Loading2": "Demora menos de 1 minuto!",
         "MultDestinos": "Multiplos Destinos",
-        "Gratis":"O número máximo de lugares no serviço grátis é 1"
+        "Gratis":"O número máximo de lugares no serviço grátis é 1",
+        "PlaceHolder1":"Idade",
+        "PlaceHolder2":"Informe o local",
+        "PlaceHolder3":"Quais as razões para essa avaliação?",
+        "PlaceHolder4":"Ex: Viagem"
         },
         "Sidebar": {
         "Roteiros": "Roteiros",
@@ -90,7 +94,9 @@
         "Creditos": "creditos",
         "MeuPerfil": "Meu Perfil",
         "Nao": "Não",
-        "Sim": "Sim"
+        "Sim": "Sim",
+        "DialogSair": "Deseja mesmo Sair?",
+        "Atencao": "Atenção"
         },
         "Perfil": {
         "MeuPerfil": "Meu Perfil",

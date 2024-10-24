@@ -66,6 +66,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Loading :loading="isLoading" />
     </div>
     
 </template>
@@ -76,13 +77,15 @@
   import moment from 'moment';
   import ptLang from '../data/ptlang';
 
-  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')).Perfil : ptLang)
+  let TRoteiro
+  const traducao = ref(ptLang)
   const user = JSON.parse(localStorage.getItem('user'));
   const name = ref('')
   const birthday = ref('')
   const selectedGender=ref('')
   const date=ref('')
   const dialog=ref(false)
+  const isLoading = ref(true)
   let img
   onMounted(() => {
     console.log(user)
@@ -94,7 +97,31 @@
     date.value=user.birthday
     selectedGender.value=user.gender
     img=user.photo
+    getTraducao()
   })
+  const getTraducao = async () => {
+    isLoading.value=true
+    const userLocale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt-br'
+    try {
+      let objUser = {
+            email: user.email ? user.email : user.Email,
+            name: user.name,
+            birthday: user.birthday,
+            gender: user.gender,
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:user.ip_origem,
+            pagina:'Roteiros',
+          };
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+    TRoteiro=JSON.parse(response.data.traducao)
+    traducao.value=TRoteiro.Perfil
+    isLoading.value=false
+    console.log(traducao.value)
+    } catch (error) {
+      console.log(error)
+      isLoading.value=false
+    }
+  }
   const customFormat = (date) => {
   return date ? moment(date).format('DD/MM/YYYY') : '';
   };

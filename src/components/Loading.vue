@@ -11,11 +11,7 @@
   </template>
   
   <script>
-  import { ref, onMounted } from 'vue';
   import ProgressSpinner from 'primevue/progressspinner';
-  import ptLang from '../data/ptlang';
-
-  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')) : ptLang)
 
   export default {
     components: {
@@ -32,11 +28,11 @@
     },
     LoadingText1:{
       type: String,
-      default: false,
+      default: 'false',
     },
     LoadingText2:{
       type: String,
-      default: false,
+      default: 'false',
     },
     },
     /* setup() {
