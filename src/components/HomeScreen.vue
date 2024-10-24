@@ -37,6 +37,7 @@
               </h2>
           </div>
           <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
+          <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino"><i class="fa-solid fa-pencil"></i></button>
               <div v-show="showDestino">
                 <input ref="inputDestino" id="autocompleteD" type="text" :placeholder="traducao.Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
@@ -233,7 +234,7 @@
     <div class="row mb-4 col-12">
       <div class="col-12 col-md-4 mb-md-0">
         <div class="p-3 bg-white" style="border-radius: 8px;">
-          <div class="d-flex align-items-center justify-content-center position-relative" style="padding-bottom: 4%;">
+          <div class="d-flex align-items-center justify-content-center position-relative" >
             <h2 class="h5 fw-bold ">{{ traducao.Hospedagem }}</h2>
             <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
@@ -347,7 +348,7 @@
       </div> 
       
     </div>
-    <div class="col-12 col-md-12 mb-4" style="text-align:left">
+    <div class="col-12 col-md-12 " style="text-align:left">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">{{ traducao.Interesses }}</h2>
