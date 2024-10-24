@@ -215,7 +215,7 @@
                   class="bi bi-question-circle-fill mb-2 pl-1"
                   data-toggle="tooltip" 
                   data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip2, escape: false }"
+                  v-tooltip.top="{ value: traducao.Tooltip9, escape: false }"
                 ></i>
             </h2>
                 <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
