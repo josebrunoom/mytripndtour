@@ -8,7 +8,7 @@
             </button>
             </div>
             <div class="space-y-4">
-                <p class="text-lg">Escolha a quantidade de créditos que deseja comprar:</p>
+                <p class="text-lg">{{props.traducao.Escolha}}:</p>
                 <div class="grid grid-cols-3 gap-4">
                 <button
                     v-for="(credit, index) in creditOptions"
@@ -20,12 +20,12 @@
                     }"
                     class="p-4 rounded-lg hover:bg-gray-100 text-center"
                 >
-                    {{ credit }} créditos
+                    {{ credit }} {{ props.traducao.Cred }}
                 </button>
                 <!-- <input type="number" class="form-control"> -->
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <span>Ou digite a quantidade de Créditos: </span>
+                    <span>{{props.traducao.DigCred}}: </span>
                     <input type="number" class="form-control" v-model="selectedCredit" >
                 </div> 
             </div>
@@ -44,7 +44,7 @@
                 :disabled="selectedCredit === null"
                 class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:bg-gray-300"
                 >
-                Confirmar Compra
+                {{props.traducao.Confirm}}
                 </button>
                 
             </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const props = defineProps({
@@ -62,15 +62,24 @@ const props = defineProps({
         type: Function,
         required: true,
     },
+    traducao:{
+        type:Object,
+        required:true
+    }
 });
 const creditOptions = [5, 10, 20];
 const selectedCredit = ref(null);
 const buttonSwitch=ref(false)
-const valueToPay=ref("1.00")
+//const valueToPay=ref("1.00")
 const clientId = 'AZ26vpUzl4-BlJkNfH1maGfL7uGrHBDhi4HSCa5STbECJKneWPphBGxqmVdhZNzrM9ClD3mO8MX1Ybma';
 const paypalButtonContainer = ref(null);
 
+const valueToPay = computed(() => {
+    return selectedCredit.value ? selectedCredit.value * 0.5 : null;
+});
+
 onMounted(async () => {
+    console.log(props.traducao)
     await loadPaypalScript(clientId);
     if (paypalButtonContainer.value) {
         window.paypal.Buttons({
@@ -127,8 +136,6 @@ const onError=(event) => {
 }
 const changeButton=()=>{
     buttonSwitch.value=true
-    const credtitVal = 0.10
-    valueToPay.value = selectedCredit.value * credtitVal
     console.log(valueToPay.value)
 }
 const generatePixQRCode = () => {
@@ -138,4 +145,7 @@ const generatePixQRCode = () => {
 </script>
 
 <style scoped>
+#paypal-button-container {
+    width: 100%;
+}
 </style>
