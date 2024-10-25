@@ -321,7 +321,7 @@
       </v-card>
     </v-dialog>
     </div>
-    <compraModal v-if="showModal" :closeModal="closeModal"></compraModal>
+    <compraModal v-if="showModal" :closeModal="closeModal" :traducao="traducao"></compraModal>
     <Loading :loading="isLoading"/>
 </template>
 

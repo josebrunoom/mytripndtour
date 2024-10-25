@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
+  <div  class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
     <div>  <!-- começo Free -->
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
@@ -348,7 +348,7 @@
       </div> 
       
     </div>
-    <div class="col-12 col-md-12 " style="text-align:left">
+    <div class="col-12 col-md-12 pb-3" style="text-align:left">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">{{ traducao.Interesses }}</h2>
@@ -601,14 +601,14 @@
   const dialogPesqPdf=ref('')
   const pdf_button = ref(null);
   let resolveConfirm;
-  const interesses = ref(traducao.value.ListInteresses/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
+  const interesses = ref(null/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
   const user=JSON.parse(localStorage.getItem('user'));
   //let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
   /* let interesses=['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */
   let selectedInteresses=[]
-  let lugares=/* ['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)'] */ traducao.value.lugares
+  let lugares=/* ['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)'] */ ref(null)
   let Destinos=[]
   let Origem
   let lugar_nIr=[]
@@ -725,7 +725,7 @@
   initAutocomplete('autocompleteD', ['locality', 'country']);
   initAutocomplete('autocompleteDMult', ['locality', 'country']);
   
-  document.getElementById("autocompleteO").focus();
+  //document.getElementById("autocompleteO").focus();
   getdata();
   getTraducao()
 });
@@ -745,6 +745,8 @@
     const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
     TRoteiro=JSON.parse(response.data.traducao)
     traducao.value=TRoteiro.Roteiros
+    interesses.value=traducao.value.ListInteresses
+    lugares.value=traducao.value.lugares
     isLoading.value=false
     } catch (error) {
       console.log(error)

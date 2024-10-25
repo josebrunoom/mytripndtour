@@ -97,7 +97,12 @@
         "Nao": "Não",
         "Sim": "Sim",
         "DialogSair": "Deseja mesmo Sair?",
-        "Atencao": "Atenção"
+        "Atencao": "Atenção",
+        "AdicionarCréditos":"Adicionar Créditos",
+        "Escolha":"Escolha a quantidade de créditos que deseja comprar",
+        "Cred":"créditos",
+        "DigCred":"Ou digite a quantidade de Créditos",
+        "Confirm":"Confirmar Compra"
         },
         "Perfil": {
         "MeuPerfil": "Meu Perfil",
@@ -127,6 +132,7 @@
         "Salvar": "Salvar",
         "Visualizar": "Visualizar Roteiro",
         "Edit": "O nome do roteiro foi editado com sucesso!",
+        "Salvo":"Roteiro salvo com sucesso!",
         "CidadeO": "Cidade de Origem",
         "Destino": "Destino(s)",
         "QAdult": "Quantidade de Adultos",

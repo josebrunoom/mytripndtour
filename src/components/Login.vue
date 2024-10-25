@@ -6,7 +6,7 @@
         </div>
         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">
-            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
+            <button v-if="traducao" @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
               <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
               {{ traducao.EntrarGoogle }}
             </button>
@@ -21,7 +21,7 @@
           </div>
         </form> -->
         <div class="mt-4">
-            <a href="https://roteiro.mytripntour.com/politica_privacidade">{{ traducao.PoliticaDePriv }}</a>
+            <a href="https://roteiro.mytripntour.com/politica_privacidade">Política de Privacidade</a>
         </div>
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>
@@ -51,22 +51,30 @@
   const userIP=ref('')
   let token=localStorage.getItem('token')
 
-  const traducao = ref(localStorage.getItem('Traducao') ? JSON.parse(localStorage.getItem('Traducao')).Login : ptLang)
+  const traducao = ref(null)
 
-  const Translate = async (lang, langName) => {
-    let objUser = {
-            email: user.email ? user.email : user.Email,
-            name: user.name,
-            birthday: user.birthday,
-            gender: user.gender,
+  const Translate = async () => {
+    isLoading.value=true
+    try {
+      let objUser = {
+            email: 'luisalbergoni717@gmail.com',
+            name: 'Luis Otavio',
+            birthday: '16/6/2000',
+            gender: 'male',
             sigla_idioma:navigator.language.toUpperCase() || navigator.languages[0].toUpperCase(),
             pagina:'Roteiros',
-            ip_origem:user.ip_origem,
+            ip_origem:userIP.value,
         };
-        const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-    localStorage.setItem('Traducao', responseUser.data.traducao);
-    location.reload()
-}
+      const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+      console.log(responseUser.data.traducao)
+      const parsed = JSON.parse(responseUser.data.traducao)
+      traducao.value = parsed.Login
+      console.log(parsed)
+      isLoading.value=false
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   onMounted(()=>{
     ipGet();
@@ -103,7 +111,8 @@
     js.src = "https://connect.facebook.net/pt_BR/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-  //Translate();
+  Translate();
+  
   }
 )
 
