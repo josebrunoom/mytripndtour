@@ -1255,23 +1255,6 @@ const customFormat = (date) => {
             pagina:'Roteiros',
           };
           
-          const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-          const LocalStorageUser = {
-                Email: user.Email,
-                name: user.name,
-                photo: user.photo,
-                MetodoAutenticacao: user.MetodoAutenticacao,
-                birthday: user.birthday,
-                gender: user.gender,
-                ip_origem: user.ip_origem,
-                email: user.email,
-                saldouser: response.data.novo_saldo,
-                vlrpdf: user.vlrpdf,
-                vlrpesquisa: user.vlrpesquisa,
-                iduser: user.iduser,
-              };
-              console.log(LocalStorageUser)
-          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           dialogPDF.value=false;
           alert('Roteiro Salvo!')
         } catch (error) {
