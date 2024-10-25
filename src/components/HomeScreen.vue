@@ -16,7 +16,7 @@
               </h2>
             </div>
             <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
-            <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem"><i class="fa-solid fa-pencil"></i></button>
+            <button v-show="!showOrigem" class="fw-bold float-start pt-[0.30rem] pl-1" style="font-size:1.2rem" @click="setOrigem"><i class="fa-solid fa-pencil"></i></button>
             <div v-show="showOrigem">
                 <input ref="inputOrigem" id="autocompleteO" type="text" :placeholder="traducao.Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
@@ -38,7 +38,7 @@
               </h2>
           </div>
           <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
-          <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino"><i class="fa-solid fa-pencil"></i></button>
+          <button v-show="!showDestino" class="fw-bold float-start pt-[0.30rem] pl-1" style="font-size:1.2rem" @click="setDestino"><i class="fa-solid fa-pencil"></i></button>
               <div v-show="showDestino">
                 <input ref="inputDestino" id="autocompleteD" type="text" :placeholder="traducao.Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
@@ -1207,6 +1207,7 @@ const customFormat = (date) => {
     const downloadPdf = async () => {
       if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
         console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
+        dialogPDF.value=false
         dialogVlr.value=true
         vlrModalText.value=traducao.value.VlrModal2
       }else{
@@ -1289,7 +1290,14 @@ const customFormat = (date) => {
         if (!confirmed) {
           return; 
         }else{
-          dialogPDF.value=true
+          if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
+            console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
+            dialogPDF.value=false
+            dialogVlr.value=true
+            vlrModalText.value=traducao.value.VlrModal2
+          }else{
+            dialogPDF.value=true
+          }
         }
   }
   const confirmUseCredits = () => {
