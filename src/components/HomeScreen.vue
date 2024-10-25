@@ -16,7 +16,8 @@
               </h2>
             </div>
             <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
-              <div v-show="showOrigem">
+            <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem"><i class="fa-solid fa-pencil"></i></button>
+            <div v-show="showOrigem">
                 <input ref="inputOrigem" id="autocompleteO" type="text" :placeholder="traducao.Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
@@ -505,7 +506,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="[#78c0d6]" text @click="dialogVlr=false">{{traducao.Cancelar}}</v-btn>
-          <v-btn color="[#78c0d6]" text @click="dialogVlr=false">{{ traducao.Adcionar }}</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogVlr=false, showModal=true">{{ traducao.Adcionar }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -536,7 +537,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <compraModal v-if="showModal" :closeModal="closeModal"></compraModal>
+    <compraModal v-if="showModal" :closeModal="closeModal" :traducao="TRoteiro.Sidebar"></compraModal>
   </div>
 </template>
 
@@ -922,7 +923,7 @@ const postRoteiro=async () =>{
     if(saldoValido==false){
         dialogVlr.value=true
         isLoading.value = false; 
-        vlrModalText.value=traducao.VlrModal1
+        vlrModalText.value=traducao.value.VlrModal1
         return;
     }else{
       dialogPesqPdf.value = 'pesquisa'
@@ -1207,7 +1208,7 @@ const customFormat = (date) => {
       if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
         console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
         dialogVlr.value=true
-        vlrModalText.value=traducao.VlrModal2
+        vlrModalText.value=traducao.value.VlrModal2
       }else{
         try {
           const destinoString = Destinos.map(location => `'${location}'`).join(', ');
