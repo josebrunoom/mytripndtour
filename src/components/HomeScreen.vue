@@ -558,7 +558,6 @@
 
   let TRoteiro 
   const traducao = ref(ptLang)
-  console.log(TRoteiro)
   const date = ref();
   const numAdults = ref()
   const numChildren = ref();
@@ -630,7 +629,6 @@
 
   watch(date, (newValue) => {
     transformDates(newValue, periodo_viagem.value)
-  console.log('Date updated:', newValue);
 });
   const toggleSelect = (modo) =>{
     if (hospedagemSelecionada.value === modo) {
@@ -649,8 +647,6 @@
       Destinos=decodedData.lugaresDestinosFullNames.join()
       lugaresConhecerFullNames.value=decodedData.quero_conhecer
       inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
-      console.log('Received Data:', decodedData);
-      console.log('Received Data interesses:', selectedInteresses);
     }
   }
 
@@ -661,11 +657,8 @@
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
       if (!place.geometry) {
-      console.log('No details available for input: ' + input.value);
       return;
     }
-      console.log(place.name); // Handle the place name as needed
-      console.log(place)
       if(elementId=='autocompleteQ'){
         if(lugaresConhecerFullNames.value.length+1>5){
           alert('O número máximo de lugares é 5')
@@ -719,7 +712,6 @@
       }
     });
   };
-  console.log(user)
   initAutocomplete('autocompleteQ', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteN', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
@@ -778,7 +770,6 @@ watch(numChildren, (newCount) => {
 
 const formatChildren = () => {
       //numChildren.value = parseInt(formattedChildren.value) || 0;
-      console.log(numChildren.value)
       if (numChildren.value > 5) {
         numChildren.value = 5;
       } else if (numChildren.value < 0) {
@@ -822,24 +813,18 @@ const formatAges = (index) => {
 
       function transformDates(initialDateStr, numberOfDays) {
         if(date&&periodo_viagem){
-          console.log('initdate',initialDateStr, 'numdays', numberOfDays)
           const initialDate = moment(date.value);
-          console.log(initialDate)
           const endDate = initialDate.clone().add(periodo_viagem.value, 'days');
-          console.log(endDate)
           const formattedEndDate = endDate.format('DD/MM/YYYY');
           FinalDate.value= `${formattedEndDate}`;
-          console.log(FinalDate.value)
         }
       }
       async function transformDatesToSave(initialDateStr, numberOfDays) {
         if(date&&periodo_viagem){
-          console.log('initdate',initialDateStr, 'numdays', numberOfDays)
           const initialDate = moment(date.value);
           const formattedInitDate = initialDate.format('YYYY-MM-DD');
           InitDate.value = `${formattedInitDate}`
           const endDate = initialDate.clone().add(periodo_viagem.value, 'days');
-          console.log(endDate)
           const formattedEndDate = endDate.format('YYYY-MM-DD');
           FinalDatePDF.value= `${formattedEndDate}`;
         }
@@ -852,7 +837,6 @@ const formatAges = (index) => {
         } else {
           const initialDate = moment(initialDateStr);
           const formattedStartDate = initialDate.format('DD/MM/YYYY');
-          console.log(formattedStartDate)
           return `${formattedStartDate}`;
         }
       }
@@ -890,7 +874,6 @@ const postRoteiro=async () =>{
   if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){
 
   }
-  console.log(date.value)
   
   console.log('Obj Roteiro',ObjRoteiro1)
 /*   if(!ObjRoteiro1.origem || !ObjRoteiro1.destino || !ObjRoteiro1.dias || !ObjRoteiro1.data_inicio || !ObjRoteiro1.qtd_adultos){
@@ -957,27 +940,14 @@ const postRoteiro=async () =>{
           idAgent_start: localStorage.getItem('idAgent_start'),
           idAgent_end: localStorage.getItem('idAgent_end')
         }
-        console.log('admin',ObjRoteiroAdmin)
         const response = await axios.post('https://mytripntour-dev-667280034337.us-central1.run.app/', ObjRoteiroAdmin)
-      console.log(response.data)
       if(disabledRating.value==true){
         disabledRating.value=false;
       }
       localStorage.setItem('roteiro', JSON.stringify(response.data));
       roteiroData.value.Roteiro=response.data
-      console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
       const userLocale = navigator.language
-      let objUser = {
-            email: user.email ? user.email : user.Email,
-            name: user.name,
-            birthday: user.birthday,
-            gender: user.gender,
-            sigla_idioma:userLocale.toUpperCase(),
-            ip_origem:user.ip_origem,
-            pagina:'Roteiros',
-          };
-          const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
           const LocalStorageUser = {
                 Email: user.Email,
                 name: user.name,
@@ -987,34 +957,20 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: responseUser.data.saldouser,
+                saldouser: response.data.novo_saldo ?? user.saldouser,
                 vlrpdf: user.vlrpdf,
                 vlrpesquisa: user.vlrpesquisa,
                 iduser: user.iduser,
               };
-              console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }else{
         const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
-      console.log(response.data)
       if(disabledRating.value==true){
         disabledRating.value=false;
       }
       localStorage.setItem('roteiro', JSON.stringify(response.data));
       roteiroData.value.Roteiro=response.data
-      console.log(ObjRoteiro1.origem);
       document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
-      const userLocale = navigator.language
-      let objUser = {
-            email: user.email ? user.email : user.Email,
-            name: user.name,
-            birthday: user.birthday,
-            gender: user.gender,
-            sigla_idioma:userLocale.toUpperCase(),
-            pagina:'Roteiros',
-            ip_origem:user.ip_origem
-          };
-          const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
           const LocalStorageUser = {
                 Email: user.Email,
                 name: user.name,
@@ -1024,19 +980,18 @@ const postRoteiro=async () =>{
                 gender: user.gender,
                 ip_origem: user.ip_origem,
                 email: user.email,
-                saldouser: responseUser.data.saldouser,
+                saldouser: response.data.novo_saldo ?? user.saldouser,
                 vlrpdf: user.vlrpdf,
                 vlrpesquisa: user.vlrpesquisa,
                 iduser: user.iduser,
               };
-              console.log(LocalStorageUser)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }
       await nextTick()
       if (pdfButton.value) {
         pdfButton.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }else{
-        console.log('asegaegaget scroll fucked up')
+        console.log('error in scroll to pdf')
       }
     } catch (error) {
       console.log('error in postRoteiro:',error)
@@ -1107,9 +1062,7 @@ const sendRating = async () =>{
     dialogRating.value=true
   }else{
     isLoading.value=true
-    console.log('objRoteiro SendRating',ObjRoteiro1);
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
-    console.log(response.data);
     disabledRating.value=true
     if(starValue.value<=3){
       RatingText.value=traducao.RatinText4
@@ -1123,10 +1076,6 @@ const sendRating = async () =>{
     console.log(error)
     alert('Erro ao Mandar Avaliação')
   }
-}
-function parseMarkdown(text) {
-  console.log('parseText ', text)
-  return marked(text);
 }
 const customFormat = (date) => {
   return date ? moment(date).format('DD/MM/YYYY') : '';
@@ -1142,8 +1091,6 @@ const customFormat = (date) => {
     const removePlaceDestino = (index) => {
       Destinos.splice(index, 1);
       lugaresDestinosFullNames.value.splice(index, 1)
-      console.log(Destinos)
-      console.log(lugaresDestinosFullNames.value)
     };
     const pushInteresses = (event, interest) =>{
       if(event.target.checked){
@@ -1185,8 +1132,6 @@ const customFormat = (date) => {
       while(Destinos.length) {
         Destinos.pop();
       }
-      console.log(Destinos)
-      console.log(lugaresDestinosFullNames.value)
       while(lugaresConhecerFullNames.length) {
         lugaresConhecerFullNames.pop();
       }
@@ -1201,12 +1146,10 @@ const customFormat = (date) => {
       selectedInteresses = [];
       lugar_nIr = [];
       lugar_Conhecer = [];
-      console.log(selectedInteresses)
     };
 
     const downloadPdf = async () => {
-      if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
-        console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
+      if(parseFloat(user.saldouser)<parseFloat(user.vlrpdf)){
         dialogPDF.value=false
         dialogVlr.value=true
         vlrModalText.value=traducao.value.VlrModal2
@@ -1216,6 +1159,7 @@ const customFormat = (date) => {
         const selectedInteressesString = selectedInteresses.map(location => `'${location}'`).join(', ');
         const lugar_ConhecerString = lugar_Conhecer.map(location => `'${location}'`).join(', ');
         const lugar_nIrString = lugar_nIr ? lugar_nIr.map(location => `'${location}'`).join(', ') : "";
+        const childAgesString = childAges.value ? childAges.value.map(age=> `${age}`).join(', ') : ""
         await transformDatesToSave(date.value)
         let ObjRoteiro1={
           email:user.Email ? user.Email : user.email,
@@ -1226,7 +1170,7 @@ const customFormat = (date) => {
           data_fim:FinalDatePDF.value,
           qtd_adultos: numAdults.value,
           qtd_menores: numChildren.value ? numChildren.value : 0,
-          idade_menores: childAges.value,
+          idade_menores: childAgesString,
           interesses: selectedInteressesString,
           quero_conhecer: lugar_ConhecerString,
           nao_incluir: lugar_nIrString,
@@ -1248,17 +1192,23 @@ const customFormat = (date) => {
           jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save();
-        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
-        let objUser = {
-            email: user.email ? user.email : user.Email,
-            name: user.name,
-            birthday: user.birthday,
-            gender: user.gender,
-            sigla_idioma:userLocale.toUpperCase(),
-            ip_origem:user.ip_origem,
-            pagina:'Roteiros',
-          };
-          
+            const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
+            const LocalStorageUser = {
+                    Email: user.Email,
+                    name: user.name,
+                    photo: user.photo,
+                    MetodoAutenticacao: user.MetodoAutenticacao,
+                    birthday: user.birthday,
+                    gender: user.gender,
+                    ip_origem: user.ip_origem,
+                    email: user.email,
+                    saldouser: response.data.novo_saldo ?? user.saldouser,
+                    vlrpdf: user.vlrpdf,
+                    vlrpesquisa: user.vlrpesquisa,
+                    iduser: user.iduser,
+                  };
+          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+              
           dialogPDF.value=false;
           alert('Roteiro Salvo!')
         } catch (error) {
@@ -1270,8 +1220,7 @@ const customFormat = (date) => {
 
     }
   const haveSaldo=()=>{
-    console.log('saldouser', user.saldouser, 'valorpesquisa', user.vlrpesquisa)
-    if (typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpesquisa) : user.saldouser > user.vlrpesquisa) {
+    if (parseFloat(user.saldouser)<parseFloat(user.vlrpesquisa)) {
       return false
     } else {
       return true
@@ -1291,7 +1240,6 @@ const customFormat = (date) => {
           return; 
         }else{
           if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
-            console.log('saldouser', user.saldouser, 'valor pdf', user.vlrpdf)
             dialogPDF.value=false
             dialogVlr.value=true
             vlrModalText.value=traducao.value.VlrModal2

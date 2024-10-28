@@ -54,6 +54,7 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -98,6 +99,7 @@ onMounted(async () => {
             alert('Obrigado pela sua compra!')
             props.closeModal(); 
             console.log(details)
+            updateSaldo()
             });
         },
         onError: function (err) {
@@ -110,6 +112,33 @@ onMounted(async () => {
         console.error('PayPal button container not found!');
     }
 });
+const updateSaldo = async () => {
+    let userObj = {
+        tpacao:'S',
+        iduser:user.iduser,
+    }
+    try {
+        const response = await axios.post('https://mtt-accounting-667280034337.us-central1.run.app',userObj)
+        console.log(response.data)
+        const LocalStorageUser = {
+                    Email: user.Email,
+                    name: user.name,
+                    photo: user.photo,
+                    MetodoAutenticacao: user.MetodoAutenticacao,
+                    birthday: user.birthday,
+                    gender: user.gender,
+                    ip_origem: user.ip_origem,
+                    email: user.email,
+                    saldouser: response.data.saldouser,
+                    vlrpdf: user.vlrpdf,
+                    vlrpesquisa: user.vlrpesquisa,
+                    iduser: user.iduser,
+                };
+        localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+    } catch (error) {
+        console.log(error)
+    }
+}
 const loadPaypalScript = (clientId) => {
     return new Promise((resolve) => {
     const script = document.createElement("script");
