@@ -7,29 +7,23 @@
     <meta name="description" content="Crie roteiros de viagem personalizados com IA e otimize sua viagem com My TripNTour. Planeje sua aventura com inteligência artificial e descubra o mundo de forma inteligente.">
     <meta name="keywords" content="Turismo, roteiros turísticos, roteiros personalizados, viagens com IA, planejamento de viagens, otimização de itinerários, IA para viagens, My TripNTour">
     <title>MyTripnTour</title>
-    <script type="module" crossorigin src="/assets/index-DiCnDTLH.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B1mTwmXW.css">
+    <script type="module" crossorigin src="/assets/index-H0AoJsfV.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DmYUUuoT.css">
   </head>
   <body class="bg-[#faf8fd]">
-    <div id="fb-root"></div>
     <div id="app"></div>
-    <div id="fb-root"></div>
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABgbwENMqmwM1Ute6IBErM69F62RWmpZc&libraries=places"></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v20.0&appId=1203498224221425" nonce="0NtxJQ9G"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- <script src="https://sandbox.paypal.com/sdk/js?client-id=AZ26vpUzl4-BlJkNfH1maGfL7uGrHBDhi4HSCa5STbECJKneWPphBGxqmVdhZNzrM9ClD3mO8MX1Ybma&components=buttons"></script> -->
-    <!-- <script type="text/javascript">
-      let googlePayClient
-      function onGooglePayLoaded() {
-        console.log('payment')
-        googlePayClient = new google.payments.api.PaymentsClient({
-          environment: 'TEST'
-        });
-      }
-    </script> -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <!-- <script async src="https://pay.google.com/gp/p/js/pay.js"></script> -->
+    <script>
+      function gmNoop() {
+        console.log('GMap Callback');
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABgbwENMqmwM1Ute6IBErM69F62RWmpZc&callback=gmNoop&libraries=places&loading=async"></script>
   </body>
 </html>
