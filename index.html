@@ -9,94 +9,23 @@
     <title>MyTripnTour</title>
   </head>
   <body class="bg-[#faf8fd]">
-    <div id="fb-root"></div>
     <div id="app"></div>
-    <div id="fb-root"></div>
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABgbwENMqmwM1Ute6IBErM69F62RWmpZc&libraries=places"></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v20.0&appId=1203498224221425" nonce="0NtxJQ9G"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- <script src="https://sandbox.paypal.com/sdk/js?client-id=AZ26vpUzl4-BlJkNfH1maGfL7uGrHBDhi4HSCa5STbECJKneWPphBGxqmVdhZNzrM9ClD3mO8MX1Ybma&components=buttons"></script> -->
-    <!-- <script type="text/javascript">
-      let googlePayClient
-      function onGooglePayLoaded() {
-        console.log('payment')
-        googlePayClient = new google.payments.api.PaymentsClient({
-          environment: 'TEST'
-        });
-      }
-    </script> -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module">
-      import router from './src/routes'
-      /* window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '1203498224221425', // Replace with your Facebook App ID
-          cookie     : true,
-          xfbml      : true,
-          version    : 'v20.0' // Use the latest Graph API version or the version your app uses
-        });
-
-        console.log('Facebook SDK initialized');
-
-        FB.getLoginStatus(function(response) {
-          console.log('FB.getLoginStatus response:', response);
-        });
-      };
- */
-      // Function to handle Facebook login
-      window.loginWithFacebook = function() {
-  FB.login(function(response) {
-    if (response.authResponse) {
-      console.log('Welcome! Fetching your information....');
-      FB.api('/me', {fields: 'name,email,birthday,gender,picture'}, async function(response) {
-        console.log('facebook response',response)
-        if (response && !response.error) {
-          console.log('Good to see you, ' + response.name + '. Your email is ' + response.email);
-          let backUser=[]
-          let objUser = {
-            Email: response.email,
-            Nome: response.name,
-            /* photo: userPicture, */
-            IdentificadorUnico: response.id, 
-            MetodoAutenticacao:'Facebook',
-            /* birthday: formattedDate, */
-            /* gender: userGender, */
-          };
-          let LocalStorageUser = {
-            Email: response.email,
-            Nome: response.name,
-            photo: response.picture.data.url, 
-            IdentificadorUnico: response.id, 
-            MetodoAutenticacao:'Facebook',
-            birthday: response.birthday, 
-            gender: response.gender, 
-          };
-          localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-          backUser.push(objUser)
-          await sendUser(backUser)
-        } else {
-          console.error('Error fetching email:', response.error);
-        }
-      });
-    } else {
-      console.log('User cancelled login or did not fully authorize.');
-    }
-  }, {scope: 'email, user_birthday,user_gender'}); 
-};
-/* const sendUser=async(user)=>{
-  try {
-    console.log('login', user)
-    await axios.post('https://mytipntourapi-gxf2gkfjfmcuaegv.eastus-01.azurewebsites.net/usuario/upload', user)
-    router.push('/mytrip/home')
-  } catch (error) {
-    console.log(error)
-    alert('Erro ao logar')
-  }
-} */
+      import router from './src/routes';
     </script>
-    <!-- <script async src="https://pay.google.com/gp/p/js/pay.js"></script> -->
-    <script type="module" src="/src/main.js"></script>
+    <script>
+      function gmNoop() {
+        console.log('GMap Callback');
+      }
+    </script>
+    <script type="module" src="./src/main.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABgbwENMqmwM1Ute6IBErM69F62RWmpZc&callback=gmNoop&libraries=places&loading=async"></script>
   </body>
 </html>
