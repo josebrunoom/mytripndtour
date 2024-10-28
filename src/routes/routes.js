@@ -6,6 +6,7 @@ import Politica_privacidade from "../components/politica_privacidade.vue";
 import HelloWorld from "../components/HelloWorld.vue";
 import ListRoteiro from "../components/ListRoteiro.vue"
 import HomeScreenSeeOnly from "../components/HomeScreen-See-Only.vue";
+import ExtratoPage from "../components/ExtratoPage.vue";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
                 path: "lista",
                 name: "Lista",
                 component: ListRoteiro,
+            },
+            {
+                path: "extrato",
+                name: "Extrato",
+                component: ExtratoPage,
             },
             {
                 path: "visualizacao",

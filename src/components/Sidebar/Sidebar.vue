@@ -72,6 +72,28 @@
                 </div>
             </div>  
             <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='Extrato'">
+                    <button 
+                    type="button" 
+                    class= "me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                    >
+                    <i class="fa-solid fa-list"></i>
+                    Extrato
+                    </button>
+                </div>
+                <div v-else>
+                    <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('extrato')"
+                    >
+                    <i class="fa-solid fa-list"></i>
+                    Extrato
+                    </button>
+                </div>
+            </div>  
+            <div class="col-12 pb-3">
                 <button 
                     type="button" 
                     class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
@@ -215,6 +237,28 @@
                     </button>
                 </div>
             </div> 
+            <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='Extrato'">
+                    <button 
+                    type="button" 
+                    class= "me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                    >
+                    <i class="fa-solid fa-list"></i>
+                    Extrato
+                    </button>
+                </div>
+                <div v-else>
+                    <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('extrato')"
+                    >
+                    <i class="fa-solid fa-list"></i>
+                    Extrato
+                    </button>
+                </div>
+            </div>  
             <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
@@ -361,11 +405,9 @@ function saveIdAgent(){
 }
 
 const savelang = (langCode, langName) => {
-    console.log('read')
     localStorage.setItem('lang', langCode);
     localStorage.setItem('langName', langName);
     languageName.value=langName
-    console.log(languageName.value)
 }
 
 const openModal = () =>{
@@ -376,7 +418,6 @@ const closeModal=()=>{
 }
 const changeLanguage = (langCode, langName) => {
     document.cookie = `googtrans=; path=/; domain=${location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-    console.log('Langcode',langCode, 'langname', langName)
     document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
     savelang(langCode, langName);
     window.location.reload(true); 
@@ -385,7 +426,6 @@ onMounted(() => {
     name.value=user.Nome
     img.value=user.photo
     saldo.value=user.saldouser
-    console.log(route.name);
     if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos') || user.email.includes('luisalbergoni717')){
         isAdmin.value=true
     }
@@ -396,7 +436,6 @@ onMounted(() => {
     getTraducao()
 })
 const getTraducao = async () => {
-    console.log('faaw')
     isLoading.value=true
     const userLocale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt-br'
     try {
@@ -410,7 +449,6 @@ const getTraducao = async () => {
             pagina:'Roteiros',
           };
     const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-    console.log('traduaca', response.data)
     TRoteiro=JSON.parse(response.data.traducao)
     traducao.value=TRoteiro.Sidebar
     isLoading.value=false
