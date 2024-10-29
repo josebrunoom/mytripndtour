@@ -10,7 +10,7 @@
             item-value="id"
             class="elevation-1"
             :loading="!Extratos.length"
-            loading-text="Carregando Extratos"
+            loading-text="Carregando Extrato"
             :items-per-page="10"
             :hide-default-footer="true"
         >
@@ -18,7 +18,6 @@
                 <v-toolbar flat>
                     <v-toolbar-title>Extratos</v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-btn @click="openCriaDialog" color="primary">Criar Venda</v-btn>
                 </v-toolbar>
             </template>
 
@@ -27,13 +26,12 @@
                     <td>{{ slotProps.item.vlroperacao }}</td>
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
-                    <td>{{ slotProps.item.tipo_operacao }}</td>
-                    <td>
-                        <v-btn @click="" color="yellow"><ion-icon name="create-outline"></ion-icon></v-btn>
-                    </td>
-                    <td>
-                        <v-btn @click="" color="red"><ion-icon name="trash-outline"></ion-icon></v-btn>
-                    </td>
+                    <td>{{ slotProps.item.tpoperacao == 'D' ? 'Débito' : 'Crédito' }}</td>
+                    <div v-if="slotProps.item.tpoperacao == 'D'">
+                        <td>
+                            <v-btn @click="OpenModal(slotProps.item)" color="red">Solicitar Extorno</v-btn>
+                        </td>
+                    </div>
                 </tr>
             </template>
         </v-data-table>
@@ -65,6 +63,21 @@
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="[#78c0d6]" text @click="dialogNameChange">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogEx" max-width="500px">
+            <v-card>
+                <v-card-title class="headline">Solicitar Extorno</v-card-title>
+                <v-card-text>Quais os Motivos para o Extorno?</v-card-text>
+                <div class="flex justify-center">
+                </div>
+                <div class="flex justify-center items-center w-[85%] mx-auto">
+                    <input type="text" class="form-control" :placeholder="traducao.PlaceHolder4" v-model="motivoEx">
+                </div>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="[#78c0d6]" text @click="sendEx">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -100,13 +113,16 @@
     const ModalVisible= ref(false)
     const selectedRoteiro = ref(null);
     const dialogNameChange = ref(false)
+    const dialogEx = ref(false)
     const dataToSend = ref(null)
+    const motivoEx = ref('')
+    const selected = ref(null)
     const traducao = ref(newlang)
     const headers = ref([
-        { title: 'Valor', key: 'vlroperacao', align: 'start' },
-        { title: 'Créditos', key: 'crdoperacao' },
-        { title: 'ID do Cliente', key: 'descricao' },
-        { title: 'Tipo de Operação', key: 'tipo_operacao' },
+        { title: 'Valor', key: 'vlroperacao', align: 'center' },
+        { title: 'Créditos', key: 'crdoperacao',align: 'center' },
+        { title: 'Descrição', key: 'descricao',align: 'center' },
+        { title: 'Tipo de Operação', key: 'tpoperacao',align: 'center' },
     ]);
     
     onMounted(() => {
@@ -155,71 +171,27 @@
     };
     
     const openIndex = ref(null);
-    
-    const toggleDetails = (index) => {
-        openIndex.value = openIndex.value === index ? null : index;
-    };
 
-    const saveRoteiro = async (index) => {
-        isLoading.value = true;
-    
-        try {
-        const roteiro = Roteiros.value[index];
-        console.log(roteiro)
-        let objRoteiro={
-            data_inicio: roteiro.data_inicio,
-            destino: roteiro.destino,
-            dias: roteiro.dias,
-            dth_insert: roteiro.dth_insert,
-            idade_menores: roteiro.idade_menores,
-            idioma: roteiro.idioma,
-            idrotsalvo: roteiro.idrotsalvo,
-            iduser: roteiro.iduser,
-            interesses: roteiro.interesses,
-            ip_origem: roteiro.ip_origem,
-            nao_incluir: roteiro.nao_incluir,
-            nome_roteiro: roteiro.nome_roteiro,
-            origem: roteiro.origem,
-            qtd_adultos: roteiro.qtd_adultos,
-            qtd_menores: roteiro.qtd_menores,
-            quero_conhecer: roteiro.quero_conhecer,
-            tipo_hospedage: roteiro.tipo_hospedage,
-            txt_roteiro: roteiro.txt_roteiro,
-            tpacao: 'U',
+    const OpenModal = (item) => {
+        dialogEx.value=true
+        selected.value = item
+    }
+
+    const sendEx = async () => {
+        if(motivoEx.value.length<50){
+            alert('O motivo deve ser maior que 50 caracteres')
+        }else{
+            try {
+                let obj = {
+                    iduser:user.iduser,
+                    idoperacao:selected.value.idcc,
+                    justificativa:motivoEx.value
+                }
+            } catch (error) {
+                
+            }
         }
-        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', objRoteiro);
-        console.log('Updated roteiro:', response.data.result);
-        isLoading.value = false;
-        dialogNameChange.value=true
-        alert(traducao.Salvo)
-        } catch (error) {
-        console.log('Error saving roteiro:', error);
-        isLoading.value = false;
-        alert(traducao.ErrSalvar)
-        }
-    };
-    const sendData = (roteiro) => {
-    console.log(roteiro)
-    let objRoteiro={
-            data_inicio: roteiro.data_inicio,
-            destino: roteiro.destino,
-            dias: roteiro.dias,
-            idade_menores: roteiro.idade_menores,
-            interesses: roteiro.interesses,
-            nao_incluir: roteiro.nao_incluir,
-            origem: roteiro.origem,
-            qtd_adultos: roteiro.qtd_adultos,
-            qtd_menores: roteiro.qtd_menores,
-            quero_conhecer: roteiro.quero_conhecer,
-            tipo_hospedage: roteiro.tipo_hospedage,
-            txt_roteiro: roteiro.txt_roteiro,
-        }
-        
-    dataToSend.value = JSON.stringify(objRoteiro)
-    localStorage.setItem('roteiroSee',dataToSend.value)
-    //const encodedData = encodeURIComponent(dataToSend.value);
-    //console.log(encodedData)
-    window.location.href = `https://roteiro.mytripntour.com/mytrip/visualizacao`;
+
     }
 </script>
 
