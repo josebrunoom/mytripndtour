@@ -3,9 +3,43 @@
         <div v-if="!Extratos">
             <span class="">Não existem Extrato</span>
         </div>
-        <div v-for="(extrato, index) in Extratos" :key="index" class="p-4 border-b ">
+        <div v-else class="w-full">
+            <v-data-table
+            :items="Extratos"
+            :headers="headers"
+            item-value="id"
+            class="elevation-1"
+            :loading="!Extratos.length"
+            loading-text="Carregando Extratos"
+            :items-per-page="10"
+            :hide-default-footer="true"
+        >
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-toolbar-title>Extratos</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="openCriaDialog" color="primary">Criar Venda</v-btn>
+                </v-toolbar>
+            </template>
+
+            <template v-slot:item="slotProps">
+                <tr>
+                    <td>{{ slotProps.item.vlroperacao }}</td>
+                    <td>{{ slotProps.item.crdoperacao }}</td>
+                    <td>{{ slotProps.item.descricao }}</td>
+                    <td>{{ slotProps.item.tipo_operacao }}</td>
+                    <td>
+                        <v-btn @click="" color="yellow"><ion-icon name="create-outline"></ion-icon></v-btn>
+                    </td>
+                    <td>
+                        <v-btn @click="" color="red"><ion-icon name="trash-outline"></ion-icon></v-btn>
+                    </td>
+                </tr>
+            </template>
+        </v-data-table>
+        </div>
+<!--         <div v-for="(extrato, index) in Extratos" :key="index" class="p-4 border-b ">
             <div class="flex items-center">
-            <!-- Arrow icon to toggle visibility, aligned to the left -->
             <button @click="toggleDetails(index)" class="mr-2">
                 <span :class="openIndex === index ? 'rotate-180' : 'rotate-0'">
                 &#x25BC;
@@ -19,16 +53,9 @@
             <div >
                 <p><strong>Tipo de Operação:</strong> {{ extrato.tipo_operacao }}</p>
             </div>
-    
-<!--             <button @click="saveRoteiro(index)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded mr-2">
-                <i class="fa-solid fa-floppy-disk"></i> {{ traducao.Salvar }}
-            </button>
-            <button @click="sendData(roteiro)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded">
-                <i class="fa-solid fa-eye"></i> {{ traducao.Visualizar }}
-            </button> -->
             </div>
             
-        </div>
+        </div> -->
         <v-dialog v-model="dialogNameChange" max-width="500px">
             <v-card>
                 <v-card-title class="headline"></v-card-title>
@@ -48,10 +75,11 @@
 <!-- {
     "extrato": [
         {
+            "crdoperacao": -1,
             "descricao": "Pesquisa",
             "dthpagamento": null,
             "iduser": 7,
-            "referencia": null,
+            "referencia": "App",
             "tipo_operacao": "D",
             "tppagamento": null,
             "vlroperacao": null
@@ -69,11 +97,17 @@
     
     const Extratos = ref([]);
     const isLoading = ref(false);
-    const ModalVisible=ref(false)
+    const ModalVisible= ref(false)
     const selectedRoteiro = ref(null);
     const dialogNameChange = ref(false)
     const dataToSend = ref(null)
     const traducao = ref(newlang)
+    const headers = ref([
+        { title: 'Valor', key: 'vlroperacao', align: 'start' },
+        { title: 'Créditos', key: 'crdoperacao' },
+        { title: 'ID do Cliente', key: 'descricao' },
+        { title: 'Tipo de Operação', key: 'tipo_operacao' },
+    ]);
     
     onMounted(() => {
         isLoading.value = true;
