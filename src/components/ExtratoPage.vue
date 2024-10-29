@@ -3,7 +3,7 @@
         <div v-if="!Extratos">
             <span class="">Não existem Extrato</span>
         </div>
-        <div v-else class="w-full">
+        <div v-else class="">
             <v-data-table
             :items="Extratos"
             :headers="headers"
@@ -12,13 +12,12 @@
             :loading="!Extratos.length"
             loading-text="Carregando Extrato"
             :items-per-page="10"
-            :hide-default-footer="true"
         >
             <template v-slot:top>
-                <v-toolbar flat>
+<!--                 <v-toolbar flat>
                     <v-toolbar-title>Extratos</v-toolbar-title>
                     <v-spacer></v-spacer>
-                </v-toolbar>
+                </v-toolbar> -->
             </template>
 
             <template v-slot:item="slotProps">
@@ -27,11 +26,9 @@
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
                     <td>{{ slotProps.item.tpoperacao == 'D' ? 'Débito' : 'Crédito' }}</td>
-                    <div v-if="slotProps.item.tpoperacao == 'D'">
-                        <td>
-                            <v-btn @click="OpenModal(slotProps.item)" color="red">Solicitar Extorno</v-btn>
-                        </td>
-                    </div>
+                    <td  v-if="slotProps.item.tpoperacao == 'D'" class="pl-4 ">
+                        <v-btn @click="OpenModal(slotProps.item)" color="red">Solicitar Extorno</v-btn>
+                    </td>
                 </tr>
             </template>
         </v-data-table>
@@ -123,6 +120,7 @@
         { title: 'Créditos', key: 'crdoperacao',align: 'center' },
         { title: 'Descrição', key: 'descricao',align: 'center' },
         { title: 'Tipo de Operação', key: 'tpoperacao',align: 'center' },
+        { title: 'Ações', key: '',align: 'center',sortable: false },
     ]);
     
     onMounted(() => {
@@ -183,15 +181,21 @@
         }else{
             try {
                 let obj = {
-                    iduser:user.iduser,
-                    idoperacao:selected.value.idcc,
-                    justificativa:motivoEx.value
+                    iduser:user.value.iduser,
+                    emailuser:user.value.email,
+                    descricao:selected.value.descricao,
+                    tpacao:'E',
+                    obsestorno:motivoEx.value,
+                    idccestorno:selected.value.idcc
                 }
+                console.log(obj)
+                const response = await axios.post('https://usercredits-667280034337.us-central1.run.app/insert_cc', obj)
+                await getExtrato()
+                alert('Seu pedido está sendo avaliado!')
             } catch (error) {
-                
+                console.log(error)
             }
         }
-
     }
 </script>
 
