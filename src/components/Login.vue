@@ -221,7 +221,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://roteiro.mytripntour.com', 
+            redirect_uri: 'http://localhost:5173', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -323,6 +323,7 @@ const sendUser=async(user, userInfo, access_type)=>{
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       localStorage.setItem('Traducao', response.data.traducao);
     }
+      saveLocation()
       router.push('/mytrip/home');
     } else{
       alert('Aceite os termos para continuar')
@@ -336,6 +337,12 @@ const sendUser=async(user, userInfo, access_type)=>{
     isLoading.value=false
   }
 }
+  const saveLocation = async () => {
+    //const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
+    const response = await axios.get(`https://ipinfo.io/json?token=$5bad712b786115`)
+    console.log('Location response',response)
+    //localStorage.setItem('location',JSON.stringify(response))
+  }
 
   const loginFacebook = async () => {
     if (window.loginWithFacebook) {

@@ -3,7 +3,7 @@
         <div v-if="!Extratos">
             <span class="">Não existem Extrato</span>
         </div>
-        <div v-else class="">
+        <div v-else >
             <v-data-table
             :items="Extratos"
             :headers="headers"
