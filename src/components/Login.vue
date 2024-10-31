@@ -339,7 +339,7 @@ const sendUser=async(user, userInfo, access_type)=>{
 }
   const saveLocation = async () => {
     //const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
-    const response = await axios.get(`https://ipinfo.io/json?token=$5bad712b786115`)
+    const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
     console.log('Location response',response)
     //localStorage.setItem('location',JSON.stringify(response))
   }
