@@ -26,7 +26,19 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <span>{{props.traducao.DigCred}}: </span>
-                    <input type="number" class="form-control" v-model="selectedCredit" >
+                    <input type="number" class="form-control" v-model="selectedCredit" @input="validateCredit">
+                </div> 
+                <div class="grid grid-cols-2 gap-4">
+                    <span>Selecione a Moeda preferida: </span>
+                    <v-select
+                        label=""
+                        :items="['BRL', 'USD', 'EUR']"
+                        :menuProps="{ zIndex: 10000 }"
+                        v-model="currency"
+                    ></v-select>
+                </div> 
+                <div class="" v-if="selectedCredit && currency">
+                    <span>Valor em {{ currency }}: {{signal}}{{ valueToPay }}.00</span>
                 </div> 
             </div>
             <div class="mt-6 flex justify-end" :disabled="selectedCredit === null">
@@ -55,7 +67,7 @@
 
 <script setup>
 import axios from 'axios';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const props = defineProps({
@@ -71,17 +83,106 @@ const props = defineProps({
 const creditOptions = [5, 10, 20];
 const selectedCredit = ref(null);
 const buttonSwitch=ref(false)
-//const valueToPay=ref("1.00")
+const valueToPay=ref("1.00")
 const clientId = 'AZ26vpUzl4-BlJkNfH1maGfL7uGrHBDhi4HSCa5STbECJKneWPphBGxqmVdhZNzrM9ClD3mO8MX1Ybma';
 const paypalButtonContainer = ref(null);
+const currency = ref(null)
+const conversionRate = ref(1)
+const signal = ref('')
 
-const valueToPay = computed(() => {
-    return selectedCredit.value ? selectedCredit.value * 0.5 : null;
+watch([selectedCredit, conversionRate], ([newCredit, newRate]) => {
+    valueToPay.value = newCredit ? newCredit * newRate : null;
 });
 
+const location = JSON.parse(localStorage.getItem('location'))
+
 onMounted(async () => {
+    await loadCurrency()
     console.log(props.traducao)
-    await loadPaypalScript(clientId);
+});
+watch(currency, (newCurrency, oldCurrency) => {
+    console.log('Currency changed from', oldCurrency, 'to', newCurrency);
+    updateCurrency()
+});
+const validateCredit = () => {
+    if (selectedCredit.value < 0) {
+        selectedCredit.value = 0;
+    }
+};
+const updateSaldo = async () => {
+    let userObj = {
+        tpacao:'S',
+        iduser:user.iduser,
+    }
+    try {
+        const response = await axios.post('https://mtt-accounting-667280034337.us-central1.run.app',userObj)
+        console.log(response.data)
+        const LocalStorageUser = {
+                    Email: user.Email,
+                    name: user.name,
+                    photo: user.photo,
+                    MetodoAutenticacao: user.MetodoAutenticacao,
+                    birthday: user.birthday,
+                    gender: user.gender,
+                    ip_origem: user.ip_origem,
+                    email: user.email,
+                    saldouser: response.data.saldouser,
+                    vlrpdf: user.vlrpdf,
+                    vlrpesquisa: user.vlrpesquisa,
+                    iduser: user.iduser,
+                };
+        localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+    } catch (error) {
+        console.log(error)
+    }
+}
+const loadCurrency = async () => {
+    const country = location.country
+    currency.value = country == 'BR' ? 'BRL' : country == 'US' ? 'USD' : 'BR'
+    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : 1
+    signal.value = currency.value == 'BRL' ? user.currency_data[0].simbolo : currency.value == 'USD' ? user.currency_data[2].simbolo : 'R$'
+}
+const updateCurrency = () => {
+    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : 1
+    valueToPay.value=selectedCredit.value ? selectedCredit.value * conversionRate.value : null;
+    console.log(valueToPay.value)
+}
+const loadPaypalScript = (clientId) => {
+
+    return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=${currency.value}`;
+    script.onload = resolve;
+    document.head.appendChild(script);
+    });
+};
+const selectCredit = (credit) => {
+    selectedCredit.value = credit;
+};
+const confirmPurchase = () => {
+    if (selectedCredit.value !== null) {
+    console.log('Compra confirmada para', selectedCredit.value, 'créditos');
+    props.closeModal(); 
+    }
+};
+const onLoadPaymentData=(event) => {
+    console.log("load payment data", event.detail);
+    props.closeModal(); 
+}
+const onError=(event) => {
+    console.log("onError", event.detail);
+}
+const changeButton= async () =>{
+    if(!currency.value){
+        alert('selecione a moeda antes de confirmar a transação!')
+    }else{
+        await loadPaypalScript(clientId);
+        await loadPaypalButton()
+        buttonSwitch.value=true
+        console.log(valueToPay.value)
+    }
+}
+const loadPaypalButton = async () => {
     if (paypalButtonContainer.value) {
         window.paypal.Buttons({
         createOrder: function (data, actions) {
@@ -111,61 +212,6 @@ onMounted(async () => {
     } else {
         console.error('PayPal button container not found!');
     }
-});
-const updateSaldo = async () => {
-    let userObj = {
-        tpacao:'S',
-        iduser:user.iduser,
-    }
-    try {
-        const response = await axios.post('https://mtt-accounting-667280034337.us-central1.run.app',userObj)
-        console.log(response.data)
-        const LocalStorageUser = {
-                    Email: user.Email,
-                    name: user.name,
-                    photo: user.photo,
-                    MetodoAutenticacao: user.MetodoAutenticacao,
-                    birthday: user.birthday,
-                    gender: user.gender,
-                    ip_origem: user.ip_origem,
-                    email: user.email,
-                    saldouser: response.data.saldouser,
-                    vlrpdf: user.vlrpdf,
-                    vlrpesquisa: user.vlrpesquisa,
-                    iduser: user.iduser,
-                };
-        localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-    } catch (error) {
-        console.log(error)
-    }
-}
-const loadPaypalScript = (clientId) => {
-    return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=BRL`;
-    script.onload = resolve;
-    document.head.appendChild(script);
-    });
-};
-const selectCredit = (credit) => {
-    selectedCredit.value = credit;
-};
-const confirmPurchase = () => {
-    if (selectedCredit.value !== null) {
-    console.log('Compra confirmada para', selectedCredit.value, 'créditos');
-    props.closeModal(); 
-    }
-};
-const onLoadPaymentData=(event) => {
-    console.log("load payment data", event.detail);
-    props.closeModal(); 
-}
-const onError=(event) => {
-    console.log("onError", event.detail);
-}
-const changeButton=()=>{
-    buttonSwitch.value=true
-    console.log(valueToPay.value)
 }
 const generatePixQRCode = () => {
     const pixLink = `https://example-pix-api.com/generate?amount=${selectedCredit.value}`;
