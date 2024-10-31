@@ -556,6 +556,7 @@
   import compraModal from './compraModal.vue';
   import ptLang from '../data/ptlang';
 
+  const location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
   const traducao = ref(ptLang)
   const date = ref();
@@ -564,13 +565,13 @@
   const childAges = ref([]);
   const currentIndex = ref(0);
   const isLoading=ref(false)
-  const showOrigem=ref(true)
+  const showOrigem=ref(false)
   const showDestino=ref(true)
   const dialog=ref(false)
   const inputOrigem = ref(null);
   const inputDestino = ref(null);
   const inputDestinoMult = ref(null);
-  const OrigemCity=ref(null)
+  const OrigemCity=ref(location.city)
   const DestinoCity=ref(null)
   const lugaresConhecerFullNames=ref([])
   const lugaresNaoIrFullNames=ref([])
@@ -610,7 +611,7 @@
   let selectedInteresses=[]
   let lugares=/* ['Luxo (5★)','Hostel', 'Pousadas','Resorts', 'Só pra dormir (3★)'] */ ref(null)
   let Destinos=[]
-  let Origem
+  let Origem = location.city
   let lugar_nIr=[]
   let lugar_Conhecer=[]
   const roteiroData = ref({Roteiro:null,})

@@ -318,6 +318,7 @@ const sendUser=async(user, userInfo, access_type)=>{
                 vlrpdf: response.data.vlrpdf,
                 vlrpesquisa: response.data.vlrpesquisa,
                 iduser: response.data.iduser,
+                currency_data:response.data.currency_data
               };
               console.log(typeof response.data.traducao)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
@@ -338,10 +339,53 @@ const sendUser=async(user, userInfo, access_type)=>{
   }
 }
   const saveLocation = async () => {
+    /* {
+      "ip": "179.221.49.176",
+      "hostname": "b3dd31b0.virtua.com.br",
+      "city": "Poços de Caldas",
+      "region": "Minas Gerais",
+      "country": "BR",
+      "loc": "-21.7878,-46.5614",
+      "postal": "37700-000",
+      "timezone": "America/Sao_Paulo",
+      "asn": {
+        "asn": "AS28573",
+        "name": "Claro NXT Telecomunicacoes Ltda",
+        "domain": "claro.com.br",
+        "route": "179.221.32.0/19",
+        "type": "isp"
+      },
+      "company": {
+        "name": "Claro NXT Telecomunicacoes Ltda",
+        "domain": "claro.com.br",
+        "type": "isp"
+      },
+      "privacy": {
+        "vpn": false,
+        "proxy": false,
+        "tor": false,
+        "relay": false,
+        "hosting": false,
+        "service": ""
+      },
+      "abuse": {
+        "address": "",
+        "country": "BR",
+        "email": "abuse_net@claro.com.br",
+        "name": "Claro NXT Telecomunicacoes Ltda",
+        "network": "179.220.0.0/14",
+        "phone": ""
+      },
+      "domains": {
+        "page": 0,
+        "total": 0,
+        "domains": []
+      }
+    } */
     //const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
     const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
     console.log('Location response',response)
-    //localStorage.setItem('location',JSON.stringify(response))
+    localStorage.setItem('location',JSON.stringify(response.data))
   }
 
   const loginFacebook = async () => {
