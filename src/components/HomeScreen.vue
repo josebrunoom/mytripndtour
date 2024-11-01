@@ -985,6 +985,7 @@ const postRoteiro=async () =>{
                 vlrpdf: user.vlrpdf,
                 vlrpesquisa: user.vlrpesquisa,
                 iduser: user.iduser,
+                currency_data:user.currency_data
               };
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }

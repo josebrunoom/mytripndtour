@@ -264,7 +264,7 @@ const processUserInfo = async (userInfo) => {
       const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
       localStorage.setItem('langName', userLocale.toUpperCase());
       await saveLocation()
-      locationData.value ? console.log(locationData.value) : locationData.value=data
+      //locationData.value ? console.log(locationData.value) : locationData.value=data
       let objUser = {
             email: userEmail,
             name: userName,
@@ -273,12 +273,12 @@ const processUserInfo = async (userInfo) => {
             sigla_idioma:userLocale.toUpperCase(),
             ip_origem:userIP.value,
             pagina:'Roteiros',
-            city: locationData.value.city,
-            region: locationData.value.region,
-            country: locationData.value.country,
-            loc: locationData.value.loc,
-            postal: locationData.value.postal,
-            timezone: locationData.value.timezone,
+            city: locationData.value.city ? locationData.value.city : '',
+            region: locationData.value.region ? locationData.value.region : '',
+            country: locationData.value.country ? locationData.value.country : '',
+            loc: locationData.value.loc ? locationData.value.loc : '',
+            postal: locationData.value.postal ? locationData.value.postal : '',
+            timezone: locationData.value.timezone ? locationData.value.timezone : '',
           };
           await sendUser(objUser, userInfo, 'google')
 };
@@ -360,7 +360,7 @@ const sendUser=async(user, userInfo, access_type)=>{
     try {
       const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
       console.log('Location response',response)
-      //locationData.value=response.data
+      locationData.value=response.data
       localStorage.setItem('location',JSON.stringify(response.data))
     } catch (error) {
       console.log('saveLocation ERROR',error)

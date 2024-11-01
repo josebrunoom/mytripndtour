@@ -38,7 +38,7 @@
                     ></v-select>
                 </div> 
                 <div class="" v-if="selectedCredit && currency">
-                    <span>Valor em {{ currency }}: {{signal}}{{ valueToPay }}.00</span>
+                    <span>Valor em {{ currency }}: {{signal}}{{ valueToPay }}</span>
                 </div> 
             </div>
             <div class="mt-6 flex justify-end" :disabled="selectedCredit === null">
@@ -140,7 +140,7 @@ const loadCurrency = async () => {
     const padrao = user.currency_data.find(obj => obj.padrao === 1);
     const country = padrao.pais
     currency.value = country == 'BR' ? 'BRL' : country == 'US' ? 'USD' : 'BR'
-    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : 1
+    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : user.currency_data[1].txconversao
     signal.value = currency.value == 'BRL' ? user.currency_data[0].simbolo : currency.value == 'USD' ? user.currency_data[2].simbolo : 'R$'
 }
 const updateCurrency = () => {
