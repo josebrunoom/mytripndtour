@@ -102,7 +102,13 @@
         "Escolha":"Escolha a quantidade de créditos que deseja comprar",
         "Cred":"créditos",
         "DigCred":"Ou digite a quantidade de Créditos",
-        "Confirm":"Confirmar Compra"
+        "Confirm":"Confirmar Compra",
+        "ErrCompra":"Erro ao concluir compra",
+        "ObrigCompra":"Obrigado pela sua compra!",
+        "ChangeButton":"selecione a moeda antes de confirmar a transação!",
+        "ValEm":"Valor em",
+        "Mpreferida":"Selecione a Moeda preferida",
+        "AddCred":"Adicionar Créditos"
         },
         "Perfil": {
         "MeuPerfil": "Meu Perfil",
@@ -143,5 +149,13 @@
         "ErrSalvar":"Erro ao Salvar Roteiro",
         "Nao": "Não",
         "Sim": "Sim"
+        },
+        "ExtratoPage": {
+            "NExt":"Não existem Extrato",
+            "Loading":"Carregando Extrato",
+            "Extorno":"Solicitar Extorno",
+            "MotExt":"Quais os Motivos para o Extorno?",
+            "Mot50":"O motivo deve ser maior que 50 caracteres",
+            "Seu pedido está sendo avaliado!":"Seu pedido está sendo avaliado!"
         }
     }
