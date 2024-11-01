@@ -144,7 +144,7 @@ const loadCurrency = async () => {
     signal.value = currency.value == 'BRL' ? user.currency_data[0].simbolo : currency.value == 'USD' ? user.currency_data[2].simbolo : 'R$'
 }
 const updateCurrency = () => {
-    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : 1
+    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : user.currency_data[1].txconversao
     valueToPay.value=selectedCredit.value ? selectedCredit.value * conversionRate.value : null;
     console.log(valueToPay.value)
 }
