@@ -50,6 +50,17 @@
   const showModal = ref(false);
   const userIP=ref('')
   let token=localStorage.getItem('token')
+  const locationData = ref(null)
+  let data = {
+      ip: "179.221.49.176",
+      hostname: "b3dd31b0.virtua.com.br",
+      city: "Poços de Caldas",
+      region: "Minas Gerais",
+      country: "BR",
+      loc: "-21.7878,-46.5614",
+      postal: "37700-000",
+      timezone: "America/Sao_Paulo",
+    } 
 
   const traducao = ref(null)
 
@@ -252,21 +263,28 @@ const processUserInfo = async (userInfo) => {
       const userLocale = navigator.language
       const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
       localStorage.setItem('langName', userLocale.toUpperCase());
-  let objUser = {
+      await saveLocation()
+      locationData.value ? console.log(locationData.value) : locationData.value=data
+      let objUser = {
             email: userEmail,
             name: userName,
-            /* photo: userPicture, */
-            //password: userInfo.names[0].metadata.source.id, 
             birthday: formattedDate,
             gender: userGender,
             sigla_idioma:userLocale.toUpperCase(),
             ip_origem:userIP.value,
-            pagina:'Roteiros'
+            pagina:'Roteiros',
+            city: locationData.value.city,
+            region: locationData.value.region,
+            country: locationData.value.country,
+            loc: locationData.value.loc,
+            postal: locationData.value.postal,
+            timezone: locationData.value.timezone,
           };
           await sendUser(objUser, userInfo, 'google')
 };
 const sendUser=async(user, userInfo, access_type)=>{ 
   isLoading.value=true
+  
   try {
     /* const response = await fetch('https://newlogin-lm7edjmduq-uc.a.run.app', {
       method: 'POST', 
@@ -324,7 +342,7 @@ const sendUser=async(user, userInfo, access_type)=>{
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       localStorage.setItem('Traducao', response.data.traducao);
     }
-      saveLocation()
+      
       router.push('/mytrip/home');
     } else{
       alert('Aceite os termos para continuar')
@@ -339,53 +357,15 @@ const sendUser=async(user, userInfo, access_type)=>{
   }
 }
   const saveLocation = async () => {
-    /* {
-      "ip": "179.221.49.176",
-      "hostname": "b3dd31b0.virtua.com.br",
-      "city": "Poços de Caldas",
-      "region": "Minas Gerais",
-      "country": "BR",
-      "loc": "-21.7878,-46.5614",
-      "postal": "37700-000",
-      "timezone": "America/Sao_Paulo",
-      "asn": {
-        "asn": "AS28573",
-        "name": "Claro NXT Telecomunicacoes Ltda",
-        "domain": "claro.com.br",
-        "route": "179.221.32.0/19",
-        "type": "isp"
-      },
-      "company": {
-        "name": "Claro NXT Telecomunicacoes Ltda",
-        "domain": "claro.com.br",
-        "type": "isp"
-      },
-      "privacy": {
-        "vpn": false,
-        "proxy": false,
-        "tor": false,
-        "relay": false,
-        "hosting": false,
-        "service": ""
-      },
-      "abuse": {
-        "address": "",
-        "country": "BR",
-        "email": "abuse_net@claro.com.br",
-        "name": "Claro NXT Telecomunicacoes Ltda",
-        "network": "179.220.0.0/14",
-        "phone": ""
-      },
-      "domains": {
-        "page": 0,
-        "total": 0,
-        "domains": []
-      }
-    } */
-    //const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
-    const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
-    console.log('Location response',response)
-    localStorage.setItem('location',JSON.stringify(response.data))
+    try {
+      const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
+      console.log('Location response',response)
+      //locationData.value=response.data
+      localStorage.setItem('location',JSON.stringify(response.data))
+    } catch (error) {
+      console.log('saveLocation ERROR',error)
+    }
+
   }
 
   const loginFacebook = async () => {

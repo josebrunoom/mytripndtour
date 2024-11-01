@@ -137,7 +137,8 @@ const updateSaldo = async () => {
     }
 }
 const loadCurrency = async () => {
-    const country = location.country
+    const padrao = user.currency_data.find(obj => obj.padrao === 1);
+    const country = padrao.pais
     currency.value = country == 'BR' ? 'BRL' : country == 'US' ? 'USD' : 'BR'
     conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : 1
     signal.value = currency.value == 'BRL' ? user.currency_data[0].simbolo : currency.value == 'USD' ? user.currency_data[2].simbolo : 'R$'
