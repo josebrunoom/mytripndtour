@@ -6,9 +6,9 @@
         </div>
         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">
-            <button v-if="traducao" @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
+            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
               <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
-              {{ traducao.EntrarGoogle }}
+              Entrar Com Google
             </button>
           </div>
         </form>
@@ -122,7 +122,7 @@
     js.src = "https://connect.facebook.net/pt_BR/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-  Translate();
+  //Translate();
   
   }
 )

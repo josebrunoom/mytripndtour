@@ -381,7 +381,7 @@ import Loading from '../Loading.vue';
 
 let TRoteiro 
 const traducao = ref(ptLang)
-const user = JSON.parse(localStorage.getItem('user'));
+const user = ref(JSON.parse(localStorage.getItem('user')))
 const name = ref('')
 const saldo = ref(null)
 const route = useRoute();
@@ -398,6 +398,7 @@ const idAgent_end=ref(null)
 const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 const isLoading = ref(false)
+const locationData = ref(null)
 
 function saveIdAgent(){
     localStorage.setItem('idAgent_start', idAgent_start.value);
@@ -422,25 +423,55 @@ const changeLanguage = (langCode, langName) => {
     savelang(langCode, langName);
     window.location.reload(true); 
 };
-onMounted(() => {
-    name.value=user.Nome
-    img.value=user.photo
-    saldo.value=user.saldouser
-    if(user.email.includes('cezarsantos') || user.Email.includes('cezarsantos') || user.email.includes('luisalbergoni717')){
+onMounted(async () => {
+    name.value=user.value.Nome
+    img.value=user.value.photo
+    saldo.value=user.value.saldouser
+    if(user.value.email.includes('cezarsantos') || user.value.Email.includes('cezarsantos') || user.value.email.includes('luisalbergoni717')){
         isAdmin.value=true
     }
     const intervalId = setInterval(checkUserSaldo, 1000);
     onUnmounted(() => {
     clearInterval(intervalId);
     });
-    getTraducao()
+    await getTraducao()
 })
+const saveLocation = async () => {
+    try {
+        const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
+        console.log('Location response',response)
+        locationData.value=response.data
+        localStorage.setItem('location',JSON.stringify(response.data))
+    } catch (error) {
+        console.log('saveLocation ERROR',error)
+    }
+}
 const getTraducao = async () => {
     isLoading.value=true
+    const userLocale = navigator.language
+    await saveLocation()
     try {
-    TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
-    traducao.value=TRoteiro.Sidebar
-    isLoading.value=false
+        let objUser = {
+                email: user.value.email ? user.value.email : user.value.Email,
+                name: user.value.name,
+                birthday: user.value.birthday,
+                gender: user.value.gender,
+                sigla_idioma:userLocale.toUpperCase(),
+                ip_origem:user.value.ip_origem,
+                pagina:'Roteiros',
+                city: locationData.value.city ? locationData.value.city : '',
+                region: locationData.value.region ? locationData.value.region : '',
+                country: locationData.value.country ? locationData.value.country : '',
+                loc: locationData.value.loc ? locationData.value.loc : '',
+                postal: locationData.value.postal ? locationData.value.postal : '',
+                timezone: locationData.value.timezone ? locationData.value.timezone : '',
+            };
+        const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+        console.log('objtura', objUser)
+        localStorage.setItem('Traducao', response.data.traducao)
+        TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
+        traducao.value=TRoteiro.Sidebar
+        isLoading.value=false
     } catch (error) {
         console.log(error)
         isLoading.value=false
