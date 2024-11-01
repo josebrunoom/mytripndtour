@@ -2,7 +2,7 @@
         <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-[9999] overflow-y-auto">
         <div class="bg-white rounded-lg shadow-lg p-8 w-2/3 max-w-lg relative">
             <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-bold">Adicionar Créditos</h2>
+            <h2 class="text-2xl font-bold">{{ props.traducao.AddCred }}</h2>
             <button @click="closeModal" class="text-gray-400 hover:text-gray-600">
                 <i class="fa fa-times"></i>
             </button>
@@ -29,7 +29,7 @@
                     <input type="number" class="form-control" v-model="selectedCredit" @input="validateCredit">
                 </div> 
                 <div class="grid grid-cols-2 gap-4">
-                    <span>Selecione a Moeda preferida: </span>
+                    <span>{{ props.traducao.Mpreferida }}: </span>
                     <v-select
                         label=""
                         :items="['BRL', 'USD', 'EUR']"
@@ -38,7 +38,7 @@
                     ></v-select>
                 </div> 
                 <div class="" v-if="selectedCredit && currency">
-                    <span>Valor em {{ currency }}: {{signal}}{{ valueToPay }}</span>
+                    <span>{{ props.traducao.ValEm }} {{ currency }}: {{signal}}{{ valueToPay }}</span>
                 </div> 
             </div>
             <div class="mt-6 flex justify-end" :disabled="selectedCredit === null">
@@ -175,7 +175,7 @@ const onError=(event) => {
 }
 const changeButton= async () =>{
     if(!currency.value){
-        alert('selecione a moeda antes de confirmar a transação!')
+        alert(props.traducao.ChangeButton)
     }else{
         await loadPaypalScript(clientId);
         await loadPaypalButton()
@@ -198,7 +198,7 @@ const loadPaypalButton = async () => {
         },
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
-            alert('Obrigado pela sua compra!')
+            alert(props.traducao.ObrigCompra)
             props.closeModal(); 
             console.log(details)
             updateSaldo()
@@ -206,7 +206,7 @@ const loadPaypalButton = async () => {
         },
         onError: function (err) {
             console.error('Error occurred during PayPal transaction', err);
-            alert('Erro ao concluir compra')
+            alert(props.traducao.ErrCompra)
             props.closeModal(); 
         }
         }).render(paypalButtonContainer.value);  

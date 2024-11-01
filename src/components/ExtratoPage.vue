@@ -1,7 +1,7 @@
 <template>
     <div class="scrollable-container">
         <div v-if="!Extratos">
-            <span class="">Não existem Extrato</span>
+            <span class="">{{traducao.NExt}}</span>
         </div>
         <div v-else >
             <v-data-table
@@ -27,7 +27,7 @@
                     <td>{{ slotProps.item.descricao }}</td>
                     <td>{{ slotProps.item.tpoperacao == 'D' ? 'Débito' : 'Crédito' }}</td>
                     <td  v-if="slotProps.item.tpoperacao == 'D'" class="pl-4 ">
-                        <v-btn @click="OpenModal(slotProps.item)" color="red">Solicitar Extorno</v-btn>
+                        <v-btn @click="OpenModal(slotProps.item)" color="red">{{traducao.Extorno}}</v-btn>
                     </td>
                 </tr>
             </template>
@@ -65,8 +65,8 @@
         </v-dialog>
         <v-dialog v-model="dialogEx" max-width="500px">
             <v-card>
-                <v-card-title class="headline">Solicitar Extorno</v-card-title>
-                <v-card-text>Quais os Motivos para o Extorno?</v-card-text>
+                <v-card-title class="headline">{{traducao.Extorno}}</v-card-title>
+                <v-card-text>{{ traducao.MotExt }}</v-card-text>
                 <div class="flex justify-center">
                 </div>
                 <div class="flex justify-center items-center w-[85%] mx-auto">
@@ -131,23 +131,12 @@
 
     const getTraducao = async () => {
         isLoading.value=true
-        const userLocale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt-br'
         try {
-        let objUser = {
-                email: user.value.email ? user.value.email : user.value.Email,
-                name: user.value.name,
-                birthday: user.value.birthday,
-                gender: user.value.gender,
-                sigla_idioma:userLocale.toUpperCase(),
-                ip_origem:user.value.ip_origem,
-                pagina:'Roteiros',
-            };
-        const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-        let TRoteiro=JSON.parse(response.data.traducao)
-        traducao.value=TRoteiro.ListRotero
+        TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
+        traducao.value=TRoteiro.ExtratoPage
         isLoading.value=false
         } catch (error) {
-            console.log('getTraducao',error)
+            console.log(error)
             isLoading.value=false
         }
     }
@@ -177,7 +166,7 @@
 
     const sendEx = async () => {
         if(motivoEx.value.length<50){
-            alert('O motivo deve ser maior que 50 caracteres')
+            alert(traducao.value.Mot50)
         }else{
             try {
                 let obj = {
@@ -191,7 +180,7 @@
                 console.log(obj)
                 const response = await axios.post('https://usercredits-667280034337.us-central1.run.app/insert_cc', obj)
                 await getExtrato()
-                alert('Seu pedido está sendo avaliado!')
+                alert(traducao.value.PedAv)
             } catch (error) {
                 console.log(error)
             }
