@@ -101,19 +101,8 @@
   })
   const getTraducao = async () => {
     isLoading.value=true
-    const userLocale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'pt-br'
     try {
-      let objUser = {
-            email: user.email ? user.email : user.Email,
-            name: user.name,
-            birthday: user.birthday,
-            gender: user.gender,
-            sigla_idioma:userLocale.toUpperCase(),
-            ip_origem:user.ip_origem,
-            pagina:'Roteiros',
-          };
-    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-    TRoteiro=JSON.parse(response.data.traducao)
+    TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
     traducao.value=TRoteiro.Perfil
     isLoading.value=false
     console.log(traducao.value)
