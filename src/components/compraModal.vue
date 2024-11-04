@@ -91,7 +91,8 @@ const conversionRate = ref(1)
 const signal = ref('')
 
 watch([selectedCredit, conversionRate], ([newCredit, newRate]) => {
-    valueToPay.value = newCredit ? newCredit * newRate : null;
+    valueToPay.value = (newCredit ? newCredit * newRate : 0).toFixed(2);
+    console.log((newCredit ? newCredit * newRate : 0).toFixed(2))
 });
 
 const location = JSON.parse(localStorage.getItem('location'))
@@ -140,13 +141,14 @@ const updateSaldo = async () => {
 const loadCurrency = async () => {
     const padrao = user.currency_data.find(obj => obj.padrao === 1);
     const country = padrao.pais
-    currency.value = country == 'BR' ? 'BRL' : country == 'US' ? 'USD' : 'BR'
-    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : user.currency_data[1].txconversao
-    signal.value = currency.value == 'BRL' ? user.currency_data[0].simbolo : currency.value == 'USD' ? user.currency_data[2].simbolo : 'R$'
+    currency.value = country == 'BR' ? 'BRL' : country == 'US' ? 'USD' : 'EUR'
+    conversionRate.value = country == 'BR' ? user.currency_data.find(obj => obj.pais === 'BR')?.txconversao : country == 'US' ? user.currency_data.find(obj => obj.pais === 'US')?.txconversao : user.currency_data.find(obj => obj.pais === 'EU')?.txconversao
+    
 }
 const updateCurrency = () => {
-    conversionRate.value = currency.value == 'BRL' ? user.currency_data[0].txconversao : currency.value == 'USD' ? user.currency_data[2].txconversao : user.currency_data[1].txconversao
+    conversionRate.value = currency.value == 'BRL' ? user.currency_data.find(obj => obj.pais === 'BR')?.txconversao : currency.value == 'USD' ? user.currency_data.find(obj => obj.pais === 'US')?.txconversao : user.currency_data.find(obj => obj.pais === 'EU')?.txconversao
     valueToPay.value=selectedCredit.value ? selectedCredit.value * conversionRate.value : null;
+    signal.value = currency.value == 'BRL' ? user.currency_data.find(obj => obj.pais === 'BR')?.simbolo : currency.value == 'USD' ? user.currency_data.find(obj => obj.pais === 'US')?.simbolo : currency.value == 'EUR' ? user.currency_data.find(obj => obj.pais === 'EU')?.simbolo : null
     console.log(valueToPay.value)
 }
 const loadPaypalScript = (clientId) => {

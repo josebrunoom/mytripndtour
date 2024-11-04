@@ -1141,7 +1141,7 @@ const customFormat = (date) => {
     };
 
     const downloadPdf = async () => {
-      if(parseFloat(user.saldouser)<parseFloat(user.vlrpdf)){
+      if(user.saldouser<parseInt(user.vlrpdf)){
         dialogPDF.value=false
         dialogVlr.value=true
         vlrModalText.value=traducao.value.VlrModal2
@@ -1213,7 +1213,7 @@ const customFormat = (date) => {
 
     }
   const haveSaldo=()=>{
-    if (parseFloat(user.saldouser)<parseFloat(user.vlrpesquisa)) {
+    if (user.saldouser<parseInt(user.vlrpesquisa)) {
       return false
     } else {
       return true
