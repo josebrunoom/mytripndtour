@@ -259,6 +259,16 @@
                     </button>
                 </div>
             </div>  
+            <div class="col-12 pb-3">
+                <button 
+                    type="button" 
+                    class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click="openModal"
+                >
+                <i class="fas fa-wallet"></i>
+                Comprar créditos
+                </button>
+            </div>
             <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
@@ -447,9 +457,10 @@ const saveLocation = async () => {
     }
 }
 const getTraducao = async () => {
-    isLoading.value=true
-    const userLocale = navigator.language
-    await saveLocation()
+    if(localStorage.getItem('Traducao')==null){
+        isLoading.value=true
+        const userLocale = navigator.language
+        await saveLocation()
     try {
         let objUser = {
                 email: user.value.email ? user.value.email : user.value.Email,
@@ -475,6 +486,7 @@ const getTraducao = async () => {
     } catch (error) {
         console.log(error)
         isLoading.value=false
+    }
     }
 }
 const checkUserSaldo = () => {
