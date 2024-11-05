@@ -487,6 +487,9 @@ const getTraducao = async () => {
         console.log(error)
         isLoading.value=false
     }
+    }else{
+        TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
+        traducao.value=TRoteiro.Sidebar
     }
 }
 const checkUserSaldo = () => {
