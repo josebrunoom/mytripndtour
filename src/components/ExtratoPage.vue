@@ -22,7 +22,7 @@
 
             <template v-slot:item="slotProps">
                 <tr>
-                    <td>{{ slotProps.item.vlroperacao }}</td>
+                    <td>{{ slotProps.item.currency_code+slotProps.item.vlroperacao }}</td>
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
                     <td>{{ slotProps.item.tpoperacao == 'D' ? 'Débito' : 'Crédito' }}</td>
@@ -132,7 +132,8 @@
     const getTraducao = async () => {
         isLoading.value=true
         try {
-        TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
+        let TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
+        console.log(TRoteiro)
         traducao.value=TRoteiro.ExtratoPage
         isLoading.value=false
         } catch (error) {
@@ -160,8 +161,12 @@
     const openIndex = ref(null);
 
     const OpenModal = (item) => {
-        dialogEx.value=true
-        selected.value = item
+        if(item.flgestornado=='S'){
+            alert('Você já solicitou extorno!')
+        }else{
+            dialogEx.value=true
+            selected.value = item
+        }
     }
 
     const sendEx = async () => {
