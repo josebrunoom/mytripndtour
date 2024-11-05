@@ -22,11 +22,11 @@
 
             <template v-slot:item="slotProps">
                 <tr>
-                    <td>{{ slotProps.item.currency_code+slotProps.item.vlroperacao }}</td>
+                    <td>{{ slotProps.item.vlroperacao }}</td>
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
                     <td>{{ slotProps.item.tpoperacao == 'D' ? 'Débito' : 'Crédito' }}</td>
-                    <td  v-if="slotProps.item.tpoperacao == 'D'" class="pl-4 ">
+                    <td  v-if="slotProps.item.tpoperacao == 'D' && slotProps.item.flgestornado==null" class="pl-4 ">
                         <v-btn @click="OpenModal(slotProps.item)" color="red">{{traducao.Extorno}}</v-btn>
                     </td>
                 </tr>
@@ -173,6 +173,7 @@
         if(motivoEx.value.length<50){
             alert(traducao.value.Mot50)
         }else{
+            console.log(selected.value)
             try {
                 let obj = {
                     iduser:user.value.iduser,
@@ -185,8 +186,11 @@
                 console.log(obj)
                 const response = await axios.post('https://usercredits-667280034337.us-central1.run.app/insert_cc', obj)
                 await getExtrato()
+                dialogEx.value=false
+                motivoEx.value=''
                 alert(traducao.value.PedAv)
             } catch (error) {
+                alert('Erro ao mandar extorno')
                 console.log(error)
             }
         }
