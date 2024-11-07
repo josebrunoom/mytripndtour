@@ -10,7 +10,7 @@
             item-value="id"
             class="elevation-1"
             :loading="!Extratos.length"
-            loading-text="Carregando Extrato"
+            :loading-text=traducao.Loading
             :items-per-page="10"
         >
             <template v-slot:top>
@@ -26,7 +26,7 @@
                     <td>{{ slotProps.item.vlroperacao }}</td>
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
-                    <td>{{ slotProps.item.tpoperacao == 'D' ? 'Débito' : 'Crédito' }}</td>
+                    <td :class="{'text-red-500': slotProps.item.tpoperacao == 'D', 'text-[#27b3cc]': slotProps.item.tpoperacao !== 'D' }">{{ slotProps.item.tpoperacao == 'D' ? traducao.Debito : traducao.Credito }}</td>
                     <td  v-if="slotProps.item.tpoperacao == 'D' && slotProps.item.flgestornado==null" class="pl-4 ">
                         <v-btn @click="OpenModal(slotProps.item)" color="red">{{traducao.Extorno}}</v-btn>
                     </td>
@@ -117,12 +117,12 @@
     const selected = ref(null)
     const traducao = ref(newlang)
     const headers = ref([
-        { title: 'Data', key: 'dthcreate', align: 'center' },
-        { title: 'Valor', key: 'vlroperacao', align: 'center' },
-        { title: 'Créditos', key: 'crdoperacao',align: 'center' },
-        { title: 'Descrição', key: 'descricao',align: 'center' },
-        { title: 'Tipo de Operação', key: 'tpoperacao',align: 'center' },
-        { title: 'Ações', key: '',align: 'center',sortable: false },
+        { title: traducao.value.Data, key: 'dthcreate', align: 'center' },
+        { title: traducao.value.Valor, key: 'vlroperacao', align: 'center' },
+        { title: traducao.value.Creditos, key: 'crdoperacao',align: 'center' },
+        { title: traducao.value.Descricao, key: 'descricao',align: 'center' },
+        { title: traducao.value.Toperacao, key: 'tpoperacao',align: 'center' },
+        { title: traducao.value.Acoes, key: '',align: 'center',sortable: false },
     ]);
     
     onMounted(() => {

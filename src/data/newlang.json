@@ -156,6 +156,14 @@
             "Extorno":"Solicitar Extorno",
             "MotExt":"Quais os Motivos para o Extorno?",
             "Mot50":"O motivo deve ser maior que 50 caracteres",
-            "PedAv":"Seu pedido está sendo avaliado!"
+            "PedAv":"Seu pedido está sendo avaliado!",
+            "Debito":"Débito",
+            "Credito":"Crédito",
+            "Data":"Data",
+            "Valor":"Valor",
+            "Creditos":"Créditos",
+            "Descricao":"Descrição",
+            "Toperacao":"Tipo de Operação",
+            "Acoes":"Ações"
         }
     }
