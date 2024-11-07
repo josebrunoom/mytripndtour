@@ -138,6 +138,14 @@
         console.log(TRoteiro)
         traducao.value=TRoteiro.ExtratoPage
         isLoading.value=false
+        headers.value = [
+            { title: traducao.value.Data, key: 'dthcreate', align: 'center' },
+            { title: traducao.value.Valor, key: 'vlroperacao', align: 'center' },
+            { title: traducao.value.Creditos, key: 'crdoperacao',align: 'center' },
+            { title: traducao.value.Descricao, key: 'descricao',align: 'center' },
+            { title: traducao.value.Toperacao, key: 'tpoperacao',align: 'center' },
+            { title: traducao.value.Acoes, key: '',align: 'center',sortable: false },
+        ]
         } catch (error) {
             console.log(error)
             isLoading.value=false
