@@ -556,7 +556,7 @@
   import compraModal from './compraModal.vue';
   import ptLang from '../data/ptlang';
 
-  const location = JSON.parse(localStorage.getItem('location'))
+  let location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
   const traducao = ref(ptLang)
   const date = ref();

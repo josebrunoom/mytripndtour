@@ -22,6 +22,7 @@
 
             <template v-slot:item="slotProps">
                 <tr>
+                    <td>{{ formatarData(slotProps.item.dthcreate) }}</td>
                     <td>{{ slotProps.item.vlroperacao }}</td>
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
@@ -116,6 +117,7 @@
     const selected = ref(null)
     const traducao = ref(newlang)
     const headers = ref([
+        { title: 'Data', key: 'dthcreate', align: 'center' },
         { title: 'Valor', key: 'vlroperacao', align: 'center' },
         { title: 'Créditos', key: 'crdoperacao',align: 'center' },
         { title: 'Descrição', key: 'descricao',align: 'center' },
@@ -194,6 +196,22 @@
                 console.log(error)
             }
         }
+    }
+
+    function formatarData(data) {
+      const dateObj = new Date(data);
+      const dia = String(dateObj.getDate()).padStart(2, '0');
+      const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const ano = dateObj.getFullYear();
+      const dadosUser = JSON.parse(localStorage.getItem('user'));
+      const moedaPadrao = dadosUser.currency_data.find(moeda => moeda.padrao === 1)?.nome;
+      
+      if (moedaPadrao == "Real"){
+        return `${dia}/${mes}/${ano}`;
+      } 
+      else{
+        return `${mes}/${dia}/${ano}`;
+      }
     }
 </script>
 
