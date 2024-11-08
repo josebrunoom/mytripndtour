@@ -326,7 +326,7 @@
 
                 <!-- Right-aligned content -->
                 <div class="d-flex align-items-center">
-                    <span class="fw-bold pr-5">{{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
+                    <span class="fw-bold pr-5"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
                 <div class="dropdown me-3">
                     <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-globe"></i> {{ languageName }}
@@ -388,6 +388,7 @@ import "@google-pay/button-element";
 import compraModal from '../compraModal.vue';
 import ptLang from '../../data/ptlang';
 import Loading from '../Loading.vue';
+import axios from 'axios';
 
 let TRoteiro 
 const traducao = ref(ptLang)
@@ -409,6 +410,37 @@ const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 const isLoading = ref(false)
 const locationData = ref(null)
+
+const reloadSaldo= async () =>{
+    const userLocale = navigator.language
+    let objUser = {
+            email: user.value.email ? user.value.email : user.value.Email,
+            name: user.value.name,
+            birthday: user.value.birthday,
+            gender: user.value.gender,
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:user.value.ip_origem,
+            pagina:'Roteiros',
+        };
+        const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+        const LocalStorageUser = {
+                Email: user.value.Email,
+                name: user.value.name,
+                photo: user.value.photo,
+                MetodoAutenticacao: user.value.MetodoAutenticacao,
+                birthday: user.value.birthday,
+                gender: user.value.gender,
+                ip_origem: user.value.ip_origem,
+                email: user.value.email,
+                currency_data:responseUser.data.currency_data,
+                saldouser: responseUser.data.saldouser,
+                vlrpdf: user.value.vlrpdf,
+                vlrpesquisa: user.value.vlrpesquisa,
+                iduser: user.value.iduser,
+            };
+    console.log(LocalStorageUser)
+    localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+}
 
 function saveIdAgent(){
     localStorage.setItem('idAgent_start', idAgent_start.value);
