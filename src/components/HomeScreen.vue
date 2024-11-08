@@ -458,11 +458,14 @@
           </div>
           </div>
           <div class="col-start-12 d-flex">
-            <div class="pl-4 pb-6" style="width:100%" v-show="starValue != null">
+            <div class="pl-4 pb-1" style="width:100%" v-show="starValue != null">
               <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" :placeholder="traducao.PlaceHolder3" :disabled="disabledRating==true"></textarea>
             </div>
-            
+
           </div>
+          <div class="mx-auto">
+                    {{ whyCardComentario.length }}/35
+                </div>
           </div>
       </div>
     </div>
@@ -527,7 +530,7 @@
     <v-dialog v-model="dialogConfirm" max-width="500px">
       <v-card>
         <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
-        <v-card-text>{{ traducao.PremiumService1 }} {{ dialogPesqPdf == 'pesquisa' ? user.vlrpesquisa : user.vlrpdf }} {{ traducao.PremiumService2 }}</v-card-text>
+        <v-card-text>{{ traducao.PremiumService1 }} {{ dialogPesqPdf == 'pesquisa' ? parseInt(user.vlrpesquisa) : parseInt(user.vlrpdf) }} {{ traducao.PremiumService2 }}</v-card-text>
         <div class="flex justify-center">
         </div>
         <v-card-actions>
@@ -988,6 +991,7 @@ const postRoteiro=async () =>{
     } catch (error) {
       console.log('error in postRoteiro:',error)
       alert('Erro ao Gerar Roteiro')
+      isLoading.value = false; 
     }
     finally {
       isLoading.value = false; 

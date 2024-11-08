@@ -73,6 +73,9 @@
                 <div class="flex justify-center items-center w-[85%] mx-auto">
                     <input type="text" class="form-control" :placeholder="traducao.PlaceHolder4" v-model="motivoEx">
                 </div>
+                <div class="mx-auto">
+                    {{ motivoEx.length }}/50
+                </div>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="[#78c0d6]" text @click="sendEx">OK</v-btn>
