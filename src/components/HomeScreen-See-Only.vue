@@ -38,7 +38,7 @@
           </div>
           <button disabled v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
               <div v-show="showDestino">
-                <input ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
+                <input disabled ref="inputDestino" id="autocompleteD" type="text" placeholder="Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
               </div>
         </div>
       </div>
@@ -580,6 +580,7 @@
   let location3;
   let location4;
   let lang = null;
+  let TRoteiro
 
   const closeModal=()=>{
     showModal.value=false
@@ -594,6 +595,19 @@
         hospedagemSelecionada.value = null; 
       }
   }
+  const getTraducao = async () => {
+    isLoading.value=true
+    try {
+    TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
+    traducao.value=TRoteiro.Roteiros
+    interesses.value=traducao.value.ListInteresses
+    lugares.value=traducao.value.lugares
+    isLoading.value=false
+    } catch (error) {
+      console.log(error)
+      isLoading.value=false
+    }
+  }
   const getdata = () =>{
       decodedData.value = JSON.parse(localStorage.getItem('roteiroSee'));
       hospedagemSelecionada.value=decodedData.value.tipo_hospedage
@@ -603,7 +617,7 @@
       selectedInteresses=decodedData.value.interesses
       date.value=decodedData.value.data_inicio
       periodo_viagem.value=decodedData.value.dias
-      inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
+      inChecked.value = interesses.value? interesses.value.map(interest => selectedInteresses.includes(interest)) : "";
       console.log('Received Data:', decodedData.value);
       console.log('Received Data interesses:', selectedInteresses);
       showOrigem.value=false
@@ -697,6 +711,7 @@
   
   document.getElementById("autocompleteO").focus();
   getdata();
+  getTraducao()
   console.log("tradcaga", traducao.value)
 });
 
