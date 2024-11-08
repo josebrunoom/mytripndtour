@@ -229,7 +229,7 @@
               <span class=" text-black" style="font-size: 1.3rem;">
                 {{ place }};
             </span>
-            <button disabled @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+           <!--  <button disabled @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button> -->
             </div>
           </div>
               <div>
@@ -319,7 +319,7 @@
               <span class=" text-black place-item">
                 {{ place }};
             </span>
-            <button disabled @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+           <!--  <button disabled @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button> -->
             </div>
           </div>
         </div>
@@ -351,7 +351,7 @@
               <span class=" text-black place-item">
                 {{ place }};
             </span>
-            <button disabled @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+           <!--  <button disabled @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button> -->
             </div>
           </div>
         </div>
@@ -601,7 +601,7 @@
     TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
     traducao.value=TRoteiro.Roteiros
     interesses.value=traducao.value.ListInteresses
-    lugares.value=traducao.value.lugares
+    lugares=traducao.value.lugares
     isLoading.value=false
     } catch (error) {
       console.log(error)
@@ -611,9 +611,9 @@
   const getdata = () =>{
       decodedData.value = JSON.parse(localStorage.getItem('roteiroSee'));
       hospedagemSelecionada.value=decodedData.value.tipo_hospedage
-      lugaresDestinosFullNames.value=[decodedData.value.destino]
+      lugaresDestinosFullNames.value=[decodedData.value.destino.replace(/'/g, '')]
       Destinos=decodedData.value.destino
-      DestinoCity.value=decodedData.value.destino.split("', '")[0] + "'";
+      DestinoCity.value = decodedData.value.destino.replace(/'/g, '').split(",")[0].trim();
       selectedInteresses=decodedData.value.interesses
       date.value=decodedData.value.data_inicio
       periodo_viagem.value=decodedData.value.dias
@@ -627,89 +627,13 @@
       numChildren.value=decodedData.value.qtd_menores
       childAges.value=decodedData.value.idade_menores.replace(/[{}/]/g, '')
       childAges.value=childAges.value.split(',').map(Number);
-      lugaresConhecerFullNames.value=[decodedData.value.quero_conhecer]
-      lugaresNaoIrFullNames.value=decodedData.value.nao_incluir.replace(/[{}/]/g, '')
-      lugaresNaoIrFullNames.value=lugaresNaoIrFullNames.value.split(',').map(item => item.trim())
+      lugaresConhecerFullNames.value.length>4 ? lugaresConhecerFullNames.value=[decodedData.value.quero_conhecer.replace(/'/g, '')] : lugaresConhecerFullNames.value= null
+      lugaresNaoIrFullNames.value ? lugaresNaoIrFullNames.value=decodedData.value.nao_incluir.replace(/[{}/]/g, '') : lugaresNaoIrFullNames.value=null
+      lugaresNaoIrFullNames.value ? lugaresNaoIrFullNames.value=lugaresNaoIrFullNames.value.split(',').map(item => item.trim()) : lugaresNaoIrFullNames.value=null
       roteiroData.Roteiro=decodedData.value.txt_roteiro
   }
 
   onMounted(() => {
-    
-  const initAutocomplete = (elementId, types) => {
-    const input = document.getElementById(elementId);
-    const autocomplete = new google.maps.places.Autocomplete(input, { types });
-
-    autocomplete.addListener('place_changed', () => {
-
-      const place = autocomplete.getPlace();
-      if (!place.geometry) {
-      console.log('No details available for input: ' + input.value);
-      return;
-    }
-      console.log(place.name); // Handle the place name as needed
-      console.log(place)
-
-      if(elementId=='autocompleteQ'){
-        if(lugaresConhecerFullNames.value.length+1>5){
-          alert('O número máximo de lugares é 5')
-        } else{
-          lugaresConhecerFullNames.value.push(document.getElementById('autocompleteQ').value)
-          console.log(lugaresConhecerFullNames.value)
-          lugar_Conhecer.push(place.name)
-        }
-      }
-      if(elementId=='autocompleteN'){
-        if(lugaresNaoIrFullNames.value.length+1>5){
-          alert('O número máximo de lugares é 5')
-        } else {
-          lugaresNaoIrFullNames.value.push(document.getElementById('autocompleteN').value)
-          console.log(lugaresNaoIrFullNames.value)
-          lugar_nIr.push(place.name)
-        }
-      }
-      if(elementId=='autocompleteO'){
-        console.log("a", place);
-        Origem=place.formatted_address
-        OrigemCity.value=place.name
-        showOrigem.value=false
-      }
-      if(elementId=='autocompleteD'){
-        console.log("b");
-        if(lugaresDestinosFullNames.value.length+1>1){
-          showDestino.value=true;
-          alert('O número máximo de lugares no serviço grátis é 1')
-        }else{
-          console.log("c");
-          Destinos.push(place.formatted_address)
-          DestinoCity.value=place.name
-          console.log(DestinoCity.value)
-          //lugaresDestinosFullNames.value.push(place.name)
-          showDestino.value=false
-        }
-      }
-      if(elementId=='autocompleteDMult'){
-        console.log("b");
-        if(lugaresDestinosFullNames.value.length+1>5){
-          //showDestino.value=true;
-          alert('O número máximo de lugares é 5')
-        }else{
-          console.log("c");
-          Destinos.push(place.formatted_address)
-          //DestinoCity.value=place.formatted_address
-          lugaresDestinosFullNames.value.push(place.name)
-          //showDestino.value=true
-        }
-      }
-    });
-  };
-  console.log(user)
-  initAutocomplete('autocompleteQ', ['point_of_interest', 'country', 'continent','locality']);
-  initAutocomplete('autocompleteN', ['point_of_interest', 'country', 'continent','locality']);
-  initAutocomplete('autocompleteO', ['(cities)']);
-  initAutocomplete('autocompleteD', ['locality', 'country', 'continent']);
-  initAutocomplete('autocompleteDMult', ['locality', 'country', 'continent']);
-  
-  document.getElementById("autocompleteO").focus();
   getdata();
   getTraducao()
   console.log("tradcaga", traducao.value)
