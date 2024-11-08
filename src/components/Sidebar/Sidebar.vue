@@ -412,7 +412,8 @@ const isLoading = ref(false)
 const locationData = ref(null)
 
 const reloadSaldo= async () =>{
-    const userLocale = navigator.language
+    try {
+        const userLocale = navigator.language
     let objUser = {
             email: user.value.email ? user.value.email : user.value.Email,
             name: user.value.name,
@@ -440,6 +441,11 @@ const reloadSaldo= async () =>{
             };
     console.log(LocalStorageUser)
     localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+    alert('Saldo atualizado')
+    } catch (error) {
+        console.log(error)
+        alert('Erro ao atualizar Saldo')
+    }
 }
 
 function saveIdAgent(){
