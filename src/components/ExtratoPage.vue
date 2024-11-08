@@ -198,6 +198,22 @@
                 }
                 console.log(obj)
                 const response = await axios.post('https://usercredits-667280034337.us-central1.run.app/insert_cc', obj)
+                const LocalStorageUser = {
+                    Email: user.value.Email,
+                    name: user.value.name,
+                    photo: user.value.photo,
+                    MetodoAutenticacao: user.value.MetodoAutenticacao,
+                    birthday: user.value.birthday,
+                    gender: user.value.gender,
+                    ip_origem: user.value.ip_origem,
+                    email: user.value.email,
+                    saldouser: response.data.novo_saldo ?? user.saldouser,
+                    vlrpdf: user.value.vlrpdf,
+                    vlrpesquisa: user.value.vlrpesquisa,
+                    iduser: user.value.iduser,
+                    currency_data:user.value.currency_data
+                };
+                localStorage.setItem('user', JSON.stringify(LocalStorageUser));
                 await getExtrato()
                 dialogEx.value=false
                 motivoEx.value=''
