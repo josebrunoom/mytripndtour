@@ -94,14 +94,14 @@
     });
 
     const getTraducao = async () => {
-        isLoading.value=true
+        
         try {
         let TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
         traducao.value=TRoteiro.ListRotero
-        isLoading.value=false
+        
         } catch (error) {
             console.log('getTraducao',error)
-            isLoading.value=false
+            
         }
     }
     
@@ -110,7 +110,7 @@
         tpacao: "S",
         iduser: user.value.iduser
         };
-        
+        isLoading.value = true;
         try {
         const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', obj);
         Roteiros.value = response.data.result;
