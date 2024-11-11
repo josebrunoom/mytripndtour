@@ -225,7 +225,7 @@
              
             </div>
             <div class="selected-placesDestino">
-            <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+            <div v-for="(place, index) in lugaresDestinosFullNames.slice(1)" :key="index">
               <span class=" text-black" style="font-size: 1.3rem;">
                 {{ place }};
             </span>
@@ -316,7 +316,7 @@
           <input disabled id="autocompleteQ" type="text" placeholder="Informe o local" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
           <div class="selected-places mt-2">
             <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
-              <span class=" text-black place-item">
+              <span class="fw-bold float-start place-item" style="font-size:1.8rem">
                 {{ place }};
             </span>
            <!--  <button disabled @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button> -->
@@ -610,7 +610,7 @@
   }
   const getdata = () =>{
       decodedData.value = JSON.parse(localStorage.getItem('roteiroSee'));
-      hospedagemSelecionada.value=decodedData.value.tipo_hospedage
+      hospedagemSelecionada.value=decodedData.value.tipo_hospedagem
       lugaresDestinosFullNames.value=[decodedData.value.destino.replace(/'/g, '')]
       Destinos=decodedData.value.destino
       DestinoCity.value = decodedData.value.destino.replace(/'/g, '').split(",")[0].trim();
@@ -619,7 +619,7 @@
       periodo_viagem.value=decodedData.value.dias
       inChecked.value = interesses.value? interesses.value.map(interest => selectedInteresses.includes(interest)) : "";
       console.log('Received Data:', decodedData.value);
-      console.log('Received Data interesses:', selectedInteresses);
+      console.log('Received Data interesses:', lugaresDestinosFullNames);
       showOrigem.value=false
       showDestino.value=false
       OrigemCity.value=decodedData.value.origem
