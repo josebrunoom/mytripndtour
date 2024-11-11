@@ -23,7 +23,7 @@
             <template v-slot:item="slotProps">
                 <tr>
                     <td>{{ formatarData(slotProps.item.dthcreate) }}</td>
-                    <td>{{ slotProps.item.vlroperacao }}</td>
+                    <td>{{ slotProps.item.vlroperacao }} {{ slotProps.item.currency_code }}</td>
                     <td>{{ slotProps.item.crdoperacao }}</td>
                     <td>{{ slotProps.item.descricao }}</td>
                     <td :class="{'text-red-500': slotProps.item.tpoperacao == 'D', 'text-[#27b3cc]': slotProps.item.tpoperacao !== 'D' }">{{ slotProps.item.tpoperacao == 'D' ? traducao.Debito : traducao.Credito }}</td>
