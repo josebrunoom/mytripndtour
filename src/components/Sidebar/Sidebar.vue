@@ -57,7 +57,7 @@
                     @click=""
                     >
                     <i class="fa-solid fa-list"></i>
-                    Histórico de Roteiros
+                    {{ traducao.HRot }}
                     </button>
                 </div>
                 <div v-else>
@@ -67,7 +67,7 @@
                     @click="goTo('lista')"
                     >
                     <i class="fa-solid fa-list"></i>
-                    Histórico de Roteiros
+                    {{ traducao.HRot }}
                     </button>
                 </div>
             </div>  
@@ -79,7 +79,7 @@
                     @click=""
                     >
                     <i class="fa-solid fa-list"></i>
-                    Extrato
+                    {{traducao.Extrato}}
                     </button>
                 </div>
                 <div v-else>
@@ -89,7 +89,7 @@
                     @click="goTo('extrato')"
                     >
                     <i class="fa-solid fa-list"></i>
-                    Extrato
+                    {{traducao.Extrato}}
                     </button>
                 </div>
             </div>  
@@ -100,7 +100,7 @@
                     @click="openModal"
                 >
                 <i class="fas fa-wallet"></i>
-                Comprar créditos
+                {{ traducao.AddCred }}
                 </button>
             </div>
             <!-- <div class="col-12 pb-3">
@@ -223,7 +223,7 @@
                     @click=""
                     >
                     <i class="fa-solid fa-list"></i>
-                    Histórico de Roteiros
+                    {{ traducao.HRot }}
                     </button>
                 </div>
                 <div v-else>
@@ -233,7 +233,7 @@
                     @click="goTo('lista')"
                     >
                     <i class="fa-solid fa-list"></i>
-                    Histórico de Roteiros
+                    {{ traducao.HRot }}
                     </button>
                 </div>
             </div> 
@@ -245,7 +245,7 @@
                     @click=""
                     >
                     <i class="fa-solid fa-list"></i>
-                    Extrato
+                    {{traducao.Extrato}}
                     </button>
                 </div>
                 <div v-else>
@@ -255,7 +255,7 @@
                     @click="goTo('extrato')"
                     >
                     <i class="fa-solid fa-list"></i>
-                    Extrato
+                    {{traducao.Extrato}}
                     </button>
                 </div>
             </div>  
@@ -266,7 +266,7 @@
                     @click="openModal"
                 >
                 <i class="fas fa-wallet"></i>
-                Comprar créditos
+                {{ traducao.AddCred }}
                 </button>
             </div>
             <!-- <div class="col-12 pb-3">

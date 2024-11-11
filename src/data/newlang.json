@@ -108,7 +108,9 @@
         "ChangeButton":"selecione a moeda antes de confirmar a transação!",
         "ValEm":"Valor em",
         "Mpreferida":"Selecione a Moeda preferida",
-        "AddCred":"Adicionar Créditos"
+        "AddCred":"Adicionar Créditos",
+        "HRot":"Histórico de Roteiros",
+        "Extrato":"Extrato"
         },
         "Perfil": {
         "MeuPerfil": "Meu Perfil",
