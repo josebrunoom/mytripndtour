@@ -483,6 +483,9 @@ onMounted(async () => {
     clearInterval(intervalId);
     });
     await getTraducao()
+    if(localStorage.getItem('lang')==null){
+        localStorage.setItem('lang', navigator.language)
+    }
 })
 const saveLocation = async () => {
     try {
@@ -573,21 +576,28 @@ function saveisdevprod(){
     localStorage.setItem('isDev', optDev.value)
 }
 const Translate = async (lang, langName) => {
+    const userinfo = JSON.parse(localStorage.getItem('user'))
     try {
         localStorage.setItem('lang', lang);
         localStorage.setItem('langName', langName);
         languageName.value=langName
-/*         let objUser = {
-                email: user.email ? user.email : user.Email,
-                name: user.name,
-                birthday: user.birthday,
-                gender: user.gender,
-                sigla_idioma:lang.toUpperCase(),
-                pagina:'Roteiros',
-                ip_origem:user.ip_origem,
-            };
+        let objUser = {
+            email: userinfo.email,
+            name: userinfo.name,
+            birthday: userinfo.birthday,
+            gender: userinfo.gender,
+            sigla_idioma:lang,
+            ip_origem:userinfo.ip_origem,
+            pagina:'Roteiros',
+            city: userinfo.city,
+            region: userinfo.region,
+            country: userinfo.country,
+            loc: userinfo.loc,
+            postal: userinfo.postal,
+            timezone: userinfo.timezone,
+          };
             const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-        localStorage.setItem('Traducao', responseUser.data.traducao); */
+        localStorage.setItem('Traducao', responseUser.data.traducao);
         location.reload()
     } catch (error) {
         console.log(error)
