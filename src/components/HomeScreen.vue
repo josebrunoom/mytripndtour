@@ -222,7 +222,7 @@
                 <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
                 <div class="selected-placesDestino">
               <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-                  <span class=" text-black" style="font-size: 1.3rem;">
+                  <span class=" text-black fw-bold" style="font-size: 1.3rem;">
                     {{ place }};
                 </span>
                 <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
@@ -838,6 +838,7 @@ const postRoteiro=async () =>{
   isRoteiro.value=true
   starValue.value=null;
   whyCardComentario.value='';
+  const userLocale = navigator.language
   lang = localStorage.getItem('lang')
   isLoading.value=true
   const destinoString = Destinos.map(location => `'${location}'`).join(', ');
@@ -861,7 +862,7 @@ const postRoteiro=async () =>{
     nao_incluir: lugar_nIrString,
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
-    idioma: lang ? lang : "pt",
+    idioma: lang ? lang : userLocale,
     ip_origem: user.ip_origem
   }
   if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){
