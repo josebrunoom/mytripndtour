@@ -826,7 +826,7 @@ const formatAges = (index) => {
         if(!initialDateStr){
           dialog.value = true;
           isLoading.value = false; 
-          errMsg.value=traducao.ErrMsg4
+          errMsg.value=traducao.value.ErrMsg4
         } else {
           const initialDate = moment(initialDateStr);
           const formattedStartDate = initialDate.format('DD/MM/YYYY');
@@ -877,22 +877,22 @@ const postRoteiro=async () =>{
   if(!ObjRoteiro1.origem){
     dialog.value = true;
     isLoading.value = false; 
-    errMsg.value=traducao.ErrMsg1
+    errMsg.value=traducao.value.ErrMsg1
   }
   else if(!ObjRoteiro1.destino){
     dialog.value = true;
     isLoading.value = false;
-    errMsg.value=traducao.ErrMsg2
+    errMsg.value=traducao.value.ErrMsg2
   }
   else if(!ObjRoteiro1.dias){
     dialog.value = true;
     isLoading.value = false; 
-    errMsg.value=traducao.ErrMsg3
+    errMsg.value=traducao.value.ErrMsg3
   }
   else if(!ObjRoteiro1.qtd_adultos){
     dialog.value = true;
     isLoading.value = false; 
-    errMsg.value=traducao.ErrMsg4
+    errMsg.value=traducao.value.ErrMsg4
   }
   else{
     if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0){
@@ -1049,22 +1049,22 @@ const sendRating = async () =>{
     txt_comentario:whyCardComentario.value,
   }
   if(!starValue.value){
-    RatingText.value=traducao.RatinText1
+    RatingText.value=traducao.value.RatinText1
     dialogRating.value=true
   }else if(starValue.value<=3 && !whyCardComentario.value){
-    RatingText.value=traducao.RatinText2
+    RatingText.value=traducao.value.RatinText2
     dialogRating.value=true
   }else if(starValue.value<=3 && whyCardComentario.value.length<=35){
-    RatingText.value=traducao.RatinText3
+    RatingText.value=traducao.value.RatinText3
     dialogRating.value=true
   }else{
     isLoading.value=true
     const response = await axios.post('https://mtt-stars-667280034337.us-central1.run.app/', ObjRoteiro1)
     disabledRating.value=true
     if(starValue.value<=3){
-      RatingText.value=traducao.RatinText4
+      RatingText.value=traducao.value.RatinText4
     }else{
-      RatingText.value=traducao.RatinText5
+      RatingText.value=traducao.value.RatinText5
     }
     dialogRating.value=true
     isLoading.value=false
