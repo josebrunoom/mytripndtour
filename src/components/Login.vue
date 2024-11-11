@@ -336,7 +336,13 @@ const sendUser=async(user, userInfo, access_type)=>{
                 vlrpdf: response.data.vlrpdf,
                 vlrpesquisa: response.data.vlrpesquisa,
                 iduser: response.data.iduser,
-                currency_data:response.data.currency_data
+                currency_data:response.data.currency_data,
+                city: locationData.value.city ? locationData.value.city : '',
+                region: locationData.value.region ? locationData.value.region : '',
+                country: locationData.value.country ? locationData.value.country : '',
+                loc: locationData.value.loc ? locationData.value.loc : '',
+                postal: locationData.value.postal ? locationData.value.postal : '',
+                timezone: locationData.value.timezone ? locationData.value.timezone : '',
               };
               console.log(typeof response.data.traducao)
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
