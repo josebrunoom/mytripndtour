@@ -9,7 +9,7 @@
             </div>
             <div class="space-y-4">
                 <p class="text-lg">{{props.traducao.Escolha}}:</p>
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <button
                     v-for="(credit, index) in creditOptions"
                     :key="index"

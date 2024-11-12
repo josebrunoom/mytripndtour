@@ -299,8 +299,8 @@
         ></div>
         </div>
         <div class="w-full bg-[#faf8fd]"> 
-            <div style="height:5% !important;" class="bg-[#faf8fd]">
-            <div class="d-flex justify-content-between align-items-center mt-4 pr-16">
+            <div style="height:7% !important;" class="bg-[#faf8fd]">
+            <div class="d-flex justify-content-between align-items-center lg:mt-4 lg:pr-16">
                 <!-- Left-aligned button -->
                 <div class="d-flex">
                 <button 
@@ -326,7 +326,7 @@
 
                 <!-- Right-aligned content -->
                 <div class="d-flex align-items-center">
-                    <span class="fw-bold pr-5"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
+                    <span class="fw-bold pr-5 max-[500px]:text-sm"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} <!-- {{ traducao.Creditos }} --></span>
                 <div class="dropdown me-3">
                     <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-globe"></i> {{ languageName }}
@@ -595,7 +595,7 @@ const Translate = async (lang, langName) => {
             loc: userinfo.loc,
             postal: userinfo.postal,
             timezone: userinfo.timezone,
-          };
+        };
             const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
         localStorage.setItem('Traducao', responseUser.data.traducao);
         location.reload()
