@@ -210,7 +210,7 @@
       <div class="col-12 col-md-12 mb-4">
         <div class="p-4 rounded-lg shadow-md h-24 w-full" style="background-color: #ffff;">
           <div class="d-flex  position-relative">
-            <h2 class="h4 fw-bold pt-1">
+            <h2 class="sm:h4 fw-bold pt-1 text-base">
                 {{ traducao.MultDestinos  }}
                 <i 
                   class="bi bi-question-circle-fill mb-2 pl-1"
@@ -232,8 +232,8 @@
             
         </div>
       </div>
-    <div class="row mb-4 col-12">
-      <div class="col-12 col-md-4 mb-md-0">
+    <div class="row mb-4">
+      <div class="col-12 col-md-4 mb-md-0 max-[500px]:mb-4">
         <div class="p-3 bg-white" style="border-radius: 8px;">
           <div class="d-flex align-items-center justify-content-center position-relative" >
             <h2 class="h5 fw-bold ">{{ traducao.Hospedagem }}</h2>
@@ -283,7 +283,7 @@
         </div>
       </div> -->
       
-      <div class="col-12 col-md-4  mb-md-0">
+      <div class="col-12 col-md-4  mb-md-0 max-[500px]:mb-4">
         <div class="bg-white p-3 rounded-lg">
           <div class="d-flex align-items-center justify-content-center position-relative">
             <h2 class="h5 fw-bold ">{{ traducao.QConhecer }}</h2>
@@ -991,7 +991,7 @@ const postRoteiro=async () =>{
       }
     } catch (error) {
       console.log('error in postRoteiro:',error)
-      alert('Erro ao Gerar Roteiro')
+      alert(traducao.value.ErrRoteiro)
       isLoading.value = false; 
     }
     finally {
