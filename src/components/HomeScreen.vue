@@ -1,6 +1,9 @@
 <template>
   <div  class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
-    <div>  <!-- começo Free -->
+    <div class="p-3 bg-[#d9e9e0] w-full h-full rounded-lg mb-2">  <!-- começo Free -->
+      <div class="flex justify-start items-start">
+          <span class="h5 text-left"><b>{{traducao.Free}}</b></span> 
+        </div>
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
         <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
@@ -203,7 +206,7 @@
     <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>{{ traducao.Premium }}</b> <i style="font-style: italic;
+          <span class="h5 text-left"><b>{{ traducao.Premium }} <!-- (-1 crédito) --></b> <i style="font-style: italic;
     font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
 
@@ -381,7 +384,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" >
-        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }} </button>
+        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }} <!-- <i>(-10 créditos)</i> --> </button>
       </div>
       
     </div>
@@ -694,7 +697,7 @@
           alert('O número máximo de lugares no serviço grátis é 1')
         }else{
           console.log("c");
-          Destinos.push(place.formatted_address)
+          Destinos[0]=(place.formatted_address)
           DestinoCity.value=place.name
           console.log(DestinoCity.value)
           //lugaresDestinosFullNames.value.push(place.name)
@@ -1116,9 +1119,9 @@ const customFormat = (date) => {
       numChildren.value = 0;
       childAges.value = [];
       currentIndex.value = 0;
-      showOrigem.value = true;
+      //showOrigem.value = true;
       showDestino.value = true;
-      OrigemCity.value = null;
+      //OrigemCity.value = null;
       DestinoCity.value = null;
       lugaresConhecerFullNames.value = [];
       lugaresNaoIrFullNames.value = [];
