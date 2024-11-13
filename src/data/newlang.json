@@ -9,7 +9,7 @@
         "Adultos": "Adultos e",
         "Menores": "Menores",
         "CidadesDe": "com idades de",
-        "Premium": "Premium",
+        "Premium": "Premium (-1 crédito)",
         "Opcional": "(Opcional)",
         "Hospedagem": "Hospedagem",
         "lugares": [
@@ -19,6 +19,7 @@
             "Resorts",
             "Só pra dormir (3★)"
         ],
+        "Free":"Free",
         "QConhecer": "Quero Conhecer",
         "NaoPrecisa": "Não precisa incluir",
         "Interesses": "Interesses",
@@ -62,7 +63,7 @@
         "Enviar": "Enviar",
         "ComoFoi": "Como foi o roteiro gerado?",
         "Criticas": "Críticas e/ou Elogios são sempre muito bem vindos!",
-        "GerarPDF": "Gerar PDF e Armazenar",
+        "GerarPDF": "Gerar PDF e Armazenar <i>(-10 créditos)</i> ",
         "Nao": "Não",
         "Sim": "Sim",
         "SelectOrigem": "Selecione a Origem",
