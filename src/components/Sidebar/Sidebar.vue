@@ -332,9 +332,9 @@
                     <i class="fa-solid fa-globe"></i> {{ languageName }}
                     </button>
                     <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
-                    <li v-for="(langName, langCode) in languages" :key="langCode">
-                        <a class="dropdown-item" href="#" @click.prevent="Translate(langCode, langName)">
-                        {{ langName }}
+                    <li v-for="(lang) in languages" :key="lang.sigla_idioma">
+                        <a class="dropdown-item" href="#" @click.prevent="Translate(lang.sigla_idioma, lang.nome_idioma)">
+                        {{ lang.nome_idioma }}
                         </a>
                     </li>
                     </div>
@@ -383,7 +383,7 @@
 import { ref, onMounted,watchEffect, onUnmounted  } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import router from '../../routes';
-import languages from '../../data/lang';
+//import languages from '../../data/lang';
 import "@google-pay/button-element";
 import compraModal from '../compraModal.vue';
 import ptLang from '../../data/ptlang';
@@ -410,6 +410,7 @@ const language = ref(localStorage.getItem('lang') || 'pt');
 const languageName = ref(localStorage.getItem('langName') || 'Português');
 const isLoading = ref(false)
 const locationData = ref(null)
+const languages = JSON.parse(localStorage.getItem('languages'))
 
 const reloadSaldo= async () =>{
     try {
