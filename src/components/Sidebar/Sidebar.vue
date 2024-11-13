@@ -326,7 +326,7 @@
 
                 <!-- Right-aligned content -->
                 <div class="d-flex align-items-center">
-                    <span class="fw-bold pr-5 max-[500px]:text-sm"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} <!-- {{ traducao.Creditos }} --></span>
+                    <span class="fw-bold pr-5 max-[500px]:text-sm"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
                 <div class="dropdown me-3">
                     <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-globe"></i> {{ languageName }}
@@ -412,6 +412,27 @@ const isLoading = ref(false)
 const locationData = ref(null)
 const languages = JSON.parse(localStorage.getItem('languages'))
 
+onMounted(async () => {
+    name.value=user.value.Nome
+    img.value=user.value.photo
+    saldo.value=user.value.saldouser
+    if(user.value.email.includes('cezarsantos') || user.value.Email.includes('cezarsantos') || user.value.email.includes('luisalbergoni717')){
+        isAdmin.value=true
+    }
+    const intervalId = setInterval(checkUserSaldo, 1000);
+    onUnmounted(() => {
+    clearInterval(intervalId);
+    });
+    await getTraducao()
+    if(localStorage.getItem('lang')==null){
+        localStorage.setItem('lang', navigator.language)
+    }
+    if(languageName.value.includes(localStorage.getItem('lang'))){
+        const find = languages.find(obj => obj.sigla_idioma === languageName.value)
+        languageName.value=find.nome_idioma
+    }
+})
+
 const reloadSaldo= async () =>{
     try {
         const userLocale = navigator.language
@@ -466,28 +487,7 @@ const openModal = () =>{
 const closeModal=()=>{
     showModal.value=false
 }
-const changeLanguage = (langCode, langName) => {
-    document.cookie = `googtrans=; path=/; domain=${location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-    document.cookie = `googtrans=/pt/${langCode}; path=/; domain=${location.hostname}`;
-    savelang(langCode, langName);
-    window.location.reload(true); 
-};
-onMounted(async () => {
-    name.value=user.value.Nome
-    img.value=user.value.photo
-    saldo.value=user.value.saldouser
-    if(user.value.email.includes('cezarsantos') || user.value.Email.includes('cezarsantos') || user.value.email.includes('luisalbergoni717')){
-        isAdmin.value=true
-    }
-    const intervalId = setInterval(checkUserSaldo, 1000);
-    onUnmounted(() => {
-    clearInterval(intervalId);
-    });
-    await getTraducao()
-    if(localStorage.getItem('lang')==null){
-        localStorage.setItem('lang', navigator.language)
-    }
-})
+
 const saveLocation = async () => {
     try {
         const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
@@ -599,6 +599,7 @@ const Translate = async (lang, langName) => {
         };
             const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
         localStorage.setItem('Traducao', responseUser.data.traducao);
+        localStorage.setItem('languages', JSON.stringify(responseUser.data.languages));
         location.reload()
     } catch (error) {
         console.log(error)
