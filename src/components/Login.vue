@@ -262,6 +262,7 @@ const processUserInfo = async (userInfo) => {
       const userGender = userInfo.genders ? userInfo.genders[0].value : null;
       const userLocale = navigator.language
       const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      localStorage.setItem('lang', userLocale.toUpperCase());
       localStorage.setItem('langName', userLocale.toUpperCase());
       await saveLocation()
       //locationData.value ? console.log(locationData.value) : locationData.value=data
@@ -314,6 +315,7 @@ const sendUser=async(user, userInfo, access_type)=>{
               vlrpesquisa: response.data.vlrpesquisa,
               iduser: response.data.iduser,
             };
+      
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       localStorage.setItem('Traducao', response.data.traducao);
     } else if(access_type=='google'){
@@ -345,6 +347,7 @@ const sendUser=async(user, userInfo, access_type)=>{
                 timezone: locationData.value.timezone ? locationData.value.timezone : '',
               };
               console.log(typeof response.data.traducao)
+      localStorage.setItem('languages', JSON.stringify(response.data.languages));
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       localStorage.setItem('Traducao', response.data.traducao);
     }
