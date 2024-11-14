@@ -61,27 +61,21 @@
               v-tooltip.top="{ value: traducao.Tooltip3, escape: false }"
             ></i>
           </div>
-
-          <!-- Flexbox layout for the inputs -->
           <div class="d-flex flex-wrap align-items-center">
             <!-- Travel duration input -->
-            <div class="me-2" style="flex: 1 1 100px;">
+            <div class="me-2 " style="flex: 1 1">
               <input 
                 type="number" 
-                class="form-control form-control-sm" 
+                class="form-control w-5" 
                 placeholder="0" 
                 v-model="periodo_viagem"
                 min="0"
                 @change="transformDates(date, periodo_viagem)"
-                style="width: 100%; font-size: 0.9rem;"
+                style="font-size: 0.9rem;"
               />
             </div>
-            
-            <!-- Text next to duration input -->
             <div class="fw-bold me-2 textosDuracao">{{ traducao.Dias }}</div>
-
-            <!-- Date picker input -->
-            <div class="me-2" style="flex: 1 1 100px;">
+            <div class="me-2" style="">
               <VueDatePicker 
                 v-model="date"
                 locale="pt-BR"
@@ -95,11 +89,7 @@
                 class="small-datepicker"
               />
             </div>
-
-            <!-- Text next to date picker -->
             <div class="fw-bold me-2 textosDuracao">{{ traducao.retrn }}</div>
-
-            <!-- Final date display -->
             <div v-if="date && periodo_viagem">
               <span class="fw-bold">{{ FinalDate }}</span>
             </div>
@@ -206,7 +196,7 @@
     <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>{{ traducao.Premium }} <!-- (-1 crédito) --></b> <i style="font-style: italic;
+          <span class="h5 text-left"><b>{{ traducao.Premium }}  (-{{ user.vlrpesquisa }} {{ traducao.Creditos }})</b> <i style="font-style: italic;
     font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
 
@@ -384,7 +374,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" >
-        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }} <!-- <i>(-10 créditos)</i> --> </button>
+        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>(-{{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
       </div>
       
     </div>
@@ -610,6 +600,8 @@
   let resolveConfirm;
   const interesses = ref(null/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
   const user=JSON.parse(localStorage.getItem('user'));
+  const currentRoteiro = ref(null)
+  const currentPDF = ref(null)
   //let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
@@ -937,6 +929,10 @@ const postRoteiro=async () =>{
           idAgent_start: localStorage.getItem('idAgent_start'),
           idAgent_end: localStorage.getItem('idAgent_end')
         }
+        if(deepEqual(currentRoteiro.value,ObjRoteiroAdmin)){
+          console.log('equal')
+          return
+        }
         const response = await axios.post('https://mytripntour-dev-667280034337.us-central1.run.app/', ObjRoteiroAdmin)
       if(disabledRating.value==true){
         disabledRating.value=false;
@@ -960,31 +956,37 @@ const postRoteiro=async () =>{
                 iduser: user.iduser,
                 currency_data:user.currency_data
               };
+              currentRoteiro.value=ObjRoteiroAdmin //save the current roteiro
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }else{
+        if(deepEqual(currentRoteiro.value,ObjRoteiro1)){
+          console.log('equal')
+          return
+        }
         const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
-      if(disabledRating.value==true){
-        disabledRating.value=false;
-      }
-      localStorage.setItem('roteiro', JSON.stringify(response.data));
-      roteiroData.value.Roteiro=response.data
-      document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
-          const LocalStorageUser = {
-                Email: user.Email,
-                name: user.name,
-                photo: user.photo,
-                MetodoAutenticacao: user.MetodoAutenticacao,
-                birthday: user.birthday,
-                gender: user.gender,
-                ip_origem: user.ip_origem,
-                email: user.email,
-                saldouser: response.data.novo_saldo ?? user.saldouser,
-                vlrpdf: user.vlrpdf,
-                vlrpesquisa: user.vlrpesquisa,
-                iduser: user.iduser,
-                currency_data:user.currency_data
-              };
-      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+        if(disabledRating.value==true){
+          disabledRating.value=false;
+        }
+        localStorage.setItem('roteiro', JSON.stringify(response.data));
+        roteiroData.value.Roteiro=response.data
+        document.getElementById("autocompleteO").value = ObjRoteiro1.origem;
+            const LocalStorageUser = {
+                  Email: user.Email,
+                  name: user.name,
+                  photo: user.photo,
+                  MetodoAutenticacao: user.MetodoAutenticacao,
+                  birthday: user.birthday,
+                  gender: user.gender,
+                  ip_origem: user.ip_origem,
+                  email: user.email,
+                  saldouser: response.data.novo_saldo ?? user.saldouser,
+                  vlrpdf: user.vlrpdf,
+                  vlrpesquisa: user.vlrpesquisa,
+                  iduser: user.iduser,
+                  currency_data:user.currency_data
+                };
+        localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+        currentRoteiro.value=ObjRoteiro1 //save the current roteiro
       }
       await nextTick()
       if (pdfButton.value) {
@@ -1003,7 +1005,21 @@ const postRoteiro=async () =>{
     }
   }
 }
+function deepEqual(obj1, obj2) {
+  if (obj1 === obj2) return true; 
+  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) return false;
 
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (let key of keys1) {
+    if (!obj2.hasOwnProperty(key) || !deepEqual(obj1[key], obj2[key])) return false;
+  }
+
+  return true;
+}
 watch(
   () => roteiroData.value.Roteiro,
   async (newVal) => {
@@ -1183,6 +1199,11 @@ const customFormat = (date) => {
           tpacao: 'I',
           iduser: user.iduser,
         }
+        if(deepEqual(currentPDF,ObjRoteiro1)){
+          alert(traducao.ErrMsg9)
+          return
+          
+        }
         const element = document.getElementById('pdf-content'); 
         const opt = {
           margin:       1,
@@ -1209,13 +1230,13 @@ const customFormat = (date) => {
                     currency_data:user.currency_data
                   };
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-              
+          currentPDF.value=ObjRoteiro1    
           dialogPDF.value=false;
-          alert('Roteiro Salvo!')
+          alert(traducao.ErrMsg7)
         } catch (error) {
           console.log(error)
           dialogPDF.value=false
-          alert('Erro ao Salvar Roteiro')
+          alert(traducao.ErrMsg8)
         }
       }
 
