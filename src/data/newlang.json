@@ -9,7 +9,7 @@
         "Adultos": "Adultos e",
         "Menores": "Menores",
         "CidadesDe": "com idades de",
-        "Premium": "Premium (-1 crédito)",
+        "Premium": "Premium",
         "Opcional": "(Opcional)",
         "Hospedagem": "Hospedagem",
         "lugares": [
@@ -54,6 +54,7 @@
         "ErrMsg6":"Erro ao Mandar Avaliação",
         "ErrMsg7":"Roteiro Salvo",
         "ErrMsg8":"Erro ao Salvar Roteiro",
+        "ErrMsg9":"Mude os dados para salvar outro roteiro",
         "NameRoteiro": "Qual será o nome do Roteiro?",
         "Cancelar": "cancelar",
         "Adcionar": "Adicionar Créditos",
@@ -63,7 +64,7 @@
         "Enviar": "Enviar",
         "ComoFoi": "Como foi o roteiro gerado?",
         "Criticas": "Críticas e/ou Elogios são sempre muito bem vindos!",
-        "GerarPDF": "Gerar PDF e Armazenar <i>(-10 créditos)</i> ",
+        "GerarPDF": "Gerar PDF e Armazenar",
         "Nao": "Não",
         "Sim": "Sim",
         "SelectOrigem": "Selecione a Origem",
@@ -86,7 +87,8 @@
         "PlaceHolder1":"Idade",
         "PlaceHolder2":"Informe o local",
         "PlaceHolder3":"Quais as razões para essa avaliação?",
-        "PlaceHolder4":"Ex: Viagem"
+        "PlaceHolder4":"Ex: Viagem",
+        "Creditos":"Créditos"
         },
         "Sidebar": {
         "Roteiros": "Roteiros",
@@ -156,8 +158,8 @@
         "ExtratoPage": {
             "NExt":"Não existem Extrato",
             "Loading":"Carregando Extrato",
-            "Extorno":"Solicitar Extorno",
-            "MotExt":"Quais os Motivos para o Extorno?",
+            "Estorno":"Solicitar Estorno",
+            "MotExt":"Quais os Motivos para o Estorno?",
             "Mot50":"O motivo deve ser maior que 50 caracteres",
             "PedAv":"Seu pedido está sendo avaliado!",
             "Debito":"Débito",
