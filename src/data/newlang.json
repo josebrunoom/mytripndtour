@@ -88,14 +88,15 @@
         "PlaceHolder2":"Informe o local",
         "PlaceHolder3":"Quais as razões para essa avaliação?",
         "PlaceHolder4":"Ex: Viagem",
-        "Creditos":"Créditos"
+        "Creditos":"Créditos",
+        "CreditoSingular":"Crédito"
         },
         "Sidebar": {
         "Roteiros": "Roteiros",
         "Perfil": "Perfil",
         "Sair": "Sair",
         "Saldo": "Saldo",
-        "Creditos": "creditos",
+        "Creditos": "Créditos",
         "MeuPerfil": "Meu Perfil",
         "Nao": "Não",
         "Sim": "Sim",

@@ -196,7 +196,7 @@
     <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>{{ traducao.Premium }}  (-{{ user.vlrpesquisa }} {{ traducao.Creditos }})</b> <i style="font-style: italic;
+          <span class="h5 text-left"><b>{{ traducao.Premium }}  (-{{ user.vlrpesquisa }} {{ traducao.CreditoSingular }})</b> <i style="font-style: italic;
     font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
         </div>
 
