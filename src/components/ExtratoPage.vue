@@ -28,7 +28,7 @@
                     <td>{{ slotProps.item.descricao }}</td>
                     <td :class="{'text-red-500': slotProps.item.tpoperacao == 'D', 'text-[#27b3cc]': slotProps.item.tpoperacao !== 'D' }">{{ slotProps.item.tpoperacao == 'D' ? traducao.Debito : traducao.Credito }}</td>
                     <td  v-if="slotProps.item.tpoperacao == 'D' && slotProps.item.flgestornado==null" class="pl-4 ">
-                        <v-btn @click="OpenModal(slotProps.item)" color="red">{{traducao.Extorno}}</v-btn>
+                        <v-btn @click="OpenModal(slotProps.item)" color="red">{{traducao.Estorno}}</v-btn>
                     </td>
                 </tr>
             </template>
@@ -66,7 +66,7 @@
         </v-dialog>
         <v-dialog v-model="dialogEx" max-width="500px">
             <v-card>
-                <v-card-title class="headline">{{traducao.Extorno}}</v-card-title>
+                <v-card-title class="headline">{{traducao.Estorno}}</v-card-title>
                 <v-card-text>{{ traducao.MotExt }}</v-card-text>
                 <div class="flex justify-center">
                 </div>

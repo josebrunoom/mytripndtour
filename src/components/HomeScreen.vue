@@ -196,8 +196,8 @@
     <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>{{ traducao.Premium }}  (-{{ user.vlrpesquisa }} {{ traducao.CreditoSingular }})</b> <i style="font-style: italic;
-    font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> </span> 
+          <span class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
+            font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }}</b> </span> 
         </div>
 
       <div class="col-12 col-md-12 mb-4">
@@ -374,7 +374,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" >
-        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>(-{{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
+        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
       </div>
       
     </div>
@@ -453,11 +453,12 @@
           <div class="col-start-12 d-flex">
             <div class="pl-4 pb-1" style="width:100%" v-show="starValue != null">
               <textarea class="razoes_avalicao form-control" v-model="whyCardComentario" :placeholder="traducao.PlaceHolder3" :disabled="disabledRating==true"></textarea>
+              {{ whyCardComentario.length }}/35
             </div>
 
           </div>
           <div class="mx-auto">
-                    {{ whyCardComentario.length }}/35
+                    
                 </div>
           </div>
       </div>
@@ -889,6 +890,11 @@ const postRoteiro=async () =>{
     isLoading.value = false; 
     errMsg.value=traducao.value.ErrMsg4
   }
+  else if(!ObjRoteiro1.data_inicio){
+    dialog.value = true;
+    isLoading.value = false; 
+    errMsg.value=traducao.value.ErrMsg5
+  }
   else{
     if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0){
     let saldoValido = haveSaldo()
@@ -1232,11 +1238,11 @@ const customFormat = (date) => {
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           currentPDF.value=ObjRoteiro1    
           dialogPDF.value=false;
-          alert(traducao.ErrMsg7)
+          alert(traducao.value.ErrMsg7)
         } catch (error) {
           console.log(error)
           dialogPDF.value=false
-          alert(traducao.ErrMsg8)
+          alert(traducao.value.ErrMsg8)
         }
       }
 
@@ -1261,10 +1267,10 @@ const customFormat = (date) => {
         if (!confirmed) {
           return; 
         }else{
-          if(typeof user.saldouser === 'string' ? parseFloat(user.saldouser)<parseFloat(user.vlrpdf) : user.saldouser > user.vlrpdf){
+          if(parseFloat(user.saldouser) < parseFloat(user.vlrpdf)){
             dialogPDF.value=false
             dialogVlr.value=true
-            vlrModalText.value=traducao.value.VlrModal2
+            vlrModalText.value=traducao.value.VlrModal2 + "saldo user:" + parseFloat(user.saldouser) + " valor pdf:" + parseFloat(user.vlrpdf)
           }else{
             dialogPDF.value=true
           }

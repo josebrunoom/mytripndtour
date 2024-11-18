@@ -1,5 +1,5 @@
 <template>
-    <div class="h-screen w-screen flex fixed left-0">
+    <div class="h-screen w-screen flex fixed left-0" style="overflow: auto;">
         <div class="w-full hidden sm:block md:w-[500px] lg:w-[300px] h-full mt-4 ml-4">
             <div class="h-[calc(100vh-50px)] bg-[#ffff] rounded-lg">
                 <div class="flex justify-center mb-4 top-0">
@@ -298,7 +298,7 @@
         class="fixed inset-0 bg-black bg-opacity-50 z-40"
         ></div>
         </div>
-        <div class="w-full bg-[#faf8fd]"> 
+        <div class="w-full bg-[#faf8fd]" > 
             <div style="height:7% !important;" class="bg-[#faf8fd]">
             <div class="d-flex justify-content-between align-items-center lg:mt-4 lg:pr-16">
                 <!-- Left-aligned button -->
