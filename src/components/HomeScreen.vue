@@ -715,8 +715,8 @@
   initAutocomplete('autocompleteQ', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteN', ['point_of_interest', 'locality']);
   initAutocomplete('autocompleteO', ['(cities)']);
-  initAutocomplete('autocompleteD', ['locality', 'country']);
-  initAutocomplete('autocompleteDMult', ['locality', 'country']);
+  initAutocomplete('autocompleteD', ['(regions)']); 
+  initAutocomplete('autocompleteDMult', ['(regions)']);
   
   //document.getElementById("autocompleteO").focus();
   getdata();
