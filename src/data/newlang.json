@@ -89,7 +89,8 @@
         "PlaceHolder3":"Quais as razões para essa avaliação?",
         "PlaceHolder4":"Ex: Viagem",
         "Creditos":"Créditos",
-        "CreditoSingular":"Crédito"
+        "CreditoSingular":"Crédito",
+        "Custo":"Detalhamento de custos"
         },
         "Sidebar": {
         "Roteiros": "Roteiros",
