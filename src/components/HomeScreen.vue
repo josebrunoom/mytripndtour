@@ -202,9 +202,9 @@
         
         <div class="row mb-4">
           <div class="col-6 col-md-6">
-            <div class="p-4 rounded-lg shadow-md h-16 w-full" style="background-color: #ffff;">
+            <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
-                <h2 class="sm:h4 fw-bold pt-1 text-base">
+                <h2 class="sm:h4 mr-4 fw-bold pt-1 text-base">
                     {{ traducao.MultDestinos  }}
                     <i 
                       class="bi bi-question-circle-fill mb-2 pl-1"
@@ -213,7 +213,7 @@
                       v-tooltip.top="{ value: traducao.Tooltip9, escape: false }"
                     ></i>
                 </h2>
-                    <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                    <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 pt-1 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
                     <div class="selected-placesDestino">
                   <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
                       <span class=" text-black fw-bold" style="font-size: 1.3rem;">
@@ -227,9 +227,9 @@
             </div>
           </div>
           <div class="col-6 col-md-6">
-            <div class="p-4 rounded-lg shadow-md h-16 w-full" style="background-color: #ffff;">
+            <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
-                <input type="radio" name="custos_detalhe" value="custos_detalhe" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>Detalhamento de custos
+                <input type="radio" name="custos_detalhe" value="S" class="me-2" v-model="custos_detalhe" @click="toggleSelectCustos()"/>Detalhamento de custos
               </div>
             </div>
           </div>
@@ -585,6 +585,7 @@
   const inChecked = ref([])
   const meio_transporte = ref()
   const hospedagemSelecionada=ref()
+  const custos_detalhe=ref(null)
   const starValue=ref(null)
   const dialogLimpar=ref(false)
   const whyCardComentario=ref('')
@@ -644,6 +645,14 @@
         hospedagemSelecionada.value = null; 
       }
   }
+  const toggleSelectCustos = () => {
+  // Toggle the value of the radio button
+  if (custos_detalhe.value === 'S') {
+    custos_detalhe.value = null; // Uncheck by setting to null
+  } else {
+    custos_detalhe.value = 'S'; // Set the selected value
+  }
+};
   const getdata = () =>{
     const queryParams = new URLSearchParams(window.location.search);
     const receivedData = queryParams.get('data');
