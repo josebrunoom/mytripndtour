@@ -199,179 +199,188 @@
           <span class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
             font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }}</b> </span> 
         </div>
-
-      <div class="col-12 col-md-12 mb-4">
-        <div class="p-4 rounded-lg shadow-md h-24 w-full" style="background-color: #ffff;">
-          <div class="d-flex  position-relative">
-            <h2 class="sm:h4 fw-bold pt-1 text-base">
-                {{ traducao.MultDestinos  }}
-                <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip9, escape: false }"
-                ></i>
-            </h2>
-                <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
-                <div class="selected-placesDestino">
-              <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-                  <span class=" text-black fw-bold" style="font-size: 1.3rem;">
-                    {{ place }};
-                </span>
-                <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+        
+        <div class="row mb-4">
+          <div class="col-6 col-md-6">
+            <div class="p-4 rounded-lg shadow-md h-16 w-full" style="background-color: #ffff;">
+              <div class="d-flex  position-relative">
+                <h2 class="sm:h4 fw-bold pt-1 text-base">
+                    {{ traducao.MultDestinos  }}
+                    <i 
+                      class="bi bi-question-circle-fill mb-2 pl-1"
+                      data-toggle="tooltip" 
+                      data-placement="top"
+                      v-tooltip.top="{ value: traducao.Tooltip9, escape: false }"
+                    ></i>
+                </h2>
+                    <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                    <div class="selected-placesDestino">
+                  <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
+                      <span class=" text-black fw-bold" style="font-size: 1.3rem;">
+                        {{ place }};
+                    </span>
+                    <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+                
+            </div>
+          </div>
+          <div class="col-6 col-md-6">
+            <div class="p-4 rounded-lg shadow-md h-16 w-full" style="background-color: #ffff;">
+              <div class="d-flex  position-relative">
+                <input type="radio" name="custos_detalhe" value="custos_detalhe" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>Detalhamento de custos
               </div>
             </div>
           </div>
-            
         </div>
-      </div>
-    <div class="row mb-4">
-      <div class="col-12 col-md-4 mb-md-0 max-[500px]:mb-4">
-        <div class="p-3 bg-white" style="border-radius: 8px;">
-          <div class="d-flex align-items-center justify-content-center position-relative" >
-            <h2 class="h5 fw-bold ">{{ traducao.Hospedagem }}</h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip5, escape: false }"
-                ></i>
-          </div>
-          <div class="d-flex flex-wrap">
-            <div 
-            v-for="(modo, index) in lugares" 
-            :key="index" 
-            class="d-inline-flex mb-2 text-start 2xl:w-[33.33%] w-[50%] text-sm"
-            style=""
-          >
-            <label class="d-flex ml-2">
-              <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
-              <span>{{ modo }}</span>
-            </label>
-          </div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="col-12 col-md-4 mb-3 mb-md-0">
-        <div class="bg-white p-3 rounded-lg">
-          <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold mb-2">Quero Viajar de </h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  title="tooltip 1"
-                ></i>
-          </div>
-          <div 
-            v-for="(modo, index) in transporteOptions" 
-            :key="index" 
-            class="d-inline-flex mb-2"
-          >
-            <label class="d-flex ml-2">
-              <input type="radio" :name="transporteOptions" :value="modo" class="me-2" v-model="meio_transporte"/>
-              <span>{{ modo }}</span>
-            </label>
-          </div>
-        </div>
-      </div> -->
-      
-      <div class="col-12 col-md-4  mb-md-0 max-[500px]:mb-4">
-        <div class="bg-white p-3 rounded-lg">
-          <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">{{ traducao.QConhecer }}</h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip6, escape: false }"
-                ></i>
-                <div class="">
-                  <button>
-                  <!-- <i 
-                  class="fa fa-plus mb-2 pl-1 pb-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  title="adicionar item"
-                ></i> -->
-                </button>
-                </div>
-          </div>
-          <input id="autocompleteQ" type="text" :placeholder="traducao.PlaceHolder2" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
-          <div class="selected-places mt-2">
-            <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
-              <span class=" text-black place-item">
-                {{ place }};
-            </span>
-            <button @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+      <div class="row mb-4">
+        <div class="col-12 col-md-4 mb-md-0 max-[500px]:mb-4">
+          <div class="p-3 bg-white" style="border-radius: 8px;">
+            <div class="d-flex align-items-center justify-content-center position-relative" >
+              <h2 class="h5 fw-bold ">{{ traducao.Hospedagem }}</h2>
+              <i 
+                    class="bi bi-question-circle-fill mb-2 pl-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    v-tooltip.top="{ value: traducao.Tooltip5, escape: false }"
+                  ></i>
+            </div>
+            <div class="d-flex flex-wrap">
+              <div 
+              v-for="(modo, index) in lugares" 
+              :key="index" 
+              class="d-inline-flex mb-2 text-start 2xl:w-[33.33%] w-[50%] text-sm"
+              style=""
+            >
+              <label class="d-flex ml-2">
+                <input type="radio" :name="lugares" :value="modo" class="me-2" v-model="hospedagemSelecionada" @click="toggleSelect(modo)"/>
+                <span>{{ modo }}</span>
+              </label>
+            </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-md-4 mb-md-0">
-        <div class="bg-white p-3 rounded-lg">
-          <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">{{ traducao.NaoPrecisa }}</h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip7, escape: false }"
-                ></i>
-                <div class="">
-                  <button>
-                  <!-- <i 
-                  class="fa fa-plus mb-2 pl-1 pb-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  title="adicionar item"
-                ></i> -->
-                </button>
-                </div>
-          </div>
-          <input id="autocompleteN" type="text" :placeholder="traducao.PlaceHolder2" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
-          <div class="selected-places mt-2">
-            <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
-              <span class=" text-black place-item">
-                {{ place }};
-            </span>
-            <button @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+        <!-- <div class="col-12 col-md-4 mb-3 mb-md-0">
+          <div class="bg-white p-3 rounded-lg">
+            <div class="d-flex align-items-center justify-content-center position-relative">
+              <h2 class="h5 fw-bold mb-2">Quero Viajar de </h2>
+              <i 
+                    class="bi bi-question-circle-fill mb-2 pl-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    title="tooltip 1"
+                  ></i>
+            </div>
+            <div 
+              v-for="(modo, index) in transporteOptions" 
+              :key="index" 
+              class="d-inline-flex mb-2"
+            >
+              <label class="d-flex ml-2">
+                <input type="radio" :name="transporteOptions" :value="modo" class="me-2" v-model="meio_transporte"/>
+                <span>{{ modo }}</span>
+              </label>
             </div>
           </div>
-        </div>
-      </div> 
-      
-    </div>
-    <div class="col-12 col-md-12 pb-3" style="text-align:left">
-        <div class="bg-white p-3 rounded-lg">
-          <div class="d-flex align-items-center justify-content-center position-relative">
-            <h2 class="h5 fw-bold ">{{ traducao.Interesses }}</h2>
-            <i 
-                  class="bi bi-question-circle-fill mb-2 pl-1"
-                  data-toggle="tooltip" 
-                  data-placement="top"
-                  v-tooltip.top="{ value: traducao.Tooltip8, escape: false }"
-                ></i>
-          </div>
-          <div class="d-flex flex-wrap align-items-start">
-            <div 
-            v-for="(interest, index) in interesses" 
-            :key="index" 
-            class="d-inline-flex text-start mb-2 lg:w-[33.33%] md:w-[50%]"
-          >
-            <label class="d-flex align-items-center pl-3">
-              <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
-              :disabled="!canCheck && !inChecked[index]"
-              />
-              <span>{{ interest }}</span>
-            </label>
-          </div>
-          </div>
-        </div>
-        <!-- <div class="bg-white p-3">
-          <h2 class="h5 fw-bold mb-2">Moeda preferida</h2>
-          <VueSelect :options="Moedas" class="w-100"></VueSelect>
         </div> -->
+        
+        <div class="col-12 col-md-4  mb-md-0 max-[500px]:mb-4">
+          <div class="bg-white p-3 rounded-lg">
+            <div class="d-flex align-items-center justify-content-center position-relative">
+              <h2 class="h5 fw-bold ">{{ traducao.QConhecer }}</h2>
+              <i 
+                    class="bi bi-question-circle-fill mb-2 pl-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    v-tooltip.top="{ value: traducao.Tooltip6, escape: false }"
+                  ></i>
+                  <div class="">
+                    <button>
+                    <!-- <i 
+                    class="fa fa-plus mb-2 pl-1 pb-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    title="adicionar item"
+                  ></i> -->
+                  </button>
+                  </div>
+            </div>
+            <input id="autocompleteQ" type="text" :placeholder="traducao.PlaceHolder2" class="w-full h-10" v-model="location3" @change="handleSelect3()" style="padding-left: 10px; padding-right: 10px;">
+            <div class="selected-places mt-2">
+              <div v-for="(place, index) in lugaresConhecerFullNames" :key="index" class="d-flex mb-2 align-items-center">
+                <span class=" text-black place-item">
+                  {{ place }};
+              </span>
+              <button @click="removePlace(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 mb-md-0">
+          <div class="bg-white p-3 rounded-lg">
+            <div class="d-flex align-items-center justify-content-center position-relative">
+              <h2 class="h5 fw-bold ">{{ traducao.NaoPrecisa }}</h2>
+              <i 
+                    class="bi bi-question-circle-fill mb-2 pl-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    v-tooltip.top="{ value: traducao.Tooltip7, escape: false }"
+                  ></i>
+                  <div class="">
+                    <button>
+                    <!-- <i 
+                    class="fa fa-plus mb-2 pl-1 pb-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    title="adicionar item"
+                  ></i> -->
+                  </button>
+                  </div>
+            </div>
+            <input id="autocompleteN" type="text" :placeholder="traducao.PlaceHolder2" class="w-full h-10" v-model="location4" @change="handleSelect4()" style="padding-left: 10px; padding-right: 10px;">
+            <div class="selected-places mt-2">
+              <div v-for="(place, index) in lugaresNaoIrFullNames" :key="index" class="d-flex mb-2 align-items-center">
+                <span class=" text-black place-item">
+                  {{ place }};
+              </span>
+              <button @click="removePlaceNir(index)" class="btn  btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div> 
+        
+      </div>
+      <div class="col-12 col-md-12 pb-3" style="text-align:left">
+          <div class="bg-white p-3 rounded-lg">
+            <div class="d-flex align-items-center justify-content-center position-relative">
+              <h2 class="h5 fw-bold ">{{ traducao.Interesses }}</h2>
+              <i 
+                    class="bi bi-question-circle-fill mb-2 pl-1"
+                    data-toggle="tooltip" 
+                    data-placement="top"
+                    v-tooltip.top="{ value: traducao.Tooltip8, escape: false }"
+                  ></i>
+            </div>
+            <div class="d-flex flex-wrap align-items-start">
+              <div 
+              v-for="(interest, index) in interesses" 
+              :key="index" 
+              class="d-inline-flex text-start mb-2 lg:w-[33.33%] md:w-[50%]"
+            >
+              <label class="d-flex align-items-center pl-3">
+                <input type="checkbox" :name="interest" v-model="inChecked[index]" :value="interest" class="me-2 custom-checkbox" @input="pushInteresses($event,interest)"
+                :disabled="!canCheck && !inChecked[index]"
+                />
+                <span>{{ interest }}</span>
+              </label>
+            </div>
+            </div>
+          </div>
+          <!-- <div class="bg-white p-3">
+            <h2 class="h5 fw-bold mb-2">Moeda preferida</h2>
+            <VueSelect :options="Moedas" class="w-100"></VueSelect>
+          </div> -->
       </div>
       <div class="items-start text-start" >
         <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
