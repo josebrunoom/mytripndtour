@@ -204,10 +204,10 @@
           <div class="col-6 col-md-6">
             <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
-                <h2 class="sm:h4 mr-4 fw-bold pt-1 text-base">
+                <h2 class="sm:h4 mr-4 fw-bold mt-[0.7rem] text-base">
                     {{ traducao.MultDestinos  }}
                     <i 
-                      class="bi bi-question-circle-fill mb-2 pl-1"
+                      class="bi bi-question-circle-fill mb-2 mt-[0.7rem]"
                       data-toggle="tooltip" 
                       data-placement="top"
                       v-tooltip.top="{ value: traducao.Tooltip9, escape: false }"
@@ -229,7 +229,7 @@
           <div class="col-6 col-md-6">
             <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
-                <input type="radio" name="custos_detalhe" value="S" class="me-2" v-model="custos_detalhe" @click="toggleSelectCustos()"/>Detalhamento de custos
+                <input type="radio" name="custos_detalhe" value="S" class="me-2 mt-1" v-model="custos_detalhe" @click="toggleSelectCustos()"/>{{traducao.Custo}}
               </div>
             </div>
           </div>
@@ -877,7 +877,8 @@ const postRoteiro=async () =>{
     meio_transporte: meio_transporte.value == 'Meios Próprios (não gerar)' ? 'N' : meio_transporte.value,
     tipo_hospedagem:hospedagemSelecionada.value,
     idioma: lang ? lang : userLocale,
-    ip_origem: user.ip_origem
+    ip_origem: user.ip_origem,
+    custos_detalhe:custos_detalhe.value
   }
   if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){
 
@@ -951,7 +952,8 @@ const postRoteiro=async () =>{
           idioma: lang ? lang : "pt",
           ip_origem: user.ip_origem,
           idAgent_start: localStorage.getItem('idAgent_start'),
-          idAgent_end: localStorage.getItem('idAgent_end')
+          idAgent_end: localStorage.getItem('idAgent_end'),
+          custos_detalhe:custos_detalhe.value
         }
         if(deepEqual(currentRoteiro.value,ObjRoteiroAdmin)){
           console.log('equal')
