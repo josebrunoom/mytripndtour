@@ -229,7 +229,7 @@
           <div class="col-6 col-md-6">
             <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
-                <input type="radio" name="custos_detalhe" value="S" class="me-2 mt-1" v-model="custos_detalhe" @click="toggleSelectCustos()"/>{{traducao.Custo}}
+                <span class="mr-1"><b>{{traducao.Custo}}:</b></span> <span class="me-2 ">{{ traducao.DetalheCusto }}</span><input type="checkbox" name="custos_detalhe" class="me-2 mt-1" v-model="custos_detalhe" />
               </div>
             </div>
           </div>
@@ -585,7 +585,7 @@
   const inChecked = ref([])
   const meio_transporte = ref()
   const hospedagemSelecionada=ref()
-  const custos_detalhe=ref(null)
+  const custos_detalhe=ref(false)
   const starValue=ref(null)
   const dialogLimpar=ref(false)
   const whyCardComentario=ref('')
@@ -878,7 +878,7 @@ const postRoteiro=async () =>{
     tipo_hospedagem:hospedagemSelecionada.value,
     idioma: lang ? lang : userLocale,
     ip_origem: user.ip_origem,
-    custos_detalhe:custos_detalhe.value
+    custos_detalhe:custos_detalhe.value == false ? 'N' : 'S'
   }
   if(localStorage.getItem('idAgent_start') || localStorage.getItem('idAgent_end')){
 
