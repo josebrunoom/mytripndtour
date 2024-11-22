@@ -90,7 +90,8 @@
         "PlaceHolder4":"Ex: Viagem",
         "Creditos":"Créditos",
         "CreditoSingular":"Crédito",
-        "Custo":"Detalhamento de custos"
+        "Custo":"Custos",
+        "DetalheCusto":"Gerar estimativa de custo em detalhes"
         },
         "Sidebar": {
         "Roteiros": "Roteiros",
@@ -122,9 +123,9 @@
         "Nome": "Nome",
         "Aniversario": "Aniversário:",
         "Genero": "Gênero:",
-        "Masculino": "Masculino:",
-        "Feminino": "Feminino:",
-        "Outro": "Outro:",
+        "Masculino": "Masculino",
+        "Feminino": "Feminino",
+        "Outro": "Outro",
         "EditPerfil": "Editar Perfil",
         "ApagarPerfil": "Apagar Perfil",
         "ConfirmAcao": "Confirmar Ação",
