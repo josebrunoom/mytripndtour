@@ -7,6 +7,7 @@ import HelloWorld from "../components/HelloWorld.vue";
 import ListRoteiro from "../components/ListRoteiro.vue"
 import HomeScreenSeeOnly from "../components/HomeScreen-See-Only.vue";
 import ExtratoPage from "../components/ExtratoPage.vue";
+import Contato from "../components/Contato.vue";
 
 const routes = [
     {
@@ -47,6 +48,11 @@ const routes = [
                 path: "visualizacao",
                 name: "Visualizacao",
                 component: HomeScreenSeeOnly,
+            },
+            {
+                path: "contato",
+                name: "Contato",
+                component: Contato,
             },
         ]
     },
