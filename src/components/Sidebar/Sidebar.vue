@@ -28,6 +28,28 @@
                     </div>
             </div>
             <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='Contato'">
+                <button 
+                    type="button" 
+                    class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                >
+                    <i class="fa-regular fa-envelope"></i>
+                    Contato
+                </button>
+                </div>
+                <div v-else>
+                <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('contato')"
+                >
+                    <i class="fa-regular fa-envelope"></i>
+                    Contato
+                </button>
+                </div>
+            </div>
+            <div class="col-12 pb-3">
                 <div v-if="currentRouteName=='Perfil'">
                     <button 
                     type="button" 
@@ -212,6 +234,28 @@
                 >
                     <i class="fa-regular fa-user"></i>
                     {{ traducao.MeuPerfil }}
+                </button>
+                </div>
+            </div>
+            <div class="col-12 pb-3">
+                <div v-if="currentRouteName=='Contato'">
+                <button 
+                    type="button" 
+                    class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg w-36" 
+                    @click=""
+                >
+                <i class="fa-regular fa-envelope"></i>
+                    Contato
+                </button>
+                </div>
+                <div v-else>
+                <button 
+                    type="button" 
+                    class="me-2 text-black pl-2 pr-2 rounded-lg w-36" 
+                    @click="goTo('contato')"
+                >
+                <i class="fa-regular fa-envelope"></i>
+                    Contato
                 </button>
                 </div>
             </div>
