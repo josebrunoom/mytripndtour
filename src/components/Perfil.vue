@@ -30,9 +30,9 @@
             <h5 class="text-left">{{ traducao.Genero }}</h5>
             <select class="w-100 form-select" id="selectedGender" v-model="selectedGender">
             <option value=""></option>
-            <option value="male">{{ traducao.Masculino }}</option>
-            <option value="female">{{ traducao.Feminino }}</option>
-            <option value="other">{{ traducao.Outro }}</option>
+            <option value="M">{{ traducao.Masculino }}</option>
+            <option value="F">{{ traducao.Feminino }}</option>
+            <option value="O">{{ traducao.Outro }}</option>
             </select>
           </div>
         </div>
@@ -41,7 +41,7 @@
         <button 
           type="button" 
           class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
-          @click="postRoteiro"
+          @click="editPerfil"
         >
           {{ traducao.EditPerfil }}
         </button>
@@ -76,6 +76,7 @@
   import VueDatePicker from '@vuepic/vue-datepicker';
   import moment from 'moment';
   import ptLang from '../data/ptlang';
+import axios from 'axios';
 
   let TRoteiro
   const traducao = ref(ptLang)
@@ -95,7 +96,7 @@
       birthday.value = formattedDate;
     }
     date.value=user.birthday
-    selectedGender.value=user.gender
+    selectedGender.value=user.gender == 'male' ? 'M' : user.gender == 'female' ? 'F' : 'O'
     img=user.photo
     getTraducao()
   })
@@ -114,8 +115,35 @@
   const customFormat = (date) => {
   return date ? moment(date).format('DD/MM/YYYY') : '';
   };
-  const editPerfil = () =>{
-    
+  const editPerfil = async () =>{
+    try {
+      let perfil = {
+        iduser: user.iduser,   
+        nmuser: name.value,         
+        dtnascimento: moment(birthday.value).format('YYYY-MM-DD'),
+        genero:selectedGender.value,
+      }
+      await axios.post('https://mtt-userdata-667280034337.us-central1.run.app/', perfil)
+      const LocalStorageUser = {
+                Email: user.Email,
+                name: name.value,
+                photo: user.photo,
+                MetodoAutenticacao: user.MetodoAutenticacao,
+                birthday: birthday.value,
+                gender: selectedGender.value,
+                ip_origem: user.ip_origem,
+                email: user.email,
+                saldouser: user.saldouser,
+                vlrpdf: user.vlrpdf,
+                vlrpesquisa: user.vlrpesquisa,
+                iduser: user.iduser,
+                currency_data:user.currency_data
+              };
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+    } catch (error) {
+      alert('erro ao editar perfil!')
+      console.log(error)
+    }
   }
   const deletePerfil = () =>{
       dialog.value = true;
