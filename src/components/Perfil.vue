@@ -61,8 +61,8 @@
         <v-card-text>{{ traducao.Ctz }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialog=false">{{ ptLtraducaoang.Cancelar }}</v-btn>
-          <v-btn color="red darken-1" text @click="deleteItem()">{{ traducao.Apagar }}</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialog=false">{{ traducao.Cancelar }}</v-btn>
+          <v-btn color="red darken-1" text @click="deletePerfil">{{ traducao.Apagar }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -96,7 +96,7 @@ import axios from 'axios';
       birthday.value = formattedDate;
     }
     date.value=user.birthday
-    selectedGender.value=user.gender == 'male' ? 'M' : user.gender == 'female' ? 'F' : 'O'
+    selectedGender.value=user.gender == 'male'|| 'M' ? 'M' : user.gender == 'female'|| 'F' ? 'F' : 'O'
     img=user.photo
     getTraducao()
   })
@@ -122,6 +122,7 @@ import axios from 'axios';
         nmuser: name.value,         
         dtnascimento: moment(birthday.value).format('YYYY-MM-DD'),
         genero:selectedGender.value,
+        tpacao:'U'
       }
       await axios.post('https://mtt-userdata-667280034337.us-central1.run.app/', perfil)
       const LocalStorageUser = {
@@ -129,7 +130,7 @@ import axios from 'axios';
                 name: name.value,
                 photo: user.photo,
                 MetodoAutenticacao: user.MetodoAutenticacao,
-                birthday: birthday.value,
+                birthday: moment(birthday.value).format('DD/MM/YYYY'),
                 gender: selectedGender.value,
                 ip_origem: user.ip_origem,
                 email: user.email,
@@ -145,8 +146,17 @@ import axios from 'axios';
       console.log(error)
     }
   }
-  const deletePerfil = () =>{
-      dialog.value = true;
+  const deletePerfil = async () =>{
+      try {
+        let perfil = {
+        iduser: user.iduser,   
+        tpacao:'D'
+      }
+      await axios.post('https://mtt-userdata-667280034337.us-central1.run.app/', perfil)
+        dialog.value = false;
+      } catch (error) {
+        console.log(error)
+      }
   }
 </script>
   
