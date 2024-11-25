@@ -173,5 +173,13 @@
             "Descricao":"Descrição",
             "Toperacao":"Tipo de Operação",
             "Acoes":"Ações"
+        },
+        "Contato":{
+            "Noma":"Nome",
+            "Email":"Email",
+            "Mensagem":"Mensagem",
+            "Enviar":"Enviar",
+            "sucesso": "Mensagem enviada com sucesso!",
+            "Erro": "Erro ao enviar mensagem"
         }
     }
