@@ -14,21 +14,21 @@
             <input v-model="name" class="form-control"/>
           </div>
           <div class="col-12 pb-2">
-            <h5 class="text-left">Email:</h5>
+            <h5 class="text-left">{{traducao.Email}}:</h5>
             <input v-model="email" class="form-control"/>
           </div>
-          <div class="col-12 pb-2">
+<!--           <div class="col-12 pb-2">
             <h5 class="text-left">Assunto:</h5>
             <input v-model="assunto" class="form-control"/>
-          </div>
+          </div> -->
           <div class="col-12 pb-2">
-            <h5 class="text-left">Mensagem:</h5>
+            <h5 class="text-left">{{traducao.Mensagem}}:</h5>
               <textarea 
                 v-model="msg" 
                 class="form-control" 
                 rows="4"
               ></textarea>
-              {{ msg.length }} / 1000
+              {{ msg.length }} / 100
           </div>
 <!--           <div class="col-12 pb-2">
             <h5 class="text-left">{{ traducao.Aniversario }}</h5>
@@ -58,9 +58,9 @@
         <button 
           type="button" 
           class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
-          @click="postRoteiro"
+          @click="enviarEmail"
         >
-          Enviar
+          {{traducao.Enviar}}
         </button>
 <!--         <button 
           type="button" 
@@ -72,17 +72,6 @@
         
       </div>
       </div>
-      <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
-        <v-card-title class="headline">{{ traducao.ConfirmAcao }}</v-card-title>
-        <v-card-text>{{ traducao.Ctz }}</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialog=false">{{ ptLtraducaoang.Cancelar }}</v-btn>
-          <v-btn color="red darken-1" text @click="deleteItem()">{{ traducao.Apagar }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <Loading :loading="isLoading" />
     </div>
     
@@ -93,6 +82,8 @@
   import VueDatePicker from '@vuepic/vue-datepicker';
   import moment from 'moment';
   import ptLang from '../data/ptlang';
+  import axios from 'axios';
+  import Loading from './Loading.vue';
 
   let TRoteiro
   const traducao = ref(ptLang)
@@ -110,7 +101,7 @@
 
   watch(msg, (newVal) => {
     if (newVal.length >= 1000) {
-      msg.value = newVal.slice(0, 1000);
+      msg.value = newVal.slice(0, 100);
     }
   });
 
@@ -130,12 +121,29 @@
     isLoading.value=true
     try {
     TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
-    traducao.value=TRoteiro.Perfil
+    traducao.value=TRoteiro.Contato
     isLoading.value=false
     console.log(traducao.value)
     } catch (error) {
       console.log(error)
       isLoading.value=false
+    }
+  }
+  const enviarEmail = async () => {
+    isLoading.value=true
+    try {
+      let obj = {
+        name:name.value,
+        email:email.value,
+        message:msg.value
+      }
+      await axios.post('https://email-667280034337.us-central1.run.app',obj)
+      isLoading.value=false
+      alert(traducao.value.sucesso)
+    } catch (error) {
+      isLoading.value=false
+      alert(traducao.value.Erro)
+      console.log(error)
     }
   }
   const customFormat = (date) => {
