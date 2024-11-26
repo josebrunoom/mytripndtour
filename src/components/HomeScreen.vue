@@ -202,7 +202,7 @@
         
         <div class="row mb-4">
           <div class="col-6 col-md-6">
-            <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
+            <div class="p-4 rounded-lg shadow-md w-full h-24" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
                 <h2 class="sm:h4 mr-4 fw-bold mt-[0.7rem] text-base">
                     {{ traducao.MultDestinos  }}
@@ -227,7 +227,7 @@
             </div>
           </div>
           <div class="col-6 col-md-6">
-            <div class="p-4 rounded-lg shadow-md w-full" style="background-color: #ffff;">
+            <div class="p-4 rounded-lg shadow-md w-full h-24" style="background-color: #ffff; display: flex; align-items: center; justify-content: flex-start;">
               <div class="d-flex  position-relative">
                 <span class="mr-1"><b>{{traducao.Custo}}:</b></span> <span class="me-2 ">{{ traducao.DetalheCusto }}</span><input type="checkbox" name="custos_detalhe" class="me-2 mt-1" v-model="custos_detalhe" />
               </div>
@@ -543,6 +543,19 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogCurrent" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>{{traducao.Same}}</v-card-text>
+        <div class="flex justify-center">
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogCurrent=false,confirm=false">{{traducao.Cancelar}}</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogCurrent=false,confirm=true">{{traducao.Sim}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <compraModal v-if="showModal" :closeModal="closeModal" :traducao="TRoteiro.Sidebar"></compraModal>
   </div>
 </template>
@@ -608,6 +621,8 @@
   const dialogConfirm=ref(false)
   const dialogPesqPdf=ref('')
   const pdf_button = ref(null);
+  const dialogCurrent = ref(false)
+  const confirm = ref(null)
   let resolveConfirm;
   const interesses = ref(null/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
   const user=JSON.parse(localStorage.getItem('user'));
@@ -636,6 +651,19 @@
   const closeModal=()=>{
     showModal.value=false
   }
+  const confirmSameRoteiro = () => {
+  return new Promise((resolve) => {
+    watch(confirm, (val) => {
+      if (val === true) {
+        console.log('Confirm is true:', val);
+        resolve(true);
+      } else if (val === false) {
+        console.log('Confirm is false:', val);
+        resolve(false);
+      }
+    });
+  });
+};
 
   watch(date, (newValue) => {
     transformDates(newValue, periodo_viagem.value)
@@ -915,7 +943,7 @@ const postRoteiro=async () =>{
     errMsg.value=traducao.value.ErrMsg5
   }
   else{
-    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0){
+    if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0||ObjRoteiro1.custos_detalhe=='S'){
     let saldoValido = haveSaldo()
     if(saldoValido==false){
         dialogVlr.value=true
@@ -957,7 +985,12 @@ const postRoteiro=async () =>{
         }
         if(deepEqual(currentRoteiro.value,ObjRoteiroAdmin)){
           console.log('equal')
-          return
+          const same = await confirmSameRoteiro()
+          console.log('sameAdmin',same)
+          if(same==false){
+            console.log('same',same)
+            return
+          }
         }
         const response = await axios.post('https://mytripntour-dev-667280034337.us-central1.run.app/', ObjRoteiroAdmin)
       if(disabledRating.value==true){
@@ -987,7 +1020,13 @@ const postRoteiro=async () =>{
       }else{
         if(deepEqual(currentRoteiro.value,ObjRoteiro1)){
           console.log('equal')
-          return
+          dialogCurrent.value=true
+          const same = await confirmSameRoteiro()
+          console.log('same',same)
+          if(same==false){
+            console.log('same',same)
+            return
+          }
         }
         const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
         if(disabledRating.value==true){
