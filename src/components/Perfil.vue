@@ -58,11 +58,14 @@
       <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">{{ traducao.ConfirmAcao }}</v-card-title>
-        <v-card-text>{{ traducao.Ctz }}</v-card-text>
+        <v-card-text>{{ traducao.Confirm }}</v-card-text>
+        <div class="px-4">
+          <input type="text" class="form-control " v-model="sim">
+        </div>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="[#78c0d6]" text @click="dialog=false">{{ traducao.Cancelar }}</v-btn>
-          <v-btn color="red darken-1" text @click="deletePerfil">{{ traducao.Apagar }}</v-btn>
+          <v-btn color="red darken-1" :disabled="disabled" text @click="deletePerfil">{{ traducao.Apagar }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -72,11 +75,11 @@
 </template>
   
 <script setup>
-  import {ref, onMounted} from 'vue';
+  import {ref, onMounted, watch} from 'vue';
   import VueDatePicker from '@vuepic/vue-datepicker';
   import moment from 'moment';
   import ptLang from '../data/ptlang';
-import axios from 'axios';
+  import axios from 'axios';
 
   let TRoteiro
   const traducao = ref(ptLang)
@@ -87,7 +90,16 @@ import axios from 'axios';
   const date=ref('')
   const dialog=ref(false)
   const isLoading = ref(true)
+  const sim = ref('')
+  const disabled = ref(true)
   let img
+  watch(sim,(val)=>{
+    if(val=='sim'||'Sim'){
+      disabled.value=false
+    }else{
+      disabled.value=true
+    }
+  })
   onMounted(() => {
     console.log(user)
     name.value=user.name
@@ -141,8 +153,9 @@ import axios from 'axios';
                 currency_data:user.currency_data
               };
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      alert(traducao.value.EditSuccess)
     } catch (error) {
-      alert('erro ao editar perfil!')
+      alert(traducao.value.EditError)
       console.log(error)
     }
   }
