@@ -91,7 +91,8 @@
         "Creditos":"Créditos",
         "CreditoSingular":"Crédito",
         "Custo":"Custos",
-        "DetalheCusto":"Gerar estimativa de custo em detalhes"
+        "DetalheCusto":"Gerar estimativa de custo em detalhes",
+        "Same":"Não foram alterados parâmetros para gerar um novo roteiro. Deseja prosseguir com as mesmas informações?"
         },
         "Sidebar": {
         "Roteiros": "Roteiros",
@@ -132,7 +133,9 @@
         "Ctz": "Tem certeza de que deseja apagar o seu perfil?",
         "Apagar": "Apagar",
         "Nao": "Não",
-        "Sim": "Sim"
+        "Sim": "Sim",
+        "EditError":"Erro ao editar perfil!",
+        "EditSuccess":"Perfil editado com sucesso!"
         },
         "Login": {
         "PoliticaDePriv": "Política de Privacidade",
@@ -180,6 +183,8 @@
             "Mensagem":"Mensagem",
             "Enviar":"Enviar",
             "sucesso": "Mensagem enviada com sucesso!",
-            "Erro": "Erro ao enviar mensagem"
+            "Erro": "Erro ao enviar mensagem",
+            "Sim":"Sim",
+            "Confirm":"Todos os seus dados serão apagados do sistema. Após esta ação, não será possivel recupera-los. Confirma a exclusão? Digite SIM abaixo."
         }
     }
