@@ -229,7 +229,7 @@
           <div class="col-6 col-md-6">
             <div class="p-4 rounded-lg shadow-md w-full h-24" style="background-color: #ffff; display: flex; align-items: center; justify-content: flex-start;">
               <div class="d-flex  position-relative">
-                <span class="mr-1"><b>{{traducao.Custo}}:</b></span> <span class="me-2 ">{{ traducao.DetalheCusto }}</span><input type="checkbox" name="custos_detalhe" class="me-2 mt-1" v-model="custos_detalhe" />
+                <span class="mr-1"><b>{{traducao.Custo}}:</b></span> <span class="me-2 ">{{ traducao.DetalheCusto }}</span><input type="checkbox" name="custos_detalhe" class="me-2 mt-1 custom-checkbox" v-model="custos_detalhe" />
               </div>
             </div>
           </div>
@@ -1271,11 +1271,11 @@ const customFormat = (date) => {
         }
         const element = document.getElementById('pdf-content'); 
         const opt = {
-          margin:       1,
-          filename:     `${PDFname.value}.pdf`,
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2 },
-          jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+          margin: 0.5, 
+          filename: `${PDFname.value}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
         html2pdf().from(element).set(opt).save();
             const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
@@ -1612,5 +1612,35 @@ input[type="date"]::-webkit-input-placeholder{
     width: 60px;  /* Even smaller on mobile */
   }
 }
+.custom-checkbox {
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none; /* For WebKit browsers */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  background-color: white;
+  display: inline-block;
+}
+
+.custom-checkbox:checked {
+  background-color: #007bff; /* Change background to desired color */
+  border-color: #007bff;
+  position: relative;
+}
+
+.custom-checkbox:checked::after {
+  content: "✔"; /* Add the checkmark */
+  color: white; /* Color of the checkmark */
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 </style>
   
