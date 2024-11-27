@@ -1,7 +1,7 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen">
+    <div class="flex justify-center items-center min-h-screen scrollable-container">
       <div class=" max-w p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div class="flex justify-center mb-4">
+        <div class="flex justify-center mb-4 sm:mb-8">
           <img src="../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-01.jpg" alt="Logo" class="img-Logo" />
         </div>
         <form @submit.prevent="">
@@ -408,5 +408,10 @@ const sendUser=async(user, userInfo, access_type)=>{
     justify-content: center;
     margin-bottom: 2rem;
   }
+  .scrollable-container {
+    overflow-y: auto;
+    margin: 0 auto;
+    padding: 1rem; 
+}
   </style>
   
