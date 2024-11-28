@@ -1,5 +1,24 @@
 <template>
   <div  class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
+    <div v-if="!isLargeScreen" class="button-group d-flex flex-wrap align-items-center">
+        <button 
+        type="button" 
+        class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+        @click="postRoteiro"
+        >
+        {{traducao.GerarPDF}}
+        </button>
+        <button 
+        type="button" 
+        class="bg-[#ffc109] text-white px-4 py-2 rounded-lg hover:bg-[#e0a607] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+        @click="dialogLimpar=true"
+        >
+        {{ traducao.Limpar }}
+        </button>
+        <div v-show="showPdf==true"  class="items-start text-start" >
+          <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
+      </div>
+    </div>
     <div class="p-3 bg-[#d9e9e0] w-full h-full rounded-lg mb-2">  <!-- começo Free -->
       <div class="flex justify-start items-start">
           <span class="h5 text-left"><b>{{traducao.Free}}</b></span> 
@@ -382,9 +401,9 @@
             <VueSelect :options="Moedas" class="w-100"></VueSelect>
           </div> -->
       </div>
-      <div class="items-start text-start" >
+<!--       <div class="items-start text-start" >
         <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
-      </div>
+      </div> -->
       
     </div>
     
@@ -409,20 +428,8 @@
           </div>
       </div>
       <div class="col-12 d-flex justify-content-start">
-        <button 
-          type="button" 
-          class="me-2 bg-[#78c0d6] text-white pl-2 pr-2 rounded-lg" 
-          @click="postRoteiro"
-        >
-          {{ traducao.Gerar }}
-        </button>
-        <button 
-          type="button" 
-          class="btn btn-warning me-2 "
-          @click="dialogLimpar=true"
-        >
-          {{ traducao.Limpar }}
-        </button>
+
+
       
           
         
@@ -563,7 +570,7 @@
 
   
 <script setup>
-  import { ref, onMounted, watch, computed, onUpdated,nextTick  } from 'vue'
+  import { ref, onMounted, watch, computed, onUpdated,nextTick,onBeforeUnmount   } from 'vue'
   import VueDatePicker from '@vuepic/vue-datepicker';
   import VueSelect from 'vue-select';
   import axios from 'axios';
@@ -574,6 +581,7 @@
   import Tooltip from 'primevue/tooltip';
   import compraModal from './compraModal.vue';
   import ptLang from '../data/ptlang';
+  import { eventBus } from '../data/eventbus';
 
   let location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
@@ -645,6 +653,36 @@
   let location3;
   let location4;
   let lang = null;
+  const isLargeScreen = computed(() => window.innerWidth >= 640);
+
+  const handleResize = () => {
+    // Force Vue to re-evaluate computed properties on resize
+    isLargeScreen.value = window.innerWidth >= 640;
+  };
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
+  eventBus.on('PostRoteiro', () => {
+    postRoteiro();
+  });
+
+  eventBus.on('LimparTudo', () => {
+    dialogLimpar.value=true
+  });
+
+  eventBus.on('GeraPDF', () => {
+    askModalPDF();
+  });
+
+  const triggerFunctionPDF = () => {
+    eventBus.emit('RoteiroAppear');
+  };
 
   const pdfButton = ref(null)
 
@@ -1016,6 +1054,7 @@ const postRoteiro=async () =>{
                 currency_data:user.currency_data
               };
               currentRoteiro.value=ObjRoteiroAdmin //save the current roteiro
+              triggerFunctionPDF();
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       }else{
         if(deepEqual(currentRoteiro.value,ObjRoteiro1)){
@@ -1050,6 +1089,7 @@ const postRoteiro=async () =>{
                   iduser: user.iduser,
                   currency_data:user.currency_data
                 };
+                triggerFunctionPDF();
         localStorage.setItem('user', JSON.stringify(LocalStorageUser));
         currentRoteiro.value=ObjRoteiro1 //save the current roteiro
       }
@@ -1347,6 +1387,7 @@ const confirmHandler = (confirmed) => {
   dialogConfirm.value = false; 
   resolveConfirm(confirmed); // Resolve the promise with the confirmed value
 };
+
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
@@ -1641,6 +1682,10 @@ input[type="date"]::-webkit-input-placeholder{
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
+@media (min-width: 640px) {
+    .hide-on-large {
+      display: none;
+    }
+  }
 </style>
   

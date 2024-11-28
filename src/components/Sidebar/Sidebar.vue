@@ -369,7 +369,27 @@
                 </div>
 
                 <!-- Right-aligned content -->
+
                 <div class="d-flex align-items-center">
+                    <div class="button-group d-flex flex-wrap align-items-center">
+                        <button 
+                        type="button" 
+                        class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+                        @click="triggerFunctionRoteiro"
+                        >
+                        Gerar Roteiro
+                        </button>
+                        <button 
+                        type="button" 
+                        class="bg-[#ffc109] text-white px-4 py-2 rounded-lg hover:bg-[#e0a607] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+                        @click="triggerFunctionLimpar"
+                        >
+                        Limpar Tudo
+                        </button>
+                        <div v-show="showPdf==true"  class="items-start text-start" >
+                            <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
+                        </div>
+                    </div>
                     <span class="fw-bold pr-5 max-[500px]:text-sm"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
                 <div class="dropdown me-3">
                     <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -433,6 +453,7 @@ import compraModal from '../compraModal.vue';
 import ptLang from '../../data/ptlang';
 import Loading from '../Loading.vue';
 import axios from 'axios';
+import { eventBus } from '../../data/eventbus';
 
 let TRoteiro 
 const traducao = ref(ptLang)
@@ -455,7 +476,21 @@ const languageName = ref(localStorage.getItem('langName') || 'Português');
 const isLoading = ref(false)
 const locationData = ref(null)
 const languages = JSON.parse(localStorage.getItem('languages'))
+const showPdf = ref(false)
 
+const triggerFunctionRoteiro = () => {
+    eventBus.emit('PostRoteiro');
+};
+const triggerFunctionLimpar = () => {
+    eventBus.emit('LimparTudo');
+};
+const triggerFunctionPDF = () => {
+    eventBus.emit('GeraPDF');
+};
+eventBus.on('RoteiroAppear', () => {
+    console.log('roteiroappear',showPdf.value)
+    showPdf.value=true
+});
 onMounted(async () => {
     name.value=user.value.Nome
     img.value=user.value.photo
@@ -688,5 +723,10 @@ const Translate = async (lang, langName) => {
 
     .slide-leave-to {
     transform: translateX(-100%);
+    }
+    @media (max-width: 640px) {
+    .button-line {
+        display: none;
+    }
     }
 </style>
