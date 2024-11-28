@@ -117,7 +117,10 @@
         "Mpreferida":"Selecione a Moeda preferida",
         "AddCred":"Adicionar Créditos",
         "HRot":"Histórico de Roteiros",
-        "Extrato":"Extrato"
+        "Extrato":"Extrato",
+        "Gerar": "Gerar Roteiro",
+        "Limpar": "Limpar Tudo",
+        "GerarPDF": "Gerar PDF e Armazenar"
         },
         "Perfil": {
         "MeuPerfil": "Meu Perfil",
