@@ -21,7 +21,7 @@
           </div>
         </form> -->
         <div class="mt-4">
-            <a href="https://roteiro.mytripntour.com/politica_privacidade">Política de Privacidade</a>
+            <input type="checkbox" class="mr-1" v-model="checkbox"> Eu concordo com a <a href="https://roteiro.mytripntour.com/politica_privacidade">Política de Privacidade</a>
         </div>
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>
@@ -46,7 +46,7 @@
   const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
 
   const isLoading = ref(false)
-  let checkbox = ref(false)
+  const checkbox = ref(false)
   const showModal = ref(false);
   const userIP=ref('')
   let token=localStorage.getItem('token')
@@ -296,7 +296,7 @@ const sendUser=async(user, userInfo, access_type)=>{
     }); */
     const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', user)
     console.log('response senduser',response.data)
-    if(response.data.ExistUser==1){
+    if(response.data.ExistUser==1 || checkbox.value==true){
       localStorage.setItem('token', response.data.token)
       const tokenDecoded= jwtDecode(response.data.token)
       console.log(tokenDecoded)
