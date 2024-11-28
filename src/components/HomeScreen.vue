@@ -1,23 +1,7 @@
 <template>
   <div  class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
     <div v-if="!isLargeScreen" class="button-group d-flex flex-wrap align-items-center">
-        <button 
-        type="button" 
-        class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
-        @click="postRoteiro"
-        >
-        {{traducao.GerarPDF}}
-        </button>
-        <button 
-        type="button" 
-        class="bg-[#ffc109] text-white px-4 py-2 rounded-lg hover:bg-[#e0a607] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
-        @click="dialogLimpar=true"
-        >
-        {{ traducao.Limpar }}
-        </button>
-        <div v-show="showPdf==true"  class="items-start text-start" >
-          <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
-      </div>
+        
     </div>
     <div class="p-3 bg-[#d9e9e0] w-full h-full rounded-lg mb-2">  <!-- começo Free -->
       <div class="flex justify-start items-start">
@@ -220,7 +204,7 @@
         </div>
         
         <div class="row mb-4">
-          <div class="col-6 col-md-6">
+          <div class="col-12 col-md-6 mb-4">
             <div class="p-4 rounded-lg shadow-md w-full h-24" style="background-color: #ffff;">
               <div class="d-flex  position-relative">
                 <h2 class="sm:h4 mr-4 fw-bold mt-[0.7rem] text-base">
@@ -245,7 +229,7 @@
                 
             </div>
           </div>
-          <div class="col-6 col-md-6">
+          <div class="col-12 col-md-6">
             <div class="p-4 rounded-lg shadow-md w-full h-24" style="background-color: #ffff; display: flex; align-items: center; justify-content: flex-start;">
               <div class="d-flex  position-relative">
                 <span class="mr-1"><b>{{traducao.Custo}}:</b></span> <span class="me-2 ">{{ traducao.DetalheCusto }}</span><input type="checkbox" name="custos_detalhe" class="me-2 mt-1 custom-checkbox" v-model="custos_detalhe" />

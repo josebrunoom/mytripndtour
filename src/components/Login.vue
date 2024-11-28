@@ -1,8 +1,8 @@
 <template>
-    <div class="flex justify-center items-center min-h-screen scrollable-container">
+    <div class="flex justify-center items-center scrollable-container">
       <div class=" max-w p-8 space-y-8 bg-white rounded-lg shadow-md">
         <div class="flex justify-center mb-4 sm:mb-8">
-          <img src="../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-01.jpg" alt="Logo" class="img-Logo" />
+          <img src="../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-1.png" alt="Logo" class="img-Logo" />
         </div>
         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">

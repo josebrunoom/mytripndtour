@@ -343,7 +343,7 @@
         ></div>
         </div>
         <div class="w-full bg-[#faf8fd]" style="overflow: auto;"> 
-            <div style="height:7% !important;" class="bg-[#faf8fd]">
+            <div class="bg-[#faf8fd]">
             <div class="d-flex justify-content-between align-items-center lg:mt-4 lg:pr-16">
                 <!-- Left-aligned button -->
                 <div class="d-flex">
