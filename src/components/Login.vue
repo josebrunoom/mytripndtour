@@ -38,6 +38,7 @@
   import axios from 'axios';
   import Loading from './Loading.vue';
   import { jwtDecode } from "jwt-decode";
+  import moment from 'moment';
   import ptLang from '../data/ptlang';
   import newlang from '../data/newlang';
 
@@ -232,7 +233,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://roteiro.mytripntour.com', 
+            redirect_uri: 'http://localhost:5173', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -330,7 +331,7 @@ const sendUser=async(user, userInfo, access_type)=>{
                 name: userName,
                 photo: userPicture,
                 MetodoAutenticacao: 'Google',
-                birthday: formattedDate,
+                birthday: moment.utc(response.data.dtnascimento).format('DD/MM/YYYY'),
                 gender: userGender,
                 ip_origem: userIP.value,
                 email: userEmail,
@@ -346,7 +347,7 @@ const sendUser=async(user, userInfo, access_type)=>{
                 postal: locationData.value.postal ? locationData.value.postal : '',
                 timezone: locationData.value.timezone ? locationData.value.timezone : '',
               };
-              console.log(typeof response.data.traducao)
+              console.log('LocalStorageUser',LocalStorageUser)
       localStorage.setItem('languages', JSON.stringify(response.data.languages));
       localStorage.setItem('user', JSON.stringify(LocalStorageUser));
       localStorage.setItem('Traducao', response.data.traducao);
@@ -360,6 +361,7 @@ const sendUser=async(user, userInfo, access_type)=>{
     
   } catch (error) {
     isLoading.value=false
+    console.log(error)
     alert('Erro ao logar')
   }finally{
     isLoading.value=false
