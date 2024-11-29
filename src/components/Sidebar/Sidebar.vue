@@ -371,24 +371,24 @@
                 <!-- Right-aligned content -->
 
                 <div class="d-flex align-items-center">
-                    <div class="button-group d-flex flex-wrap align-items-center">
+                    <div class="button-group align-items-center hidden sm:block"v-if="currentRouteName=='home'">
                         <button 
                         type="button" 
                         class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
                         @click="triggerFunctionRoteiro"
                         >
-                        Gerar Roteiro
+                        {{traducao.Gerar}}
                         </button>
-                        <button 
+<!--                         <button 
                         type="button" 
                         class="bg-[#ffc109] text-white px-4 py-2 rounded-lg hover:bg-[#e0a607] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
                         @click="triggerFunctionLimpar"
                         >
                         Limpar Tudo
-                        </button>
-                        <div v-show="showPdf==true"  class="items-start text-start" >
+                        </button> -->
+                        <!-- <div v-show="showPdf==true"  class="items-start text-start" >
                             <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
-                        </div>
+                        </div> -->
                     </div>
                     <span class="fw-bold pr-5 max-[500px]:text-sm"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
                 <div class="dropdown me-3">
