@@ -3,7 +3,7 @@
       <div class="d-flex align-items-start">
         <div class="mb-4">
           <!-- <img class="inline-block h-20 w-20 rounded-full ring-2 ring-white me-2" :src="img" alt="" /> -->
-          <h1>Contato</h1>
+          <h1>{{traducao.Contato}}</h1>
         </div>
       </div>
       <div class="row mb-4">

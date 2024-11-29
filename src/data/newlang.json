@@ -181,13 +181,14 @@
             "Acoes":"Ações"
         },
         "Contato":{
-            "Noma":"Nome",
+            "Nome":"Nome",
             "Email":"Email",
             "Mensagem":"Mensagem",
             "Enviar":"Enviar",
             "sucesso": "Mensagem enviada com sucesso!",
             "Erro": "Erro ao enviar mensagem",
             "Sim":"Sim",
-            "Confirm":"Todos os seus dados serão apagados do sistema. Após esta ação, não será possivel recupera-los. Confirma a exclusão? Digite SIM abaixo."
+            "Confirm":"Todos os seus dados serão apagados do sistema. Após esta ação, não será possivel recupera-los. Confirma a exclusão? Digite SIM abaixo.",
+            "Contato":"Contato"
         }
     }
