@@ -80,6 +80,7 @@
   import moment from 'moment';
   import ptLang from '../data/ptlang';
   import axios from 'axios';
+  import Loading from './Loading.vue';
 
   let TRoteiro
   const traducao = ref(ptLang)
