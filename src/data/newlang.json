@@ -164,7 +164,8 @@
         "ErrSalvar":"Erro ao Salvar Roteiro",
         "Nao": "Não",
         "Sim": "Sim",
-        "Delete":"Apagar Roteiro"
+        "Delete":"Apagar Roteiro",
+        "DeletedRot":"Roteiro apagado"
         },
         "ExtratoPage": {
             "NExt":"Não existem Extrato",
