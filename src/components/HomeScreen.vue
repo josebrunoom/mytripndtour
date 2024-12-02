@@ -725,13 +725,14 @@ onBeforeUnmount(() => {
     const receivedData = queryParams.get('data');
     if (receivedData) {
       const decodedData = JSON.parse(decodeURIComponent(receivedData));
+      console.log(decodedData);
       hospedagemSelecionada.value=decodedData.hospedagemSelecionada
-      lugaresDestinosFullNames.value=decodedData.lugaresDestinosFullNames
+      //lugaresDestinosFullNames.value=decodedData.lugaresDestinosFullNames
       selectedInteresses=decodedData.interesses
       DestinoCity.value=decodedData.lugaresDestinosFullNames.join()
-      Destinos=decodedData.lugaresDestinosFullNames.join()
+      //Destinos=decodedData.lugaresDestinosFullNames.join()
       lugaresConhecerFullNames.value=decodedData.quero_conhecer
-      inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
+      //inChecked.value = interesses.value.map(interest => selectedInteresses.includes(interest));
     }
   }
 
