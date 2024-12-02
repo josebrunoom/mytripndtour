@@ -225,21 +225,25 @@
         }
     }
 
-    function formatarData(data) {
-      const dateObj = new Date(data);
-      const dia = String(dateObj.getDate()).padStart(2, '0');
-      const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const ano = dateObj.getFullYear();
-      const dadosUser = JSON.parse(localStorage.getItem('user'));
-      const moedaPadrao = dadosUser.currency_data.find(moeda => moeda.padrao === 1)?.nome;
-      
-      if (moedaPadrao == "Real"){
-        return `${dia}/${mes}/${ano}`;
-      } 
-      else{
-        return `${mes}/${dia}/${ano}`;
-      }
+function formatarData(data) {
+    const dateObj = new Date(data);
+    
+    const dia = String(dateObj.getDate()).padStart(2, '0');
+    const mes = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const ano = dateObj.getFullYear();
+
+    const horas = String(dateObj.getHours()).padStart(2, '0');
+    const minutos = String(dateObj.getMinutes()).padStart(2, '0');
+
+    const dadosUser = JSON.parse(localStorage.getItem('user'));
+    const moedaPadrao = dadosUser.currency_data.find(moeda => moeda.padrao === 1)?.nome;
+
+    if (moedaPadrao === "Real") {
+        return `${dia}/${mes}/${ano} - ${horas}:${minutos}`;
+    } else {
+        return `${mes}/${dia}/${ano} - ${horas}:${minutos}`;
     }
+}
 </script>
 
 
