@@ -19,13 +19,13 @@
                 type="text"
                 placeholder="Edit Route Name"
             />
-            <span v-else class="text-lg font-bold">{{ roteiro.nome_roteiro }}</span>
+            <span v-else class="text-lg font-bold">{{ roteiro.nome_roteiro }}; {{ roteiro.origem }}; {{ removeApostrophes(roteiro.destino) }}.</span>
             </div>
             
             <!-- Conditionally display additional properties -->
             <div v-if="openIndex === index" class="mt-2 text-gray-600 text-left">
             <p><strong>{{ traducao.CidadeO }}:</strong> {{ roteiro.origem }}</p>
-            <p><strong>{{ traducao.Destino }}:</strong> {{ roteiro.destino }}</p>
+            <p><strong>{{ traducao.Destino }}:</strong> {{ removeApostrophes(roteiro.destino) }}</p>
             <p><strong>{{ traducao.PViagem }}:</strong> {{ roteiro.dias }} dias</p>
             <p><strong>{{ traducao.Dias }}:</strong> {{ moment(roteiro.data_inicio).format("DD/MM/YYYY") }}</p>
             <p><strong>{{ traducao.QAdult }}:</strong> {{ roteiro.qtd_adultos }}</p>
@@ -48,6 +48,9 @@
             <button @click="sendData(roteiro)" class="mt-4 px-4 py-2 bg-[#27b3cc] text-white rounded">
                 <i class="fa-solid fa-eye"></i> {{ traducao.Visualizar }}
             </button>
+            <button @click="DeleteRoteiro(roteiro)" class="mt-4 ml-2 px-4 py-2 bg-[#e62c2c] text-white rounded">
+                <i class="fa-solid fa-trash"></i> {{ traducao.Delete }}
+            </button>
             </div>
             
         </div>
@@ -59,7 +62,7 @@
                 </div>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="[#78c0d6]" text @click="dialogNameChange">OK</v-btn>
+                <v-btn color="[#78c0d6]" text @click="dialogNameChange=false">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -98,7 +101,7 @@
         try {
         let TRoteiro=JSON.parse(localStorage.getItem('Traducao'))
         traducao.value=TRoteiro.ListRotero
-        
+        console.log(traducao.value.ErrSalvar)
         } catch (error) {
             console.log('getTraducao',error)
             
@@ -114,6 +117,7 @@
         try {
         const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', obj);
         Roteiros.value = response.data.result;
+        console.log(Roteiros.value)
         isLoading.value = false;
         } catch (error) {
         console.log(error);
@@ -122,7 +126,9 @@
     };
     
     const openIndex = ref(null);
-    
+    function removeApostrophes(locationsString) {
+        return locationsString.replace(/'/g, '');
+    }
     const toggleDetails = (index) => {
         openIndex.value = openIndex.value === index ? null : index;
     };
@@ -155,14 +161,38 @@
             tpacao: 'U',
         }
         const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', objRoteiro);
-        console.log('Updated roteiro:', response.data.result);
+        console.log('Updated roteiro:', response.data);
         isLoading.value = false;
         dialogNameChange.value=true
-        alert(traducao.Salvo)
+        alert(traducao.value.Salvo)
         } catch (error) {
         console.log('Error saving roteiro:', error);
         isLoading.value = false;
-        alert(traducao.ErrSalvar)
+        alert('erro',traducao.value.ErrSalvar)
+        }
+    };
+
+    const DeleteRoteiro = async (index) => {
+        isLoading.value = true;
+    
+        try {
+        const roteiro = Roteiros.value[index];
+        console.log(roteiro)
+        let objRoteiro={
+            idrotsalvo: roteiro.idrotsalvo,
+            iduser: roteiro.iduser,
+            tpacao: 'D',
+        }
+        const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', objRoteiro);
+        console.log('Delete roteiro:', response.data);
+        Roteiros.value.splice(index, 1)
+        isLoading.value = false;
+        dialogNameChange.value=true
+        alert(traducao.value.DeletedRot)
+        } catch (error) {
+        console.log('Error saving roteiro:', error);
+        isLoading.value = false;
+        alert('erro',traducao.value.ErrSalvar)
         }
     };
     const sendData = (roteiro) => {
