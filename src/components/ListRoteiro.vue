@@ -19,7 +19,7 @@
                 type="text"
                 placeholder="Edit Route Name"
             />
-            <span v-else class="text-lg font-bold">{{ roteiro.nome_roteiro }}; {{ roteiro.origem }}; {{ removeApostrophes(roteiro.destino) }}.</span>
+            <span v-else class="text-lg font-bold">{{ roteiro.nome_roteiro }} - {{ roteiro.origem }} - {{ removeApostrophes(roteiro.destino) }}.</span>
             </div>
             
             <!-- Conditionally display additional properties -->
