@@ -60,7 +60,7 @@
         <v-card-title class="headline">{{ traducao.ConfirmAcao }}</v-card-title>
         <v-card-text>{{ traducao.Confirm }}</v-card-text>
         <div class="px-4">
-          <input type="text" class="form-control " v-model="sim">
+          <input type="text" class="form-control " v-model="sim" @input="checkSim">
         </div>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -75,7 +75,7 @@
 </template>
   
 <script setup>
-  import {ref, onMounted, watch} from 'vue';
+  import {ref, onMounted, watch, computed} from 'vue';
   import VueDatePicker from '@vuepic/vue-datepicker';
   import moment from 'moment';
   import ptLang from '../data/ptlang';
@@ -94,13 +94,9 @@
   const sim = ref('')
   const disabled = ref(true)
   let img
-  watch(sim,(val)=>{
-    if(val=='sim'||'Sim'){
-      disabled.value=false
-    }else{
-      disabled.value=true
-    }
-  })
+  function checkSim() {
+    disabled.value = !(sim.value.toLowerCase() === 'sim');
+  }
   onMounted(() => {
     console.log(user)
     name.value=user.name
@@ -167,7 +163,10 @@
         tpacao:'D'
       }
       await axios.post('https://mtt-userdata-667280034337.us-central1.run.app/', perfil)
-        dialog.value = false;
+      dialog.value = false;
+      alert(traducao.value.SairUser)
+      localStorage.clear();
+      location.reload();
       } catch (error) {
         console.log(error)
       }
