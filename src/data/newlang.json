@@ -1,7 +1,7 @@
     {
         "Roteiros":{
         "CidadeO": "Cidade de Origem",
-        "Destino": "Destino(s)",
+        "Destino": "Destino",
         "Duration": "Duração da Viagem",
         "Dias": "dias, com inicio em",
         "retrn": "e retorno em",
@@ -130,11 +130,12 @@
         "Masculino": "Masculino",
         "Feminino": "Feminino",
         "Outro": "Outro",
-        "EditPerfil": "Editar Perfil",
+        "EditPerfil": "Salvar Perfil",
         "ApagarPerfil": "Apagar Perfil",
         "ConfirmAcao": "Confirmar Ação",
         "Ctz": "Tem certeza de que deseja apagar o seu perfil?",
         "Apagar": "Apagar",
+        "Confirm":"Todos os seus dados serão apagados do sistema. Após esta ação, não será possivel recupera-los. Confirma a exclusão? Digite SIM abaixo.",
         "Nao": "Não",
         "Sim": "Sim",
         "EditError":"Erro ao editar perfil!",
@@ -154,7 +155,7 @@
         "Edit": "O nome do roteiro foi editado com sucesso!",
         "Salvo":"Roteiro salvo com sucesso!",
         "CidadeO": "Cidade de Origem",
-        "Destino": "Destino(s)",
+        "Destino": "Destino",
         "QAdult": "Quantidade de Adultos",
         "QMenor": "Quantidade de Menores",
         "PViagem": "Periodo de Viagem",
@@ -162,7 +163,8 @@
         "RotSalvos": "Não existem roteiros salvos",
         "ErrSalvar":"Erro ao Salvar Roteiro",
         "Nao": "Não",
-        "Sim": "Sim"
+        "Sim": "Sim",
+        "Delete":"Apagar Roteiro"
         },
         "ExtratoPage": {
             "NExt":"Não existem Extrato",
@@ -189,6 +191,6 @@
             "Erro": "Erro ao enviar mensagem",
             "Sim":"Sim",
             "Confirm":"Todos os seus dados serão apagados do sistema. Após esta ação, não será possivel recupera-los. Confirma a exclusão? Digite SIM abaixo.",
-            "Contato":"Contato"
+            "Contato":"Fale conosco"
         }
     }
