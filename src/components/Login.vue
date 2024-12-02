@@ -356,7 +356,7 @@ const sendUser=async(user, userInfo, access_type)=>{
       router.push('/mytrip/home');
     } else{
       alert('Aceite os termos para continuar')
-      openModal();
+      //openModal();
     }
     
   } catch (error) {
