@@ -139,7 +139,9 @@
         "Nao": "Não",
         "Sim": "Sim",
         "EditError":"Erro ao editar perfil!",
-        "EditSuccess":"Perfil editado com sucesso!"
+        "EditSuccess":"Perfil editado com sucesso!",
+        "Cancelar":"Cancelar",
+        "SairUser":"Seus usuário foi excluido com sucesso."
         },
         "Login": {
         "PoliticaDePriv": "Política de Privacidade",
