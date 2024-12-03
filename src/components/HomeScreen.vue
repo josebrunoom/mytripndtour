@@ -583,6 +583,7 @@
   import compraModal from './compraModal.vue';
   import ptLang from '../data/ptlang';
   import { eventBus } from '../data/eventbus';
+import router from '../routes';
 
   let location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
@@ -1269,6 +1270,7 @@ const customFormat = (date) => {
       selectedInteresses = [];
       lugar_nIr = [];
       lugar_Conhecer = [];
+      custos_detalhe.value=null
     };
 
     const downloadPdf = async () => {
@@ -1284,6 +1286,7 @@ const customFormat = (date) => {
         const lugar_nIrString = lugar_nIr ? lugar_nIr.map(location => `'${location}'`).join(', ') : "";
         const childAgesString = childAges.value ? childAges.value.map(age=> `${age}`).join(', ') : ""
         await transformDatesToSave(date.value)
+        console.log('roeti',roteiroData.value.Roteiro.Roteiro)
         let ObjRoteiro1={
           email:user.Email ? user.Email : user.email,
           origem:Origem,
@@ -1311,15 +1314,15 @@ const customFormat = (date) => {
           return
           
         }
-        const element = document.getElementById('pdf-content'); 
+/*         const element = document.getElementById('pdf-content'); 
         const opt = {
           margin: 0.5, 
           filename: `${PDFname.value}.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2 },
           jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().from(element).set(opt).save();
+        }; */
+        /* html2pdf().from(element).set(opt).save(); */
             const response = await axios.post('https://mtt-savetrip-667280034337.us-central1.run.app', ObjRoteiro1)
             const LocalStorageUser = {
                     Email: user.Email,
@@ -1336,6 +1339,8 @@ const customFormat = (date) => {
                     iduser: user.iduser,
                     currency_data:user.currency_data
                   };
+          localStorage.setItem('pdfName',PDFname.value)
+          router.push('/save');
           localStorage.setItem('user', JSON.stringify(LocalStorageUser));
           currentPDF.value=ObjRoteiro1    
           dialogPDF.value=false;

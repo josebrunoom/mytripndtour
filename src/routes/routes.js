@@ -8,6 +8,7 @@ import ListRoteiro from "../components/ListRoteiro.vue"
 import HomeScreenSeeOnly from "../components/HomeScreen-See-Only.vue";
 import ExtratoPage from "../components/ExtratoPage.vue";
 import Contato from "../components/Contato.vue";
+import PdfSave from "../components/pdfSave.vue";
 
 const routes = [
     {
@@ -54,12 +55,18 @@ const routes = [
                 name: "Contato",
                 component: Contato,
             },
+
         ]
     },
     {
         path:'/politica_privacidade',
         name:"politica_privacidade",
         component:Politica_privacidade
+    },
+    {
+        path: "/save",
+        name: "Save",
+        component: PdfSave,
     },
 ]
 
