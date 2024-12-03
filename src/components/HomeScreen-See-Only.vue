@@ -390,7 +390,7 @@
         </div> -->
       </div>
       <div class="items-start text-start" ref="pdf_button">
-        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  Gerar PDF e Armazenar </button>
+        <button v-if="roteiroData.Roteiro!=null" class="btn btn-danger" @click="downloadPdf">  Baixar PDF </button>
       </div>
       
     </div>
