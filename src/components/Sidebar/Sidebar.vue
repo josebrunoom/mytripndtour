@@ -637,9 +637,7 @@ const openDialog = (id) =>{
 }
 const sairUser = () =>{
     dialogSair.value=false
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    
+    localStorage.clear();
     window.location.href= 'https://mytripntour.com/'
 }
 function convertNumberFormat(value) {
