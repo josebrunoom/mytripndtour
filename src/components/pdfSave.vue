@@ -15,8 +15,6 @@ const PDFname = localStorage.getItem('pdfName')
 const Roteiro = JSON.parse(localStorage.getItem('roteiro'))
 
 onMounted(async ()=>{
-    console.log('rote',Roteiro)
-    console.log('namefaf',PDFname)
     await savePDF()
     router.back()
 })
