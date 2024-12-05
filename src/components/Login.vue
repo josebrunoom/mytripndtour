@@ -124,7 +124,15 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
   //Translate();
-  
+    if (!window.dataLayer) {
+        window.dataLayer = [];
+    }
+
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-5BTZ1093SB');
   }
 )
 
