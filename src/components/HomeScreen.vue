@@ -1,14 +1,6 @@
 <template>
   <div  class="container-fluid px-3 px-md-5 scrollable-container"> <!-- Adjust padding for different screen sizes -->
-    <div class="button-group align-items-center hidden max-[640px]:block mb-2">
-        <button 
-          type="button" 
-          class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
-          @click="postRoteiro"
-        >
-          Gerar Roteiro
-        </button>
-      </div>
+
     <div class="p-3 bg-[#d9e9e0] w-full h-full rounded-lg mb-2">  <!-- começo Free -->
       <div class="flex justify-start items-start">
           <span class="h5 text-left"><b>{{traducao.Free}}</b></span> 
@@ -146,7 +138,7 @@
           </div>
           <div class="fw-bold textosDuracao">{{ traducao.Menores }}</div>
           <div class=" mt-2">
-            <div class=" ms-auto">
+            <div class="hidden lg:block ms-auto">
               <div class="d-flex flex-wrap space-x-4">
               <span v-if="numChildren > 0" class="fw-bold textosDuracao mt-1 pl-4">{{ traducao.CidadesDe }}</span>
               <div 
@@ -168,7 +160,26 @@
             </div>
           </div>
           </div>
-
+          <div class="sm:hidden mt-4 ms-auto">
+              <div class="d-flex flex-wrap space-x-4">
+              <span v-if="numChildren > 0" class="fw-bold textosDuracao mt-1 pl-4">{{ traducao.CidadesDe }}</span>
+              <div 
+                v-for="(age, index) in numChildren" 
+                :key="index" 
+              >
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  :placeholder="`Idade ${index + 1}`" 
+                  v-model.number="childAges[index]"
+                  @input="formatAges(index)"
+                  min="0"
+                  max="17"
+                  style="width: 4rem;"
+                />
+              </div>
+            </div>
+            </div>
           <!-- <div v-if="numChildren > 0" class="col-4 mt-2 text-center fw-bold">
             <button 
               @click="prevChild" 
