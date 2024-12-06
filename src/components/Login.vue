@@ -270,7 +270,7 @@ const processUserInfo = async (userInfo) => {
       const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
       const userGender = userInfo.genders ? userInfo.genders[0].value : null;
       const userLocale = navigator.language
-      const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      const formattedDate = userBirthday ? `${userBirthday.day || 1}/${userBirthday.month || 1}/${userBirthday.year || 2000}` : null;
       localStorage.setItem('lang', userLocale.toUpperCase());
       localStorage.setItem('langName', userLocale.toUpperCase());
       await saveLocation()
