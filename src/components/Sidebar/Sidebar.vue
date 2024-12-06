@@ -407,9 +407,19 @@
                 <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img" alt="" />
                 <button class="fw-bold">{{ name }}</button>
                 </div>
+ 
             </div>
             </div>
             <div class="h-[calc(100vh-50px)] bg-[#faf8fd]">
+                <div class="button-group align-items-center hidden max-[640px]:block mb-2">
+                    <button 
+                    type="button" 
+                    class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+                    @click="postRoteiro"
+                    >
+                    Gerar Roteiro
+                    </button>
+                </div>
                 <RouterView></RouterView>
             </div>
         </div>
@@ -495,7 +505,7 @@ onMounted(async () => {
     name.value=user.value.Nome
     img.value=user.value.photo
     saldo.value=user.value.saldouser
-    if(user.value.email.includes('cezarsantos') || user.value.Email.includes('cezarsantos') || user.value.email.includes('luisalbergoni717')){
+    if(user.value.email.includes('cezarsantos') || user.value.Email.includes('cezarsantos')){
         isAdmin.value=true
     }
     const intervalId = setInterval(checkUserSaldo, 1000);
