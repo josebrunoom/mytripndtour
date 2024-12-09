@@ -55,6 +55,7 @@
         "ErrMsg7":"Roteiro Salvo",
         "ErrMsg8":"Erro ao Salvar Roteiro",
         "ErrMsg9":"Mude os dados para salvar outro roteiro",
+        "ErrMsg10":"A quantidade de dias não pode ser maior do que 20 ou menor do que 2!",
         "NameRoteiro": "Qual será o nome do Roteiro?",
         "Cancelar": "cancelar",
         "Adcionar": "Adicionar Créditos",
