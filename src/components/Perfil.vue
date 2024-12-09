@@ -166,7 +166,7 @@
       dialog.value = false;
       alert(traducao.value.SairUser)
       localStorage.clear();
-      location.reload();
+      window.location.href= 'https://mytripntour.com/'
       } catch (error) {
         console.log(error)
       }
