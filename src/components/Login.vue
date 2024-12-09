@@ -305,6 +305,39 @@ const sendUser=async(user, userInfo, access_type)=>{
     }); */
     const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', user)
     console.log('response senduser',response.data)
+    localStorage.setItem('token', response.data.token)
+    const tokenDecoded= jwtDecode(response.data.token)
+    const userEmail = userInfo.emailAddresses[0].value;
+      const userName = userInfo.names[0].displayName;
+      const userPicture = userInfo.photos[0].url;
+      const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+      const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      const LocalStorageUser = {
+                Email: userEmail,
+                name: userName,
+                photo: userPicture,
+                MetodoAutenticacao: 'Google',
+                birthday: moment.utc(response.data.dtnascimento).format('DD/MM/YYYY'),
+                gender: userGender,
+                ip_origem: userIP.value,
+                email: userEmail,
+                saldouser: response.data.saldouser,
+                vlrpdf: response.data.vlrpdf,
+                vlrpesquisa: response.data.vlrpesquisa,
+                iduser: response.data.iduser,
+                currency_data:response.data.currency_data,
+                city: locationData.value.city ? locationData.value.city : '',
+                region: locationData.value.region ? locationData.value.region : '',
+                country: locationData.value.country ? locationData.value.country : '',
+                loc: locationData.value.loc ? locationData.value.loc : '',
+                postal: locationData.value.postal ? locationData.value.postal : '',
+                timezone: locationData.value.timezone ? locationData.value.timezone : '',
+              };
+              console.log('LocalStorageUser',LocalStorageUser)
+      localStorage.setItem('languages', JSON.stringify(response.data.languages));
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
     if(response.data.ExistUser==1 || checkbox.value==true){
       localStorage.setItem('token', response.data.token)
       const tokenDecoded= jwtDecode(response.data.token)
@@ -364,7 +397,7 @@ const sendUser=async(user, userInfo, access_type)=>{
       router.push('/mytrip/home');
     } else{
       alert('Aceite os termos para continuar')
-      //openModal();
+      openModal();
     }
     
   } catch (error) {
