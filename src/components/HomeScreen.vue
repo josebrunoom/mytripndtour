@@ -166,6 +166,7 @@
               <div 
                 v-for="(age, index) in numChildren" 
                 :key="index" 
+                class="mb-2"
               >
                 <input 
                   type="number" 
@@ -993,6 +994,11 @@ const postRoteiro=async () =>{
     dialog.value = true;
     isLoading.value = false; 
     errMsg.value=traducao.value.ErrMsg5
+  }
+  else if(ObjRoteiro1.periodo_viagem<2||ObjRoteiro1.periodo_viagem<20){
+    dialog.value = true;
+    isLoading.value = false; 
+    errMsg.value=traducao.value.ErrMsg10
   }
   else{
     if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0||ObjRoteiro1.custos_detalhe=='S'){
