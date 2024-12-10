@@ -62,7 +62,7 @@
               v-tooltip.top="{ value: traducao.Tooltip3, escape: false }"
             ></i>
           </div>
-          <div class="d-flex flex-wrap align-items-center">
+          <div class="d-flex flex-wrap align-items-center flex-column flex-md-row">
             <!-- Travel duration input -->
             <div class="me-2 " style="flex: 1 1">
               <input 
@@ -511,6 +511,7 @@
         <v-card-text>{{traducao.DialogLimpar}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogLimpar=false">{{ traducao.Nao }}</v-btn>
           <v-btn color="[#78c0d6]" text @click="resetData">{{ traducao.Sim }}</v-btn>
         </v-card-actions>
       </v-card>
@@ -1666,17 +1667,7 @@ input[type="date"]::-webkit-input-placeholder{
   height: auto;        /* Adjust height automatically */
 }
 
-@media (max-width: 768px) {
-  .small-datepicker {
-    width: 80px;  /* Adjust width for smaller screens */
-  }
-}
 
-@media (max-width: 576px) {
-  .small-datepicker {
-    width: 60px;  /* Even smaller on mobile */
-  }
-}
 .custom-checkbox {
   appearance: none; /* Remove default browser styling */
   -webkit-appearance: none; /* For WebKit browsers */
@@ -1711,5 +1702,10 @@ input[type="date"]::-webkit-input-placeholder{
       display: none;
     }
   }
+@media (max-width: 768px) {
+  .custom-flex {
+    flex-direction: column;
+  }
+}
 </style>
   
