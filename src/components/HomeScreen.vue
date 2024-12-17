@@ -856,6 +856,14 @@ watch(numChildren, (newCount) => {
     childAges.value.splice(newCount);
   }
 });
+watch(periodo_viagem, (newCount) => {
+  if (newCount > 20) {
+    periodo_viagem.value=20
+  } 
+  else if (newCount < 2) {
+    periodo_viagem.value=2
+  }
+});
 
 const formatChildren = () => {
       //numChildren.value = parseInt(formattedChildren.value) || 0;
@@ -996,7 +1004,7 @@ const postRoteiro=async () =>{
     isLoading.value = false; 
     errMsg.value=traducao.value.ErrMsg5
   }
-  else if(ObjRoteiro1.periodo_viagem<2||ObjRoteiro1.periodo_viagem<20){
+  else if(ObjRoteiro1.periodo_viagem.value<2||ObjRoteiro1.periodo_viagem.value<20){
     dialog.value = true;
     isLoading.value = false; 
     errMsg.value=traducao.value.ErrMsg10
