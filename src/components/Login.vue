@@ -12,6 +12,20 @@
             </button>
           </div>
         </form>
+        <div class=" flex justify-center items-center">
+          <input 
+          type="text" 
+          class="form-control google-btn input-box py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100"
+          v-model="Email"
+          placeholder="Email"
+          >
+        </div>
+        <div  class=" flex justify-center items-center">
+          <button  @click="sendEmailOnly()" class="google-btn input-box w-full py-2 px-4 bg-[#27b3cc] text-white border border-gray-300 rounded-md shadow-sm hover:bg-[#184f58] ">
+            
+            Entrar
+          </button>
+        </div>
 <!--         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">
             <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
@@ -52,6 +66,7 @@
   const userIP=ref('')
   let token=localStorage.getItem('token')
   const locationData = ref(null)
+  const Email = ref('')
   let data = {
       ip: "179.221.49.176",
       hostname: "b3dd31b0.virtua.com.br",
@@ -100,71 +115,10 @@
         console.log("The 'exp' timestamp has passed.");
       }
     }
-    window.fbAsyncInit = function() {
-    FB.init({
-      appId: '1203498224221425',
-      cookie: true,
-      xfbml: true,
-      version: 'v20.0'
-    });
-
-    console.log('Facebook SDK initialized');
-
-    FB.getLoginStatus(function(response) {
-      console.log('FB.getLoginStatus response:', response);
-    });
-  };
-
-  // Load Facebook SDK
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) { return; }
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/pt_BR/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-  //Translate();
-    if (!window.dataLayer) {
-        window.dataLayer = [];
-    }
-
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'G-5BTZ1093SB');
+/*     gtag('js', new Date());
+    gtag('config', 'G-5BTZ1093SB'); */
   }
 )
-
-  const loginWithFacebook = () => {
-  FB.login(function(response) {
-    if (response.authResponse) {
-      console.log('Welcome! Fetching your information....');
-      FB.api('/me', { fields: 'name,email,birthday,gender,picture' }, async function(response) {
-        console.log('facebook response', response);
-        if (response && !response.error) {
-          console.log('Good to see you, ' + response.name + '. Your email is ' + response.email);
-          let backUser = [];
-          let objUser = {
-            email: response.email,
-            name: response.name,
-            //password: response.id, 
-            birthday:  response.birthday ? response.birthday : null,
-            gender: response.gender ? response.gender : null,
-            idioma:'PT',
-            ip_origem:userIP.value
-          };
-
-          await sendUser(objUser, response, 'facebook');
-        } else {
-          console.error('Error fetching email:', response.error);
-        }
-      });
-    } else {
-      console.log('User cancelled login or did not fully authorize.');
-    }
-  }, { scope: 'email,user_birthday,user_gender' });
-};
   const ipGet=async ()=>{
     const response = await fetch('https://api.ipify.org?format=json');
     const data = await response.json();
@@ -241,7 +195,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://roteiro.mytripntour.com', 
+            redirect_uri: 'http://localhost:5173', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -282,13 +236,14 @@ const processUserInfo = async (userInfo) => {
             gender: userGender,
             sigla_idioma:userLocale.toUpperCase(),
             ip_origem:userIP.value,
-            pagina:'Roteiros',
+            /* pagina:'Roteiros', */
             city: locationData.value.city ? locationData.value.city : '',
             region: locationData.value.region ? locationData.value.region : '',
             country: locationData.value.country ? locationData.value.country : '',
             loc: locationData.value.loc ? locationData.value.loc : '',
             postal: locationData.value.postal ? locationData.value.postal : '',
             timezone: locationData.value.timezone ? locationData.value.timezone : '',
+            flg_auth:'G'
           };
           await sendUser(objUser, userInfo, 'google')
 };
@@ -427,6 +382,56 @@ const sendUser=async(user, userInfo, access_type)=>{
       console.error('Facebook login function is not available.');
     }
   };
+  const sendEmailOnly = async () => {
+    isLoading.value=true
+    await saveLocation()
+    const userLocale = navigator.language
+    let objUser={
+      email:Email.value,
+      flg_auth:'E',
+      name: Email.value,
+      sigla_idioma:userLocale.toUpperCase(),
+      ip_origem:userIP.value,
+      city: locationData.value.city ? locationData.value.city : '',
+      region: locationData.value.region ? locationData.value.region : '',
+      country: locationData.value.country ? locationData.value.country : '',
+      loc: locationData.value.loc ? locationData.value.loc : '',
+      postal: locationData.value.postal ? locationData.value.postal : '',
+      timezone: locationData.value.timezone ? locationData.value.timezone : '',
+    }
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+    if(response.data.ExistUser==1 || checkbox.value==true){
+      localStorage.setItem('token', response.data.token)
+      const LocalStorageUser = {
+        email:Email.value,
+        flg_auth:'E',
+        name: Email.value,
+        sigla_idioma:userLocale.toUpperCase(),
+        ip_origem:userIP.value,
+        city: locationData.value.city ? locationData.value.city : '',
+        region: locationData.value.region ? locationData.value.region : '',
+        country: locationData.value.country ? locationData.value.country : '',
+        loc: locationData.value.loc ? locationData.value.loc : '',
+        postal: locationData.value.postal ? locationData.value.postal : '',
+        timezone: locationData.value.timezone ? locationData.value.timezone : '',
+        saldouser: response.data.saldouser,
+        vlrpdf: response.data.vlrpdf,
+        vlrpesquisa: response.data.vlrpesquisa,
+        iduser: response.data.iduser,
+        currency_data:response.data.currency_data,
+      }
+      localStorage.setItem('languages', JSON.stringify(response.data.languages));
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
+      console.log('responseEmailSend',response)
+      isLoading.value=false
+      localStorage.setItem('user',JSON.stringify(objUser))
+      router.push('/mytrip/home');
+    }else{
+      alert('Aceite os termos para continuar')
+      openModal();
+    }
+  }
 </script> 
 
   
