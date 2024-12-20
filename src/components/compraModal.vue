@@ -61,13 +61,29 @@
                 
             </div>
         </div>
-        
+        <v-dialog v-model="dialog" max-width="500px">
+        <v-card>
+            <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+            <v-card-text>Para fazer a compra de creditos, você deve fornecer mais informações</v-card-text>
+            <v-card-actions>
+                <div  class=" flex justify-center items-center">
+                    <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
+                    <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
+                    Entrar Com Google
+                    </button>
+                </div>
+            <v-spacer></v-spacer>
+            <v-btn color="[#78c0d6]" text @click="dialog=false, props.closeModal()">Cancelar</v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
         </div>
 </template>
 
 <script setup>
 import axios from 'axios';
 import { ref, onMounted, computed, watch } from 'vue';
+import router from '../routes';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const props = defineProps({
@@ -89,6 +105,7 @@ const paypalButtonContainer = ref(null);
 const currency = ref(null)
 const conversionRate = ref(1)
 const signal = ref('')
+const dialog = ref(false)
 
 watch([selectedCredit, conversionRate], ([newCredit, newRate]) => {
     valueToPay.value = (newCredit ? newCredit * newRate : 0).toFixed(2);
@@ -100,6 +117,9 @@ const location = JSON.parse(localStorage.getItem('location'))
 onMounted(async () => {
     await loadCurrency()
     console.log(props.traducao)
+    if(user.name.incudes(".com")||user.Flg_Auth=='E'){
+        dialog.value=true
+    }
 });
 watch(currency, (newCurrency, oldCurrency) => {
     console.log('Currency changed from', oldCurrency, 'to', newCurrency);
@@ -221,6 +241,9 @@ const generatePixQRCode = () => {
     const pixLink = `https://example-pix-api.com/generate?amount=${selectedCredit.value}`;
     pixQRCode.value = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(pixLink)}&size=150x150`;
 };
+const login = () =>{
+    router.push('/')
+}
 </script>
 
 <style scoped>
