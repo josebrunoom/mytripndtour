@@ -1004,7 +1004,7 @@ const postRoteiro=async () =>{
     isLoading.value = false; 
     errMsg.value=traducao.value.ErrMsg5
   }
-  else if(ObjRoteiro1.periodo_viagem.value<2||ObjRoteiro1.periodo_viagem.value<20){
+  else if(ObjRoteiro1.dias.value<2||ObjRoteiro1.dias.value<20){
     dialog.value = true;
     isLoading.value = false; 
     errMsg.value=traducao.value.ErrMsg10
