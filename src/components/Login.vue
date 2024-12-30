@@ -1,17 +1,10 @@
 <template>
     <div class="flex justify-center items-center scrollable-container">
-      <div class=" max-w p-8 space-y-8 bg-white rounded-lg shadow-md">
+      <div class=" max-w p-8  bg-white rounded-lg shadow-md">
         <div class="flex justify-center mb-4 sm:mb-8">
           <img src="../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-1.png" alt="Logo" class="img-Logo" />
         </div>
-        <form @submit.prevent="">
-          <div  class=" flex justify-center items-center">
-            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
-              <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
-              Entrar Com Google
-            </button>
-          </div>
-        </form>
+
         <div class=" flex justify-center items-center">
           <input 
           type="text" 
@@ -26,6 +19,15 @@
             Entrar
           </button>
         </div>
+        <span class=" mb-3">Ou</span>
+        <form @submit.prevent="">
+          <div  class=" flex justify-center items-center mt-3">
+            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
+              <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
+              Entrar Com Google
+            </button>
+          </div>
+        </form>
 <!--         <form @submit.prevent="">
           <div  class=" flex justify-center items-center">
             <button  @click="loginWithFacebook" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
@@ -42,7 +44,7 @@
       <Loading :loading="isLoading" ></Loading>
       <!-- <button @click="sendUser" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ml-24"> Logar</button> -->
     </div>
-  </template>
+</template>
   <script setup>
   import { ref, onMounted } from 'vue';
   import { googleOneTap, GoogleLogin, googleTokenLogin, googleAuthCodeLogin, googleSdkLoaded } from "vue3-google-login";
