@@ -217,6 +217,13 @@
     <div class="col-12 d-flex justify-content-start mb-2">
       <button 
         type="button" 
+        class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+        @click="postRoteiro"
+        >
+        {{traducao.Gerar}}
+      </button>
+      <button 
+        type="button" 
         class="bg-[#ffc109] text-white px-4 py-2 rounded-lg hover:bg-[#e0a607] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
         @click="dialogLimpar=true"
       >
@@ -420,7 +427,7 @@
     
     </div> <!--  Fim Premium -->
 
-    <div class="row mb-4 pl-[0.80rem]">
+    <div class="row mb-4 ">
       <div style="display: none !important" class="col-12 d-flex justify-content-start">
         <div class="fw-bold mb-2 pl-2">Gerar com detalhes descritivos dos locais sugeridos? </div>
         <div 
@@ -438,7 +445,14 @@
           </div>
           </div>
       </div>
-      <div class="col-12 d-flex justify-content-start">
+      <div class="col-12 d-flex justify-content-start mb-2">
+        <button 
+          type="button" 
+          class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+          @click="postRoteiro"
+          >
+          {{traducao.Gerar}}
+        </button>
         <button 
           type="button" 
           class="bg-[#ffc109] text-white px-4 py-2 rounded-lg hover:bg-[#e0a607] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
