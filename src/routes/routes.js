@@ -12,7 +12,7 @@ import PdfSave from "../components/pdfSave.vue";
 
 const routes = [
     {
-        path:'/roteiro',
+        path:'/',
         name:"Login",
         component:Login
     },
