@@ -13,7 +13,7 @@ import PdfSave from "../components/pdfSave.vue";
 const routes = [
     {
         path:'/',
-        name:'Login',
+        name:'Login2',
         component:Login
     },
     {
