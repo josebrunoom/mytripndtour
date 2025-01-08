@@ -27,6 +27,15 @@
         console.log('GMap Callback');
       }
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11509215928"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-11509215928');
+    </script>
     <script type="module" src="./src/main.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABgbwENMqmwM1Ute6IBErM69F62RWmpZc&callback=gmNoop&libraries=places"></script>
   </body>
