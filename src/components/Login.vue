@@ -197,7 +197,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://mytripntour.com/roteiro', 
+            redirect_uri: 'https://mytripntour.com', 
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
