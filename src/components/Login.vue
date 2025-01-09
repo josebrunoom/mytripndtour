@@ -37,7 +37,7 @@
           </div>
         </form> -->
         <div class="mt-4">
-            <input type="checkbox" class="mr-1" v-model="checkbox"> Eu concordo com a <a href="https://roteiro.mytripntour.com/politica_privacidade">Política de Privacidade</a>
+            <input type="checkbox" class="mr-1" v-model="checkbox"> Eu concordo com a <a href="https://mytripntour.com/roteiro/politica_privacidade">Política de Privacidade</a>
         </div>
       </div>
       <ModalTermsAndPolitics v-if="showModal" :close-modal="closeModal"></ModalTermsAndPolitics>

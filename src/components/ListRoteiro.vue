@@ -216,7 +216,7 @@
     localStorage.setItem('roteiroSee',dataToSend.value)
     //const encodedData = encodeURIComponent(dataToSend.value);
     //console.log(encodedData)
-    window.location.href = `https://roteiro.mytripntour.com/mytrip/visualizacao`;
+    window.location.href = `https://mytripntour.com/roteiro/mytrip/visualizacao`;
     }
 </script>
 
