@@ -63,7 +63,7 @@
   const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
 
   const isLoading = ref(false)
-  const checkbox = ref(false)
+  const checkbox = ref(true)
   const showModal = ref(false);
   const userIP=ref('')
   let token=localStorage.getItem('token')
