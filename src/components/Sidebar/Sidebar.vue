@@ -688,7 +688,7 @@ const Translate = async (lang, langName) => {
             const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
         localStorage.setItem('Traducao', responseUser.data.traducao);
         localStorage.setItem('languages', JSON.stringify(responseUser.data.languages));
-        location.reload()
+        window.location.href = window.location.href;
     } catch (error) {
         console.log(error)
     }
