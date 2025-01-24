@@ -10,6 +10,7 @@
           type="text" 
           class="form-control google-btn input-box py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100"
           v-model="Email"
+          id="emaillogin"
           placeholder="Email"
           >
         </div>
@@ -353,26 +354,17 @@ const sendUser=async(user, userInfo, access_type)=>{
     }
   };
   const sendEmailOnly = async () => {
-    isLoading.value=true
-    await saveLocation()
-    const userLocale = navigator.language
-    let objUser={
-      email:Email.value,
-      flg_auth:'E',
-      name: Email.value,
-      sigla_idioma:userLocale.toUpperCase(),
-      ip_origem:userIP.value,
-      city: locationData.value.city ? locationData.value.city : '',
-      region: locationData.value.region ? locationData.value.region : '',
-      country: locationData.value.country ? locationData.value.country : '',
-      loc: locationData.value.loc ? locationData.value.loc : '',
-      postal: locationData.value.postal ? locationData.value.postal : '',
-      timezone: locationData.value.timezone ? locationData.value.timezone : '',
+    if (document.getElementById("emaillogin").value == null || document.getElementById("emaillogin").value == ""){
+      alert('Preencha um email para continuar!')
     }
-    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-    if(response.data.ExistUser==1 || checkbox.value==true){
-      localStorage.setItem('token', response.data.token)
-      const LocalStorageUser = {
+    else if(document.getElementById("emaillogin").value.indexOf("@") == -1) {
+      alert('Preencha um email valido para continuar!')
+    }
+    else{
+      isLoading.value=true
+      await saveLocation()
+      const userLocale = navigator.language
+      let objUser={
         email:Email.value,
         flg_auth:'E',
         name: Email.value,
@@ -384,21 +376,38 @@ const sendUser=async(user, userInfo, access_type)=>{
         loc: locationData.value.loc ? locationData.value.loc : '',
         postal: locationData.value.postal ? locationData.value.postal : '',
         timezone: locationData.value.timezone ? locationData.value.timezone : '',
-        saldouser: response.data.saldouser,
-        vlrpdf: response.data.vlrpdf,
-        vlrpesquisa: response.data.vlrpesquisa,
-        iduser: response.data.iduser,
-        currency_data:response.data.currency_data,
       }
-      localStorage.setItem('languages', JSON.stringify(response.data.languages));
-      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
-      localStorage.setItem('Traducao', response.data.traducao);
-      console.log('responseEmailSend',response)
-      isLoading.value=false
-      router.push('/mytrip/home');
-    }else{
-      alert('Aceite os termos para continuar')
-      openModal();
+      const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
+      if(response.data.ExistUser==1 || checkbox.value==true){
+        localStorage.setItem('token', response.data.token)
+        const LocalStorageUser = {
+          email:Email.value,
+          flg_auth:'E',
+          name: Email.value,
+          sigla_idioma:userLocale.toUpperCase(),
+          ip_origem:userIP.value,
+          city: locationData.value.city ? locationData.value.city : '',
+          region: locationData.value.region ? locationData.value.region : '',
+          country: locationData.value.country ? locationData.value.country : '',
+          loc: locationData.value.loc ? locationData.value.loc : '',
+          postal: locationData.value.postal ? locationData.value.postal : '',
+          timezone: locationData.value.timezone ? locationData.value.timezone : '',
+          saldouser: response.data.saldouser,
+          vlrpdf: response.data.vlrpdf,
+          vlrpesquisa: response.data.vlrpesquisa,
+          iduser: response.data.iduser,
+          currency_data:response.data.currency_data,
+        }
+        localStorage.setItem('languages', JSON.stringify(response.data.languages));
+        localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+        localStorage.setItem('Traducao', response.data.traducao);
+        console.log('responseEmailSend',response)
+        isLoading.value=false
+        router.push('/mytrip/home');
+      }else{
+        alert('Aceite os termos para continuar')
+        openModal();
+      }
     }
   }
 </script> 
