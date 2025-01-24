@@ -69,41 +69,9 @@
   let token=localStorage.getItem('token')
   const locationData = ref(null)
   const Email = ref('')
-  let data = {
-      ip: "179.221.49.176",
-      hostname: "b3dd31b0.virtua.com.br",
-      city: "Poços de Caldas",
-      region: "Minas Gerais",
-      country: "BR",
-      loc: "-21.7878,-46.5614",
-      postal: "37700-000",
-      timezone: "America/Sao_Paulo",
-    } 
 
   const traducao = ref(null)
-
-  const Translate = async () => {
-    isLoading.value=true
-    try {
-      let objUser = {
-            email: 'luisalbergoni717@gmail.com',
-            name: 'Luis Otavio',
-            birthday: '16/6/2000',
-            gender: 'male',
-            sigla_idioma:navigator.language.toUpperCase() || navigator.languages[0].toUpperCase(),
-            pagina:'Roteiros',
-            ip_origem:userIP.value,
-        };
-      const responseUser = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', objUser)
-      console.log(responseUser.data.traducao)
-      const parsed = JSON.parse(responseUser.data.traducao)
-      traducao.value = parsed.Login
-      console.log(parsed)
-      isLoading.value=false
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  
 
   onMounted(()=>{
     ipGet();
@@ -427,7 +395,6 @@ const sendUser=async(user, userInfo, access_type)=>{
       localStorage.setItem('Traducao', response.data.traducao);
       console.log('responseEmailSend',response)
       isLoading.value=false
-      localStorage.setItem('user',JSON.stringify(objUser))
       router.push('/mytrip/home');
     }else{
       alert('Aceite os termos para continuar')
