@@ -404,7 +404,7 @@
                     </div>
                 </div>
 
-                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img" alt="" />
+                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img ? img : avatar" alt="" />
                 <button class="fw-bold">{{ name }}</button>
                 </div>
  
@@ -464,6 +464,7 @@ import ptLang from '../../data/ptlang';
 import Loading from '../Loading.vue';
 import axios from 'axios';
 import { eventBus } from '../../data/eventbus';
+import avatar from '../../assets/defaultUser/defaultAvatar.jpg'
 
 let TRoteiro 
 const traducao = ref(ptLang)
@@ -502,10 +503,10 @@ eventBus.on('RoteiroAppear', () => {
     showPdf.value=true
 });
 onMounted(async () => {
-    name.value=user.value.Nome
+    name.value=user.value.name
     img.value=user.value.photo
     saldo.value=user.value.saldouser
-    if(user.value.email.includes('cezarsantos') || user.value.Email.includes('cezarsantos')){
+    if(user.value.email.includes('cezarsantos') ){
         isAdmin.value=true
     }
     const intervalId = setInterval(checkUserSaldo, 1000);
