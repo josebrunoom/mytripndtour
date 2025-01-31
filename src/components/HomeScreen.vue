@@ -734,7 +734,7 @@ onBeforeUnmount(() => {
 
   watch(date, (newValue) => {
     transformDates(newValue, periodo_viagem.value)
-});
+  });
   const toggleSelect = (modo) =>{
     if (hospedagemSelecionada.value === modo) {
         hospedagemSelecionada.value = null; 
@@ -875,7 +875,7 @@ watch(periodo_viagem, (newCount) => {
     periodo_viagem.value=20
   } 
   else if (newCount < 2) {
-    periodo_viagem.value=2
+    periodo_viagem.value=null
   }
 });
 
