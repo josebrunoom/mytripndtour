@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen w-screen flex fixed left-0" >
-        <div class="w-full hidden sm:block md:w-[500px] lg:w-[300px] h-full mt-4 ml-4">
+        <div class="w-full hidden Slider md:w-[500px] lg:w-[300px] h-full mt-4 ml-4">
             <div class="h-[calc(100vh-50px)] bg-[#ffff] rounded-lg">
                 <div class="flex justify-center mb-4 top-0">
                     <img src="../../assets/Logotipo/Arquivos em Imagem/Arquivos com Fundo/Logotipo_MyTripNTour_ComFundo-01.jpg" alt="Logo" class="img-Logo" />
@@ -349,7 +349,7 @@
                 <div class="d-flex">
                 <button 
                     @click="isSidebarOpen = !isSidebarOpen" 
-                    class="text-black px-4 py-2 rounded-lg md:hidden"
+                    class="text-black px-4 py-2 rounded-lg max-[1050px]:block hidden"
                 >
                     <ion-icon name="reorder-three-outline" size="large"></ion-icon>
                 </button>
@@ -737,5 +737,15 @@ const Translate = async (lang, langName) => {
     .button-line {
         display: none;
     }
+    }
+    @media (min-width: 1050px) {
+        .Slider {
+            display: block;
+        }
+    }
+    @media (min-width: 1050px) {
+        .ButtonSlider {
+            display: none;
+        }
     }
 </style>
