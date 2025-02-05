@@ -64,7 +64,7 @@ const routes = [
         ]
     },
     {
-        path:'/politica_privacidade',
+        path:'/politica_privacidade/',
         name:"politica_privacidade",
         component:Politica_privacidade
     },
