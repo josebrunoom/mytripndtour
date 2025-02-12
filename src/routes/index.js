@@ -2,18 +2,25 @@ import { createWebHistory, createRouter } from 'vue-router'
 import routes from './routes';
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory("/roteiro/"),
     routes,
   })
 
-router.beforeEach((to, from, next) => {
+  router.beforeEach((to, from, next) => {
     console.log("Navegando para:", to.fullPath);
-    const publicPages = ['/', '/politica_privacidade'];
+    
+    // Ajuste os caminhos para incluir "/roteiro/"
+    const publicPages = ['/roteiro/', '/roteiro/politica_privacidade'];
+
+    // Verifica se a página exige autenticação
     const authRequired = !publicPages.includes(to.path);
     const token = localStorage.getItem('token');
+
+    // Se for necessário autenticar e não houver token, redireciona para a Home
     if (authRequired && !token) {
-        return next('/');
+        return next('/roteiro/');
     }
+
     next();
 });
 
