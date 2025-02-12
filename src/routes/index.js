@@ -7,6 +7,7 @@ const router = createRouter({
   })
 
 router.beforeEach((to, from, next) => {
+    console.log("Navegando para:", to.fullPath);
     const publicPages = ['/', '/politica_privacidade'];
     const authRequired = !publicPages.includes(to.path);
     const token = localStorage.getItem('token');
