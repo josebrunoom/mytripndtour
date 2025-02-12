@@ -12,11 +12,6 @@ import PdfSave from "../components/pdfSave.vue";
 
 const routes = [
     {
-        path:'/',
-        name:'Login2',
-        component:Login
-    },
-    {
         path:'/roteiro/',
         name:"Login",
         component:Login
@@ -65,6 +60,11 @@ const routes = [
     },
     {
         path:'/roteiro/politica_privacidade/',
+        name:"politica_privacidade",
+        component:Politica_privacidade
+    },
+    {
+        path:'/politica_privacidade/',
         name:"politica_privacidade",
         component:Politica_privacidade
     },
