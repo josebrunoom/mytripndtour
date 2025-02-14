@@ -805,9 +805,9 @@ export default {
             display: none;
         }
     }
-    @media (max-width: 768px) { /* Aplica apenas no mobile */
+    @media (max-width: 768px) { 
         .dropdown-menu-custom{
-           width: 50px !;
+           width: 5% !important;
         }
 }
 
