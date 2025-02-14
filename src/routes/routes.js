@@ -28,6 +28,11 @@ const routes = [
     },
     {
         path:'/',
+        name:'Login2',
+        component:Login
+    },
+    {
+        path:'/roteiro',
         name:"Login",
         component:Login
     },
