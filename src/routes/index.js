@@ -23,7 +23,7 @@ const router = createRouter({
       // Se for necessário autenticar e não houver token, redireciona para a Home
       if (authRequired && !token) {
         console.log("teste");
-        return next('/');
+        return next('/roteiro');
       }
 
       next();
