@@ -7,7 +7,7 @@ const router = createRouter({
   })
 
   router.beforeEach((to, from, next) => {
-    console.log("Navegando para:", to.fullPath);
+    console.log("Navegando para:", to.path);
     
     // Ajuste os caminhos para incluir "/roteiro/"
     const publicPages = ['/roteiro/', '/politica_privacidade'];
