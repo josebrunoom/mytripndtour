@@ -12,12 +12,12 @@ import PdfSave from "../components/pdfSave.vue";
 
 const routes = [
     {
-        path:'/roteiro/politica_privacidade/',
+        path:'/roteiro/politica_privacidade',
         name:"politica_privacidade",
         component:Politica_privacidade
     },
     {
-        path:'/politica_privacidade/',
+        path:'/politica_privacidade',
         name:"politica_privacidade2",
         component:Politica_privacidade
     },
