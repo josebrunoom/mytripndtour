@@ -7,7 +7,7 @@
         </div>
     <div class="row mb-4">
       <div class="col-12 col-md-6 mb-3 mb-md-0">
-        <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #FEECCF;">
+        <div class="p-4 rounded-lg shadow-md h-32 cartao-origem" style="background-color: #FEECCF;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold text-left">
                 {{ traducao.CidadeO }}
@@ -22,14 +22,14 @@
             <button v-show="!showOrigem" class="fw-bold float-start" style="font-size:1.8rem" @click="setOrigem">{{ OrigemCity ? OrigemCity : traducao.SelectOrigem }}</button>
             <button v-show="!showOrigem" class="fw-bold float-start pt-[0.30rem] pl-1" style="font-size:1.2rem" @click="setOrigem"><i class="fa-solid fa-pencil"></i></button>
             <div v-show="showOrigem">
-                <input ref="inputOrigem" id="autocompleteO" type="text" :placeholder="traducao.Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
+                <input ref="inputOrigem" id="autocompleteO" type="text" :placeholder="traducao.Origem" class="w-full h-10 bg-white rounded-lg" v-model="OrigemCity" style="padding-left: 10px; padding-right: 10px;margin-top: 10px;">
               </div>
             <!-- <vue-google-autocomplete id="map" types="(cities)" classname="form-control" placeholder="Origem" v-on:placechanged="handlePlaceOrigem">
             </vue-google-autocomplete> -->
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <div class="p-4 rounded-lg shadow-md h-44" style="background-color: #CFEDFE;">
+        <div class="p-4 rounded-lg shadow-md h-32" style="background-color: #CFEDFE;">
           <div class="d-flex align-items-center justify-content-between">
               <h2 class="h3 fw-bold  text-left">
                 {{ traducao.Destino  }}
@@ -44,7 +44,7 @@
           <button v-show="!showDestino" class="fw-bold float-start" style="font-size:1.8rem" @click="setDestino">{{ DestinoCity ? DestinoCity : traducao.SelectDestino }}</button>
           <button v-show="!showDestino" class="fw-bold float-start pt-[0.30rem] pl-1" style="font-size:1.2rem" @click="setDestino"><i class="fa-solid fa-pencil"></i></button>
               <div v-show="showDestino">
-                <input ref="inputDestino" id="autocompleteD" type="text" :placeholder="traducao.Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 39px;">
+                <input ref="inputDestino" id="autocompleteD" type="text" :placeholder="traducao.Destino" class="w-full h-10 bg-white rounded-lg" v-model="DestinoCity" style="padding-left: 10px; padding-right: 10px;margin-top: 10px;">
               </div>
         </div>
       </div>
@@ -1642,6 +1642,21 @@ body {
     font-size: 1.3rem;
   }
 }
+@media (max-width: 768px) { /* Aplica apenas no mobile */
+  .cartao-origem {
+    height: auto !important; /* Permite ajuste dinâmico */
+    min-height: 120px; /* Define um limite mínimo para evitar cards muito pequenos */
+  }
+
+  .p-4 {
+    padding: 12px !important; /* Reduz o padding interno */
+  }
+
+  button, input {
+    font-size: 1.5rem !important; /* Ajusta tamanhos dos elementos internos */
+  }
+}
+
 /* Remove as setas em navegadores baseados no WebKit (Chrome, Safari, etc.) */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
