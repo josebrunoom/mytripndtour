@@ -11,7 +11,7 @@ const router = createRouter({
       console.log("Navegando para:", to.path);
     
       // Ajuste os caminhos para incluir "/roteiro/"
-      const publicPages = ['/roteiro/', '/politica_privacidade'];
+      const publicPages = ['/','/roteiro/', '/politica_privacidade'];
   
       console.log("Public: ", publicPages);
       // Verifica se a página exige autenticação
