@@ -344,34 +344,32 @@
         </div>
         <div class="w-full bg-[#faf8fd]" style="overflow: auto;"> 
             <div class="bg-[#faf8fd]">
-            <div class="d-flex justify-content-between align-items-center lg:mt-4 lg:pr-16">
-                <!-- Left-aligned button -->
-                <div class="d-flex">
-                <button 
-                    @click="isSidebarOpen = !isSidebarOpen" 
-                    class="text-black px-4 py-2 rounded-lg max-[1050px]:block hidden"
-                >
-                    <ion-icon name="reorder-three-outline" size="large"></ion-icon>
-                </button>
-                <div v-if="isAdmin" class="pr-2">
-                    <input type="radio" value="dev" v-model="optDev" @change="saveisdevprod">
-                    <span class="pr-3">DEV</span>
-                    <input type="radio" value="prod" v-model="optDev" @change="saveisdevprod">
-                    <span>PROD</span>
-                </div>
-                <div v-if="optDev=='dev'" class="d-flex">
-                    <span>idAgent_start: </span>
-                    <input type="number" v-model="idAgent_start" class="form-control" @change="saveIdAgent">
-                    <span>idAgent_end: </span>
-                    <input type="number" v-model="idAgent_end" class="form-control" @change="saveIdAgent">
-                </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center lg:mt-4 lg:pr-16">
+                    <!-- Left-aligned button -->
+                    <div class="d-flex align-items-center">
+                        <button 
+                            @click="isSidebarOpen = !isSidebarOpen" 
+                            class="text-black px-4 py-2 rounded-lg max-[1050px]:block hidden"
+                        >
+                            <ion-icon name="reorder-three-outline" size="large"></ion-icon>
+                        </button>
+                        <div v-if="isAdmin" class="pr-2">
+                            <input type="radio" value="dev" v-model="optDev" @change="saveisdevprod">
+                            <span class="pr-3">DEV</span>
+                            <input type="radio" value="prod" v-model="optDev" @change="saveisdevprod">
+                            <span>PROD</span>
+                        </div>
+                        <div v-if="optDev=='dev'" class="d-flex">
+                            <span>idAgent_start: </span>
+                            <input type="number" v-model="idAgent_start" class="form-control" @change="saveIdAgent">
+                            <span>idAgent_end: </span>
+                            <input type="number" v-model="idAgent_end" class="form-control" @change="saveIdAgent">
+                        </div>
+                    </div>
 
-                </div>
-
-                <!-- Right-aligned content -->
-
-                <div class="d-flex align-items-center">
-                    <div class="button-group align-items-center hidden sm:block"v-if="currentRouteName=='home'">
+                    <!-- Right-aligned content -->
+                    <div class="d-flex align-items-center">
+                        <div class="button-group align-items-center hidden sm:block"v-if="currentRouteName=='home'">
                         <button 
                         type="button" 
                         class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
@@ -390,39 +388,51 @@
                             <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
                         </div> -->
                     </div>
-                    <span class="fw-bold pr-5 max-[500px]:text-sm"><button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}</span>
-                <div class="dropdown me-3">
-                    <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-globe"></i> {{ languageName }}
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
-                    <li v-for="(lang) in languages" :key="lang.sigla_idioma">
-                        <a class="dropdown-item" href="#" @click.prevent="Translate(lang.sigla_idioma, lang.nome_idioma)">
-                        {{ lang.nome_idioma }}
-                        </a>
-                    </li>
+                        <span class="fw-bold pr-5 max-[500px]:text-sm">
+                            <button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> 
+                            {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}
+                        </span>
+                        <div class="dropdown me-3">
+                            <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-globe"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuButton">
+                                <li v-for="lang in languages" :key="lang.sigla_idioma">
+                                    <a v-if="!isMobile" class="dropdown-item" href="#" @click.prevent="Translate(lang.sigla_idioma, lang.nome_idioma)">
+                                        {{ lang.nome_idioma }}
+                                    </a>
+                                    <a v-else class="dropdown-item text-center" href="#" @click.prevent="Translate(lang.sigla_idioma, lang.nome_idioma)">
+                                        <img :src="getFlag(lang.sigla_idioma)" class="h-5 w-5 inline-block" alt="" />
+                                    </a>
+                                </li>
+                            </div>
+                        </div>
+                        <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2 d-none d-lg-inline" :src="img ? img : avatar" alt="" />
+                        <button class="fw-bold d-none d-lg-inline">{{ name }}</button>
                     </div>
                 </div>
 
-                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img ? img : avatar" alt="" />
-                <button class="fw-bold">{{ name }}</button>
+
+                <div class="d-flex flex-column align-items-center mt-2 w-100 text-center d-lg-none">
+                    <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white me-2" :src="img ? img : avatar" alt="" />
+                    <button class="fw-bold w-100">{{ name }}</button>
                 </div>
- 
             </div>
-            </div>
+
             <div class="h-[calc(100vh-50px)] bg-[#faf8fd]">
                 <div class="button-group align-items-center hidden max-[640px]:block mb-2">
                     <button 
-                    type="button" 
-                    class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
-                    @click="postRoteiro"
+                        type="button" 
+                        class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+                        @click="postRoteiro"
                     >
-                    Gerar Roteiro
+                        Gerar Roteiro
                     </button>
                 </div>
                 <RouterView></RouterView>
             </div>
         </div>
+
        <!--  <v-dialog v-model="dialog" max-width="500px">
       <v-card>
         <v-card-title class="headline">Selecionar Idioma</v-card-title>
@@ -696,6 +706,53 @@ const Translate = async (lang, langName) => {
 }
 </script>
 
+<script>
+import BRFlag from '../../assets/flags/PT-BR.svg';
+import ARFlag from '../../assets/flags/AR.svg';
+import JAFlag from '../../assets/flags/JA.svg';
+import CHFlag from '../../assets/flags/ZH-CN.svg';
+import ENFlag from '../../assets/flags/EN.svg';
+import ESFlag from '../../assets/flags/ES.svg';
+import FRFlag from '../../assets/flags/FR.svg';
+import ITFlag from '../../assets/flags/IT.svg';
+
+
+export default {
+    data() {
+        return {
+            isMobile: window.innerWidth <= 640,
+            flagMap: {
+                'PT-BR': BRFlag,
+                'AR': ARFlag,
+                'JA': JAFlag,
+                'ZH-CN': CHFlag,
+                'EN': ENFlag,
+                'ES': ESFlag,
+                'FR': FRFlag,                
+                'IT': ITFlag,                
+            }
+        };
+    },
+    methods: {
+        getFlag(sigla) {
+            return this.flagMap[sigla] || ''; // Retorna vazio ou uma imagem padrão se a sigla não for encontrada
+        },
+        updateIsMobile() {
+            this.isMobile = window.innerWidth <= 640;
+        }
+    },
+    mounted() {
+        window.addEventListener("resize", this.updateIsMobile);
+    },
+    beforeUnmount() {
+        window.removeEventListener("resize", this.updateIsMobile);
+    }
+};
+</script>
+
+
+
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
 
@@ -748,4 +805,10 @@ const Translate = async (lang, langName) => {
             display: none;
         }
     }
+    @media (max-width: 768px) { /* Aplica apenas no mobile */
+        .dropdown-menu-custom{
+           width: 50px !;
+        }
+}
+
 </style>
