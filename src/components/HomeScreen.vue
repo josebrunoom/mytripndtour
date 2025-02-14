@@ -1645,7 +1645,7 @@ body {
 @media (max-width: 768px) { /* Aplica apenas no mobile */
   .cartao-origem {
     height: auto !important; /* Permite ajuste dinâmico */
-    min-height: 120px; /* Define um limite mínimo para evitar cards muito pequenos */
+    min-height: 100px; /* Define um limite mínimo para evitar cards muito pequenos */
   }
 
   .p-4 {

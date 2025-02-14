@@ -388,7 +388,7 @@
                             <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
                         </div> -->
                     </div>
-                        <span class="fw-bold pr-5 max-[500px]:text-sm">
+                        <span class="fw-bold menu-saldo pr-5 max-[500px]:text-sm">
                             <button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> 
                             {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}
                         </span>
@@ -420,7 +420,7 @@
             </div>
 
             <div class="h-[calc(100vh-50px)] bg-[#faf8fd]">
-                <div class="button-group align-items-center hidden max-[640px]:block mb-2">
+                <div class="button-group align-items-center hidden max-[640px]:block mt-3 mb-2">
                     <button 
                         type="button" 
                         class="bg-[#78c0d6] text-white px-4 py-2 rounded-lg hover:bg-[#5ba8bd] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
@@ -710,7 +710,7 @@ const Translate = async (lang, langName) => {
 import BRFlag from '../../assets/flags/PT-BR.svg';
 import ARFlag from '../../assets/flags/AR.svg';
 import JAFlag from '../../assets/flags/JA.svg';
-import CHFlag from '../../assets/flags/ZH-CN.svg';
+import ZHFlag from '../../assets/flags/ZH.svg';
 import ENFlag from '../../assets/flags/EN.svg';
 import ESFlag from '../../assets/flags/ES.svg';
 import FRFlag from '../../assets/flags/FR.svg';
@@ -725,7 +725,7 @@ export default {
                 'PT-BR': BRFlag,
                 'AR': ARFlag,
                 'JA': JAFlag,
-                'ZH-CN': CHFlag,
+                'ZH': ZHFlag,
                 'EN': ENFlag,
                 'ES': ESFlag,
                 'FR': FRFlag,                
@@ -735,7 +735,8 @@ export default {
     },
     methods: {
         getFlag(sigla) {
-            return this.flagMap[sigla] || ''; // Retorna vazio ou uma imagem padrão se a sigla não for encontrada
+            console.log(sigla);
+            return this.flagMap[sigla] || ''; 
         },
         updateIsMobile() {
             this.isMobile = window.innerWidth <= 640;
@@ -808,7 +809,12 @@ export default {
     @media (max-width: 768px) { 
         .dropdown-menu-custom{
            width: 5% !important;
-        }
+        }   
+    }
+    @media (max-width: 768px) { /* Aplica apenas no mobile */
+    .menu-saldo {
+        margin:10px;
+    }
 }
 
 </style>
