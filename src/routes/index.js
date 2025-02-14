@@ -21,7 +21,7 @@ const router = createRouter({
 
     // Se for necessário autenticar e não houver token, redireciona para a Home
     if (authRequired && !token) {
-        return next('/roteiro/');
+        location.href = "https://mytripntour.com/";
     }
 
     next();
