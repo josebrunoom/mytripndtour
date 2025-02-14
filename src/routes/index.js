@@ -7,24 +7,30 @@ const router = createRouter({
   })
 
   router.beforeEach((to, from, next) => {
-    console.log("Navegando para:", to.path);
+    try{
+      console.log("Navegando para:", to.path);
     
-    // Ajuste os caminhos para incluir "/roteiro/"
-    const publicPages = ['/roteiro/', '/politica_privacidade'];
-
-    console.log("Public: ", publicPages);
-    // Verifica se a página exige autenticação
-    const authRequired = !publicPages.includes(to.path) && !to.path.includes('politica_privacidade');
-    console.log("Auth: ", authRequired);
-
-    const token = localStorage.getItem('token');
-
-    // Se for necessário autenticar e não houver token, redireciona para a Home
-    if (authRequired && !token) {
-        location.href = "https://mytripntour.com/";
+      // Ajuste os caminhos para incluir "/roteiro/"
+      const publicPages = ['/roteiro/', '/politica_privacidade'];
+  
+      console.log("Public: ", publicPages);
+      // Verifica se a página exige autenticação
+      const authRequired = !publicPages.includes(to.path) && !to.path.includes('politica_privacidade');
+      console.log("Auth: ", authRequired);
+  
+      const token = localStorage.getItem('token');
+  
+      // Se for necessário autenticar e não houver token, redireciona para a Home
+      if (authRequired && !token) {
+        return next('/');
+      }
+  
+      next();
     }
-
-    next();
+    catch(e){
+      console.log(e);
+    }
+    
 });
 
 export default router;
