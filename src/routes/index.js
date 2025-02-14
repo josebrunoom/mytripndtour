@@ -14,7 +14,7 @@ const router = createRouter({
 
     console.log("Public: ", publicPages);
     // Verifica se a página exige autenticação
-    const authRequired = !publicPages.includes(to.path);
+    const authRequired = !publicPages.includes(to.path) && !to.path.includes('politica_privacidade');
     console.log("Auth: ", authRequired);
 
     const token = localStorage.getItem('token');
