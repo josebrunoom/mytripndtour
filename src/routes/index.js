@@ -12,9 +12,11 @@ const router = createRouter({
     // Ajuste os caminhos para incluir "/roteiro/"
     const publicPages = ['/roteiro/', '/politica_privacidade'];
 
+    console.log("Public: ", publicPages);
     // Verifica se a página exige autenticação
     const authRequired = !publicPages.includes(to.path);
     console.log("Auth: ", authRequired);
+
     const token = localStorage.getItem('token');
 
     // Se for necessário autenticar e não houver token, redireciona para a Home
