@@ -73,6 +73,7 @@
                 min="0"
                 @change="transformDates(date, periodo_viagem)"
                 style="font-size: 0.9rem;"
+                @blur="watchPeriodo_viagem"
               />
             </div>
             <div class="fw-bold me-2 textosDuracao">{{ traducao.Dias }}</div>
@@ -239,9 +240,10 @@
         
         <div class="row mb-4">
           <div class="col-12 col-md-6 mb-4">
-            <div class="p-4 rounded-lg shadow-md w-full h-24" style="background-color: #ffff;">
-              <div class="d-flex  position-relative">
-                <h2 class="sm:h4 mr-4 fw-bold mt-[0.7rem] text-base">
+            <div class="p-4 rounded-lg shadow-md w-full md:h-24" style="background-color: #ffff;">
+              <div class="flex_column position-relative">
+                <div class="flex">
+                  <h2 class="sm:h4 mr-4 fw-bold mt-[0.7rem] text-base">
                     {{ traducao.MultDestinos  }}
                     <i 
                       class="bi bi-question-circle-fill mb-2 mt-[0.7rem]"
@@ -249,18 +251,18 @@
                       data-placement="top"
                       v-tooltip.top="{ value: traducao.Tooltip9, escape: false }"
                     ></i>
-                </h2>
-                    <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 pt-1 bg-white rounded-lg" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
-                    <div class="selected-placesDestino">
+                  </h2>
+                  <input ref="inputDestinoMult" id="autocompleteDMult" type="text" :placeholder="traducao.Destino" class="h-10 pt-1 bg-white rounded-lg w-[200px]" v-model="location2" @change="handleSelect2()" style="padding-left: 10px; padding-right: 10px;">
+                </div>
+                <div class="selected-placesDestino">
                   <div v-for="(place, index) in lugaresDestinosFullNames" :key="index">
-                      <span class=" text-black fw-bold" style="font-size: 1.3rem;">
+                      <span class=" text-black " style="font-size: 0.8rem;">
                         {{ place }};
                     </span>
                     <button @click="removePlaceDestino(index)" class="btn-sm ms-2"><i class="fa-solid fa-trash"></i></button>
                   </div>
                 </div>
               </div>
-                
             </div>
           </div>
           <div class="col-12 col-md-6">
@@ -822,6 +824,7 @@ onBeforeUnmount(() => {
           //DestinoCity.value=place.formatted_address
           lugaresDestinosFullNames.value.push(place.name)
           //showDestino.value=true
+          custos_detalhe.value=true
         }
       }
     });
@@ -870,14 +873,22 @@ watch(numChildren, (newCount) => {
     childAges.value.splice(newCount);
   }
 });
-watch(periodo_viagem, (newCount) => {
+/* watch(periodo_viagem, (newCount) => {
   if (newCount > 20) {
     periodo_viagem.value=20
   } 
   else if (newCount < 2) {
     periodo_viagem.value=null
   }
-});
+}); */
+const watchPeriodo_viagem = () => {
+  if (periodo_viagem.value > 20) {
+    periodo_viagem.value=20
+  } 
+  else if (periodo_viagem.value < 2) {
+    periodo_viagem.value=2
+  }
+}
 
 const formatChildren = () => {
       //numChildren.value = parseInt(formattedChildren.value) || 0;
@@ -1547,11 +1558,11 @@ input[type="radio"] {
   overflow-y: auto; /* Make the div scrollable */
 }
 .selected-placesDestino {
-  height: 32px; /* Adjust height as needed */
-  overflow-y: auto; /* Make the div scrollable */
+  height: 50px; /* Adjust height as needed */
+  overflow-y: hidden; /* Make the div scrollable */
   display: flex; /* Make items inline */
   flex-wrap: wrap; /* Wrap items to the next line if they exceed the container width */
-  gap: 10px; /* Add space between items */
+  gap: 4px; /* Add space between items */
   align-items: center; /* Align items vertically center */
   margin-bottom: 5px;
 }
@@ -1742,6 +1753,15 @@ input[type="date"]::-webkit-input-placeholder{
 @media (max-width: 768px) {
   .custom-flex {
     flex-direction: column;
+  }
+}
+.flex_column {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 768px) {
+  .flex_column {
+    flex-direction: row;
   }
 }
 </style>
