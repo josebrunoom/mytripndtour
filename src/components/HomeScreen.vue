@@ -659,7 +659,7 @@ import router from '../routes';
   const showModal=ref(false)
   const dialogConfirm=ref(false)
   const dialogPesqPdf=ref('')
-  const pdf_button = ref(null);
+  const isMultD = ref(false);
   const dialogCurrent = ref(false)
   const confirm = ref(null)
   let resolveConfirm;
@@ -824,7 +824,8 @@ onBeforeUnmount(() => {
           //DestinoCity.value=place.formatted_address
           lugaresDestinosFullNames.value.push(place.name)
           //showDestino.value=true
-          custos_detalhe.value=true
+          isMultD.value=true
+          
         }
       }
     });
@@ -964,6 +965,9 @@ const formatAges = (index) => {
       }
 
 const postRoteiro=async () =>{
+  if(isMultD.value==true&&lugaresDestinosFullNames.value.length>1){
+    custos_detalhe.value=true
+  }
   isRoteiro.value=true
   starValue.value=null;
   whyCardComentario.value='';
