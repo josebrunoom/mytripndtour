@@ -466,6 +466,15 @@
     </div>
 
     <div class="row mb-4">
+      <div class="col-12 d-flex justify-content-start mb-2" v-if="roteiroData.Roteiro!=null">
+        <button 
+          type="button" 
+          class="bg-[#78d69c] text-white px-4 py-2 rounded-lg hover:bg-[#66c4af] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
+          @click="dialogCota=true"
+          >
+          Quero uma cotação
+        </button>
+      </div>
       <div class="col-12 roteiro-container bg-white">
         
         <!-- Render each item after parsing with marked -->
@@ -518,6 +527,35 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="[#78c0d6]" text @click="dialog=false">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialogCota" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">Cotação</v-card-title>
+        <v-card-text>
+          <span>Como você quer ser contactado?</span>
+
+          <!-- Use v-radio-group to manage selection properly -->
+          <v-radio-group v-model="contactMethod" class="mb-2">
+            <v-radio label="Email" value="email"></v-radio>
+            <v-radio label="Telefone" value="telefone"></v-radio>
+          </v-radio-group>
+
+          <!-- Show input field when 'Telefone' is selected -->
+          <v-text-field 
+            v-if="contactMethod === 'telefone'" 
+            v-model="phoneNumber" 
+            label="Digite seu telefone" 
+            outlined 
+            dense
+          ></v-text-field>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogCota = false">Cancelar</v-btn>
+          <v-btn color="[#78c0d6]" text @click="dialogCota = false">Confirmar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -661,12 +699,15 @@ import router from '../routes';
   const dialogPesqPdf=ref('')
   const isMultD = ref(false);
   const dialogCurrent = ref(false)
+  const dialogCota = ref(false)
   const confirm = ref(null)
   let resolveConfirm;
   const interesses = ref(null/* ['Compras', 'Cidades Históricas', 'Cultura Local', 'Diversão Noturna','Ecoturismo', 'Esportes',  'Gastronomia', 'Museus',  'Parques de Diversão'] */)
   const user=JSON.parse(localStorage.getItem('user'));
   const currentRoteiro = ref(null)
   const currentPDF = ref(null)
+  const contactMethod = ref(null)
+  const phoneNumber = ref('')
   //let childAges=[]
   let transporteOptions=['Aéreo','Marítimo','Meios Próprios (não gerar)','Rodoviário', 'Trens','Veículos de Aluguel']
   let opc=['Sim','Não']
@@ -740,6 +781,11 @@ onBeforeUnmount(() => {
   const toggleSelect = (modo) =>{
     if (hospedagemSelecionada.value === modo) {
         hospedagemSelecionada.value = null; 
+      }
+  }
+  const toggleSelectContato = (modo) =>{
+    if (contactMethod.value === modo) {
+        contactMethod.value = null; 
       }
   }
   const toggleSelectCustos = () => {
@@ -965,9 +1011,6 @@ const formatAges = (index) => {
       }
 
 const postRoteiro=async () =>{
-  if(isMultD.value==true&&lugaresDestinosFullNames.value.length>1){
-    custos_detalhe.value=true
-  }
   isRoteiro.value=true
   starValue.value=null;
   whyCardComentario.value='';
@@ -1124,6 +1167,9 @@ const postRoteiro=async () =>{
             console.log('same',same)
             return
           }
+        }
+        if(user.saldouser>1){
+          ObjRoteiro1.custos_detalhe=true
         }
         const response = await axios.post('https://mytripntour-lm7edjmduq-uc.a.run.app/', ObjRoteiro1)
         if(disabledRating.value==true){
