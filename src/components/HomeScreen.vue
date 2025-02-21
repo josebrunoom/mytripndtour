@@ -466,7 +466,7 @@
     </div>
 
     <div class="row mb-4">
-      <div class="col-12 d-flex justify-content-start mb-2" v-if="roteiroData.Roteiro!=null">
+      <!-- <div class="col-12 d-flex justify-content-start mb-2" v-if="roteiroData.Roteiro!=null">
         <button 
           type="button" 
           class="bg-[#78d69c] text-white px-4 py-2 rounded-lg hover:bg-[#66c4af] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
@@ -474,7 +474,7 @@
           >
           Quero uma cotação
         </button>
-      </div>
+      </div> -->
       <div class="col-12 roteiro-container bg-white">
         
         <!-- Render each item after parsing with marked -->
