@@ -481,15 +481,9 @@
          <div ref="pdfButton" v-if="roteiroData.Roteiro!=null">
           
           <div id="pdf-content"  v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
-          <!-- <div class="col-12 d-flex justify-content-start mb-2" v-if="roteiroData.Roteiro!=null">
-            <button 
-              type="button" 
-              class="bg-[#78d69c] text-white px-4 py-2 rounded-lg hover:bg-[#66c4af] focus:outline-none focus:ring-2 focus:ring-[#78c0d6] me-2" 
-              @click="dialogCota=true"
-              >
-              Quero uma cotação
-            </button>
-          </div> -->
+          <div class="col-12 d-flex justify-content-start mb-2" v-if="roteiroData.Roteiro!=null">
+            <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
+          </div>
           <div class="col-md-12 d-flex align-items-start">
             <span class="pl-4" style="text-align: left;">
               <b>{{ traducao.ComoFoi }}</b><br> {{ traducao.Criticas }}
