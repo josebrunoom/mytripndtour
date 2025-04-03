@@ -14,12 +14,12 @@ const routes = [
     {
         path:'/roteiro/politica_privacidade',
         name:"politica_privacidade",
-        component:Politica_privacidade
+        component: Politica_privacidade
     },
     {
         path:'/politica_privacidade',
-        name:"politica_privacidade2",
-        component:Politica_privacidade
+        name:"politica_privacidade",
+        component: Politica_privacidade
     },
     {
         path: "/save",
@@ -28,17 +28,12 @@ const routes = [
     },
     {
         path:'/',
-        name:'Login2',
-        component:Login
-    },
-    {
-        path:'/roteiro',
         name:"Login",
-        component:Login
+        component: Login
     },
     {
         path:'/mytrip/',
-        component:Sidebar,
+        component: Sidebar,
         children:[
             {
                 path: "home",
@@ -75,10 +70,15 @@ const routes = [
                 name: "Contato",
                 component: Contato,
             },
-
         ]
     },
-    
-]
+    // 🔹 Redireciona qualquer rota inválida para "/"
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "/"
+    }
+];
 
 export default routes;
+
+
