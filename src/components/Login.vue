@@ -63,7 +63,7 @@
   import newlang from '../data/newlang';
 
   const isProd=ref(true)
-  const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
+  const clientId = process.env.CLIENT_ID;
   const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
 
   const isLoading = ref(false)
