@@ -93,7 +93,7 @@
                     </button>
                 </div>
             </div>  
-            <div class="col-12 pb-3">
+            <!-- <div class="col-12 pb-3">
                 <div v-if="currentRouteName=='Extrato'">
                     <button 
                     type="button" 
@@ -114,8 +114,8 @@
                     {{traducao.Extrato}}
                     </button>
                 </div>
-            </div>  
-            <div class="col-12 pb-3">
+            </div>   -->
+            <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
                     class="me-2 text-black hover:text-white pl-2 pr-2 rounded-lg w-36" 
@@ -124,7 +124,7 @@
                 <i class="fas fa-wallet"></i>
                 {{ traducao.AddCred }}
                 </button>
-            </div>
+            </div> -->
             <!-- <div class="col-12 pb-3">
                 <google-pay-button
                 environment="TEST"
@@ -281,7 +281,7 @@
                     </button>
                 </div>
             </div> 
-            <div class="col-12 pb-3">
+            <!-- <div class="col-12 pb-3">
                 <div v-if="currentRouteName=='Extrato'">
                     <button 
                     type="button" 
@@ -312,7 +312,7 @@
                 <i class="fas fa-wallet"></i>
                 {{ traducao.AddCred }}
                 </button>
-            </div>
+            </div> -->
             <!-- <div class="col-12 pb-3">
                 <button 
                     type="button" 
@@ -388,10 +388,10 @@
                             <button class="btn btn-danger" @click="triggerFunctionPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
                         </div> -->
                     </div>
-                        <span class="fw-bold menu-saldo pr-5 max-[500px]:text-sm">
+                        <!-- <span class="fw-bold menu-saldo pr-5 max-[500px]:text-sm">
                             <button @click="reloadSaldo"><ion-icon name="refresh-outline"></ion-icon></button> 
                             {{ traducao.Saldo }}: {{ saldo }} {{ traducao.Creditos }}
-                        </span>
+                        </span> -->
                         <div class="dropdown me-3">
                             <button class="dropdown-toggle fw-bold" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-globe"></i>

@@ -169,7 +169,7 @@ const requestNewGoogleLogin = () => {
             code: response.code,
             client_id: clientId,
             client_secret: clientSecret, 
-            redirect_uri: 'https://mytripntour.com', 
+            redirect_uri: 'https://roteiro.mytripntour.com', //mudar dependente do url
             grant_type: 'authorization_code'
           });
           const accessToken = tokenResponse.data.access_token;
@@ -181,7 +181,7 @@ const requestNewGoogleLogin = () => {
           }
           localStorage.setItem('tokens', JSON.stringify(tokens));
           processUserInfo(userInfo);
-
+          localStorage.setItem('google',true)
         } catch (error) {
           console.error('Error handling Google login response:', error);
         }
