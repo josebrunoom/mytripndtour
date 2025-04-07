@@ -64,7 +64,7 @@
 
   const isProd=ref(true)
   const clientId = process.env.CLIENT_ID;
-  const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
   const isLoading = ref(false)
   const checkbox = ref(true)
