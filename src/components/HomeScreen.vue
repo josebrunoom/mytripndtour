@@ -234,8 +234,10 @@
     <div id="form-premium" class="content-premium">  <!--  Começo Premium -->
       <div class="p-3 bg-[#33cee9] w-full h-full rounded-lg mb-2"> 
         <div class="flex justify-start items-start">
-          <span class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
-            font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }}</b> </span> 
+          <span v-if="isGoogle" class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
+            font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> <!-- {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }} --></b> </span> 
+            <span v-else class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
+            font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> Faça login no google para usar <!-- {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }} --></b> </span> 
         </div>
         
         <div class="row mb-4">
@@ -422,7 +424,7 @@
           </div> -->
       </div>
       <div class="items-start text-start" >
-        <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
+        <button v-if="isGoogle" v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i><!-- ({{ user.vlrpdf }} {{ traducao.Creditos }}) --></i> </button>
       </div>
       
     </div>
@@ -656,6 +658,7 @@ import router from '../routes';
 
   let location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
+  const isGoogle = ref(localStorage.getItem('google'))
   const traducao = ref(ptLang)
   const date = ref();
   const numAdults = ref()
@@ -1085,6 +1088,10 @@ const postRoteiro=async () =>{
   }
   else{
     if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0||ObjRoteiro1.custos_detalhe=='S'){
+    if(!isGoogle){
+      alert('Faça login com o Google para continuar')
+      return
+    }
     let saldoValido = haveSaldo()
     if(saldoValido==false){
         dialogVlr.value=true
@@ -1093,11 +1100,11 @@ const postRoteiro=async () =>{
         return;
     }else{
       dialogPesqPdf.value = 'pesquisa'
-      let confirmed = await confirmUseCredits();
+      /* let confirmed = await confirmUseCredits();
       if (!confirmed) {
         isLoading.value = false;
         return; 
-      }
+      } */
     }
   }
     try {
