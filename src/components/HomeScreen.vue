@@ -424,7 +424,8 @@
           </div> -->
       </div>
       <div class="items-start text-start" >
-        <button v-if="isGoogle" v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i><!-- ({{ user.vlrpdf }} {{ traducao.Creditos }}) --></i> </button>
+        <button v-if="isGoogle" v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askLoginPDF">  {{ traducao.GerarPDF }}  <i><!-- ({{ user.vlrpdf }} {{ traducao.Creditos }}) --></i> </button>
+        <button v-else v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askLoginPDF">  {{ traducao.GerarPDF }}  <i> (Faça login no google para usar)<!-- ({{ user.vlrpdf }} {{ traducao.Creditos }}) --></i> </button>
       </div>
       
     </div>
@@ -484,7 +485,8 @@
           
           <div id="pdf-content"  v-html="roteiroData.Roteiro.Roteiro" class="roteiro-item"></div>
           <div class="col-12 d-flex justify-content-start mb-2" v-if="roteiroData.Roteiro!=null">
-            <button v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askModalPDF">  {{ traducao.GerarPDF }}  <i>({{ user.vlrpdf }} {{ traducao.Creditos }})</i> </button>
+            <button v-if="isGoogle" v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askLoginPDF">  {{ traducao.GerarPDF }}  <i><!-- ({{ user.vlrpdf }} {{ traducao.Creditos }}) --></i> </button>
+            <button v-else v-show="roteiroData.Roteiro!=null" class="btn btn-danger" @click="askLoginPDF">  {{ traducao.GerarPDF }}  <i> (Faça login no google para usar)<!-- ({{ user.vlrpdf }} {{ traducao.Creditos }}) --></i> </button>
           </div>
           <div class="col-md-12 d-flex align-items-start">
             <span class="pl-4" style="text-align: left;">
@@ -635,6 +637,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogIsGoogle" max-width="500px">
+      <v-card>
+        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-text>Faça login com o Google para continuar</v-card-text>
+        <div class="flex justify-center">
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="[#78c0d6]" text @click="dialogIsGoogle=false">{{traducao.Cancelar}}</v-btn>
+          <div  class=" flex justify-center items-center mt-3">
+            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
+              <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
+              Entrar Com Google
+            </button>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <compraModal v-if="showModal" :closeModal="closeModal" :traducao="TRoteiro.Sidebar"></compraModal>
   </div>
 </template>
@@ -654,7 +674,9 @@
   import compraModal from './compraModal.vue';
   import ptLang from '../data/ptlang';
   import { eventBus } from '../data/eventbus';
-import router from '../routes';
+  import router from '../routes';
+  import { googleSdkLoaded } from "vue3-google-login";
+  import { jwtDecode } from 'jwt-decode';
 
   let location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
@@ -704,6 +726,7 @@ import router from '../routes';
   const dialogPesqPdf=ref('')
   const isMultD = ref(false);
   const dialogCurrent = ref(false)
+  const dialogIsGoogle = ref(false)
   const dialogCota = ref(false)
   const confirm = ref(null)
   let resolveConfirm;
@@ -736,6 +759,13 @@ import router from '../routes';
     // Force Vue to re-evaluate computed properties on resize
     isLargeScreen.value = window.innerWidth >= 640;
   };
+  const askLoginPDF = () => {
+    if(!isGoogle.value){
+      dialogIsGoogle.value=true
+    }else{
+      downloadPdf()
+    }
+  }
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
@@ -754,7 +784,7 @@ onBeforeUnmount(() => {
   });
 
   eventBus.on('GeraPDF', () => {
-    askModalPDF();
+    askLoginPDF();
   });
 
   const triggerFunctionPDF = () => {
@@ -1088,24 +1118,26 @@ const postRoteiro=async () =>{
   }
   else{
     if(ObjRoteiro1.tipo_hospedagem||ObjRoteiro1.quero_conhecer.length>1||ObjRoteiro1.nao_incluir.length>1||ObjRoteiro1.interesses.length>1||lugaresDestinosFullNames.value.length>0||ObjRoteiro1.custos_detalhe=='S'){
-    if(!isGoogle){
-      alert('Faça login com o Google para continuar')
+    console.log('uis',isGoogle)
+    if(!isGoogle.value){
+      dialogIsGoogle.value=true
+      isLoading.value = false; 
       return
     }
     let saldoValido = haveSaldo()
-    if(saldoValido==false){
+    /* if(saldoValido==false){
         dialogVlr.value=true
         isLoading.value = false; 
         vlrModalText.value=traducao.value.VlrModal1
         return;
     }else{
       dialogPesqPdf.value = 'pesquisa'
-      /* let confirmed = await confirmUseCredits();
+      let confirmed = await confirmUseCredits();
       if (!confirmed) {
         isLoading.value = false;
         return; 
-      } */
-    }
+      }
+    } */
   }
     try {
       if(localStorage.getItem('isDev')=='dev'){ /* if is admin testing */
@@ -1505,6 +1537,255 @@ const confirmHandler = (confirmed) => {
   resolveConfirm(confirmed); // Resolve the promise with the confirmed value
 };
 
+
+//Google Login Logic
+
+const userIP=ref('')
+const locationData = ref(null)
+const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
+const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
+
+const ipGet=async ()=>{
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    userIP.value = data.ip;
+}
+
+const login = () => {
+  ipGet()
+  const storedUser = localStorage.getItem('tokens');
+  const refreshToken = storedUser ? JSON.parse(storedUser).refresh_token : null;
+
+  if (refreshToken) {
+    axios.post('https://oauth2.googleapis.com/token', {
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
+      grant_type: 'refresh_token',
+    })
+    .then(async (response) => {
+      console.log('res')
+      const accessToken = response.data.access_token;
+      console.log(response)
+      const userInfo = await fetchUserInfo(accessToken);
+      processUserInfo(userInfo);
+    })
+    .catch((error) => {
+      console.error('Error refreshing token:', error);
+      requestNewGoogleLogin();
+    });
+  } else {
+    requestNewGoogleLogin();
+  }
+};
+
+const requestNewGoogleLogin = () => {
+  googleSdkLoaded((google) => {
+    const client = google.accounts.oauth2.initCodeClient({
+      client_id: clientId,
+      scope: 'email profile openid https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read',
+      access_type: 'offline', 
+      prompt: 'consent', 
+      callback: async (response) => {
+        try {
+          const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
+            code: response.code,
+            client_id: clientId,
+            client_secret: clientSecret, 
+            redirect_uri: 'https://roteiro.mytripntour.com', //mudar dependente do url
+            grant_type: 'authorization_code'
+          });
+          const accessToken = tokenResponse.data.access_token;
+          const refreshToken = tokenResponse.data.refresh_token; 
+          const userInfo = await fetchUserInfo(accessToken);
+          const tokens = {
+            access_token: accessToken,
+            refresh_token: refreshToken 
+          }
+          localStorage.setItem('tokens', JSON.stringify(tokens));
+          processUserInfo(userInfo);
+          localStorage.setItem('google',true)
+        } catch (error) {
+          console.error('Error handling Google login response:', error);
+        }
+      }
+    });
+    client.requestCode();
+  });
+};
+const processUserInfo = async (userInfo) => {
+  console.log(userInfo)
+  const userEmail = userInfo.emailAddresses[0].value;
+      const userName = userInfo.names[0].displayName;
+      const userPicture = userInfo.photos[0].url;
+      const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+      const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const userLocale = navigator.language
+      const formattedDate = userBirthday ? `${userBirthday.day || 1}/${userBirthday.month || 1}/${userBirthday.year || 2000}` : null;
+      localStorage.setItem('lang', userLocale.toUpperCase());
+      localStorage.setItem('langName', userLocale.toUpperCase());
+      await saveLocation()
+      //locationData.value ? console.log(locationData.value) : locationData.value=data
+      let objUser = {
+            email: userEmail,
+            name: userName,
+            birthday: formattedDate,
+            gender: userGender,
+            sigla_idioma:userLocale.toUpperCase(),
+            ip_origem:userIP.value,
+            /* pagina:'Roteiros', */
+            city: locationData.value.city ? locationData.value.city : '',
+            region: locationData.value.region ? locationData.value.region : '',
+            country: locationData.value.country ? locationData.value.country : '',
+            loc: locationData.value.loc ? locationData.value.loc : '',
+            postal: locationData.value.postal ? locationData.value.postal : '',
+            timezone: locationData.value.timezone ? locationData.value.timezone : '',
+            flg_auth:'G'
+          };
+          await sendUser(objUser, userInfo, 'google')
+};
+const sendUser=async(user, userInfo, access_type)=>{ 
+  isLoading.value=true
+  
+  try {
+    /* const response = await fetch('https://newlogin-lm7edjmduq-uc.a.run.app', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+      body: JSON.stringify(user), 
+    }); */
+    const response = await axios.post('https://newlogin-lm7edjmduq-uc.a.run.app', user)
+    console.log('response senduser',response.data)
+    localStorage.setItem('token', response.data.token)
+    const tokenDecoded= jwtDecode(response.data.token)
+    const userEmail = userInfo.emailAddresses[0].value;
+      const userName = userInfo.names[0].displayName;
+      const userPicture = userInfo.photos[0].url;
+      const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+      const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      const LocalStorageUser = {
+                Email: userEmail,
+                name: userName,
+                photo: userPicture,
+                MetodoAutenticacao: 'Google',
+                birthday: moment.utc(response.data.dtnascimento).format('DD/MM/YYYY'),
+                gender: userGender,
+                ip_origem: userIP.value,
+                email: userEmail,
+                saldouser: response.data.saldouser,
+                vlrpdf: response.data.vlrpdf,
+                vlrpesquisa: response.data.vlrpesquisa,
+                iduser: response.data.iduser,
+                currency_data:response.data.currency_data,
+                city: locationData.value.city ? locationData.value.city : '',
+                region: locationData.value.region ? locationData.value.region : '',
+                country: locationData.value.country ? locationData.value.country : '',
+                loc: locationData.value.loc ? locationData.value.loc : '',
+                postal: locationData.value.postal ? locationData.value.postal : '',
+                timezone: locationData.value.timezone ? locationData.value.timezone : '',
+              };
+              console.log('LocalStorageUser',LocalStorageUser)
+      localStorage.setItem('languages', JSON.stringify(response.data.languages));
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
+    if(response.data.ExistUser==1 || checkbox.value==true){
+      localStorage.setItem('token', response.data.token)
+      const tokenDecoded= jwtDecode(response.data.token)
+      console.log(tokenDecoded)
+      if(access_type=='facebook'){
+      let LocalStorageUser = {
+              email: userInfo.email,
+              Email: userInfo.email,
+              Nome: userInfo.name,
+              photo: userInfo.picture.data.url,
+              IdentificadorUnico: userInfo.id,
+              MetodoAutenticacao: 'Facebook',
+              birthday: userInfo.birthday ? userInfo.birthday : null,
+              gender: userInfo.gender ? userInfo.gender : null,
+              saldouser: response.data.saldouser,
+              vlrpdf: response.data.vlrpdf,
+              vlrpesquisa: response.data.vlrpesquisa,
+              iduser: response.data.iduser,
+            };
+      
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
+    } else if(access_type=='google'){
+      const userEmail = userInfo.emailAddresses[0].value;
+      const userName = userInfo.names[0].displayName;
+      const userPicture = userInfo.photos[0].url;
+      const userBirthday = userInfo.birthdays ? userInfo.birthdays[0].date : null;
+      const userGender = userInfo.genders ? userInfo.genders[0].value : null;
+      const formattedDate = userBirthday ? `${userBirthday.day}/${userBirthday.month}/${userBirthday.year}` : null;
+      const LocalStorageUser = {
+                Email: userEmail,
+                name: userName,
+                photo: userPicture,
+                MetodoAutenticacao: 'Google',
+                birthday: moment.utc(response.data.dtnascimento).format('DD/MM/YYYY'),
+                gender: userGender,
+                ip_origem: userIP.value,
+                email: userEmail,
+                saldouser: response.data.saldouser,
+                vlrpdf: response.data.vlrpdf,
+                vlrpesquisa: response.data.vlrpesquisa,
+                iduser: response.data.iduser,
+                currency_data:response.data.currency_data,
+                city: locationData.value.city ? locationData.value.city : '',
+                region: locationData.value.region ? locationData.value.region : '',
+                country: locationData.value.country ? locationData.value.country : '',
+                loc: locationData.value.loc ? locationData.value.loc : '',
+                postal: locationData.value.postal ? locationData.value.postal : '',
+                timezone: locationData.value.timezone ? locationData.value.timezone : '',
+              };
+              console.log('LocalStorageUser',LocalStorageUser)
+      localStorage.setItem('languages', JSON.stringify(response.data.languages));
+      localStorage.setItem('user', JSON.stringify(LocalStorageUser));
+      localStorage.setItem('Traducao', response.data.traducao);
+    }
+      
+      window.location.reload();
+    } else{
+      alert('Aceite os termos para continuar')
+      openModal();
+    }
+    
+  } catch (error) {
+    isLoading.value=false
+    console.log(error)
+    alert('Erro ao logar')
+  }finally{
+    isLoading.value=false
+  }
+}
+  const saveLocation = async () => {
+    try {
+      const response = await axios.get(`https://ipinfo.io/json?token=5bad712b786115`)
+      console.log('Location response',response)
+      locationData.value=response.data
+      localStorage.setItem('location',JSON.stringify(response.data))
+    } catch (error) {
+      console.log('saveLocation ERROR',error)
+    }
+
+  }
+  const fetchUserInfo = async (accessToken) => {
+  try {
+    const response = await axios.get('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,birthdays,genders,photos', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log('fetchuserinfo',response)
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+};
+
+
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
@@ -1823,5 +2104,14 @@ input[type="date"]::-webkit-input-placeholder{
     flex-direction: row;
   }
 }
+.input-box {
+    width: 60%;
+  }
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
 </style>
   
