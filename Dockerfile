@@ -8,6 +8,14 @@ WORKDIR /app
 COPY package*.json ./
 COPY . .
 
+# Define os argumentos de build (recebidos com --build-arg)
+ARG VITE_GOOGLE_CLIENT_ID
+ARG VITE_GOOGLE_CLIENT_SECRET
+
+# Define as variáveis de ambiente com base nos argumentos
+ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_SECRET=$VITE_GOOGLE_CLIENT_SECRET
+
 # Instala as dependências e faz o build
 RUN npm install --legacy-peer-deps && npm run build
 
