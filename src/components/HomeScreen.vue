@@ -236,8 +236,11 @@
         <div class="flex justify-start items-start">
           <span v-if="isGoogle" class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
             font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> <!-- {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }} --></b> </span> 
-            <span v-else class="h5 text-left"><b>{{ traducao.Premium }} <i style="font-style: italic;
-            font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> Faça login no google para usar <!-- {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }} --></b> </span> 
+            <button v-else @click="login" class="mb-2">
+              <span  class="h5 text-left" ><b>{{ traducao.Premium }} <i style="font-style: italic;
+              font-family: 'Roboto', sans-serif;">{{ traducao.Opcional }}</i> Faça login no google para usar <!-- {{ user.vlrpesquisa }} {{ traducao.CreditoSingular }} --></b> </span> 
+            </button>
+            
         </div>
         
         <div class="row mb-4">
@@ -639,19 +642,26 @@
     </v-dialog>
     <v-dialog v-model="dialogIsGoogle" max-width="500px">
       <v-card>
-        <v-card-title class="headline">{{ traducao.Atencao }}</v-card-title>
+        <v-card-title class="headline">
+          {{ traducao.Atencao }}
+        </v-card-title>
         <v-card-text>Faça login com o Google para continuar</v-card-text>
-        <div class="flex justify-center">
-        </div>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="[#78c0d6]" text @click="dialogIsGoogle=false">{{traducao.Cancelar}}</v-btn>
-          <div  class=" flex justify-center items-center mt-3">
-            <button  @click="login()" class="google-btn input-box w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 ">
-              <img src="../assets/google-logo.webp" alt="Facebook" class="img-Google mr-1" />
-              Entrar Com Google
-            </button>
-          </div>
+        <v-card-actions class="flex flex-col space-y-4 items-center">
+          <button
+            @click="login()"
+            class="w-full py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100 flex items-center justify-center"
+          >
+            <img src="../assets/google-logo.webp" alt="Google" class="w-5 h-5 mr-2" />
+            Entrar com Google
+          </button>
+          <v-btn
+            class="w-full"
+            color="[#78c0d6]"
+            text
+            @click="dialogIsGoogle = false"
+          >
+            {{ traducao.Cancelar }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
