@@ -688,6 +688,9 @@
   import { googleSdkLoaded } from "vue3-google-login";
   import { jwtDecode } from 'jwt-decode';
 
+  const clientId = ref();
+  const clientSecret = ref();
+
   let location = JSON.parse(localStorage.getItem('location'))
   let TRoteiro 
   const isGoogle = ref(localStorage.getItem('google'))
@@ -779,6 +782,8 @@
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
+  clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
 });
 
 onBeforeUnmount(() => {
@@ -1552,8 +1557,6 @@ const confirmHandler = (confirmed) => {
 
 const userIP=ref('')
 const locationData = ref(null)
-const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
-const clientSecret = import.meta.env.VITE_APP_GOOGLE_CLIENT_SECRET;
 
 const ipGet=async ()=>{
     const response = await fetch('https://api.ipify.org?format=json');
