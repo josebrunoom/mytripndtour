@@ -10,15 +10,15 @@
 
 
       <div class=" flex justify-center items-center">
-        <input type="text"
+        <!-- <input type="text"
           class="form-control google-btn input-box py-2 px-4 bg-white text-gray-600 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100"
-          v-model="Email" id="emaillogin" placeholder="Email">
+          v-model="Email" id="emaillogin" placeholder="Email"> -->
       </div>
       <div class=" flex justify-center items-center">
         <button @click="sendEmailOnly()"
           class="google-btn input-box w-full py-2 px-4 bg-[#27b3cc] text-white border border-gray-300 rounded-md shadow-sm hover:bg-[#184f58] ">
 
-          Entrar
+          Entrar como Anônimo
         </button>
       </div>
       <span class=" mb-3">Ou</span>
@@ -72,7 +72,7 @@ const showModal = ref(false);
 const userIP = ref('')
 let token = localStorage.getItem('token')
 const locationData = ref(null)
-const Email = ref('')
+const Email = ref('anonimo')
 
 const traducao = ref(null)
 
@@ -361,13 +361,14 @@ const loginFacebook = async () => {
   }
 };
 const sendEmailOnly = async () => {
-  if (document.getElementById("emaillogin").value == null || document.getElementById("emaillogin").value == "") {
+  /* if (document.getElementById("emaillogin").value == null || document.getElementById("emaillogin").value == "") {
     alert('Preencha um email para continuar!')
   }
   else if (document.getElementById("emaillogin").value.indexOf("@") == -1) {
     alert('Preencha um email valido para continuar!')
   }
-  else {
+  else */ {
+    localStorage.removeItem('google');
     isLoading.value = true
     await saveLocation()
     const userLocale = navigator.language
