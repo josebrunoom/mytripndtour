@@ -782,8 +782,8 @@
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
-  clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
+  clientId.value = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  clientSecret.value = import.meta.env.VITE_GOOGLE_CLIENT_SECRET;
 });
 
 onBeforeUnmount(() => {
@@ -1571,8 +1571,8 @@ const login = () => {
 
   if (refreshToken) {
     axios.post('https://oauth2.googleapis.com/token', {
-      client_id: clientId,
-      client_secret: clientSecret,
+      client_id: clientId.value,
+      client_secret: clientSecret.value,
       refresh_token: refreshToken,
       grant_type: 'refresh_token',
     })
@@ -1595,7 +1595,7 @@ const login = () => {
 const requestNewGoogleLogin = () => {
   googleSdkLoaded((google) => {
     const client = google.accounts.oauth2.initCodeClient({
-      client_id: clientId,
+      client_id: clientId.value,
       scope: 'email profile openid https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read',
       access_type: 'offline', 
       prompt: 'consent', 
@@ -1603,8 +1603,8 @@ const requestNewGoogleLogin = () => {
         try {
           const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
             code: response.code,
-            client_id: clientId,
-            client_secret: clientSecret, 
+            client_id: clientId.value,
+            client_secret: clientSecret.value, 
             redirect_uri: 'https://roteiro.mytripntour.com', //mudar dependente do url
             grant_type: 'authorization_code'
           });
